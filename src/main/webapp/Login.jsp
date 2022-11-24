@@ -23,9 +23,8 @@ pageEncoding="UTF-8"  %>
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
-		userID = (String) session.getAttribute("userPWD");
-	}
-	if(userID != null){
+		userID = (String) session.getAttribute("userID");
+	
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('로그인 정보가 존재합니다.');");
@@ -33,7 +32,6 @@ pageEncoding="UTF-8"  %>
 		script.println("</script>");
 		script.close();
 	}
-
 
 %>
 
@@ -66,10 +64,6 @@ pageEncoding="UTF-8"  %>
 					</div>
 				</li>	
 			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요" aria-lable="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
-			</form>
 		</div>
 	</nav>
 	

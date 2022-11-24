@@ -16,20 +16,24 @@ pageEncoding="UTF-8"  %>
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->
 	<link rel="stylesheet" href="./css/custom.css">
-	<style type="text/css">
-		a, a:hover{
-			color: #000000;
-			text-decoration: none;
-		}
-	</style>
+	
+	
 </head>
 <body>
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
+	
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('로그인 정보가 존재합니다.');");
+		script.println("location.href = 'index.jsp';");
+		script.println("</script>");
+		script.close();
 	}
-	int pageNumber = 1;
+
+
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
@@ -65,9 +69,23 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-	<h3>여기는 Admin Survey Result 페이지입니다.</h3>	
-	
-	
+		<form method="post" action="./LoginAction.jsp">
+		<div class="form-row">
+			<div class="col-sm-6">
+				<div class="form-row" >
+					<div class="form-group col-sm-12">
+						<input type="text" name="userID" class="form-control" required placeholder="ID">
+					</div>
+					<div class="form-group col-sm-12">
+						<input type="password" name="userPWD" class="form-control" required placeholder="Password">
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 row-sm-2">
+				<button type="submit" class="btn" style="background:#FF8484; width:90%; height:90%; color:white;">Login</button>
+			</div>
+		</div>
+		</form>
 	</section>
 	
 	<br/>
