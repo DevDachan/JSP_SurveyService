@@ -11,3 +11,56 @@ h5{
 body{
 	font-family:'Jeju Gothic';
 }
+
+.list{
+	width: 100%;
+	display:grid !important; 
+	grid-template-columns: 1fr;
+}
+
+.list-title{
+	grid-column-end: span 3;
+	display:grid !important;
+	grid-template-columns: 70% 30%;
+	text-align:center;
+}
+.list-content{
+	display:grid !important;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	text-align: center;
+}
+.list-option{
+	display:grid !important;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-column-end: span 4;
+	border-bottom: 3px solid #ADADAD;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.list-option-itme{
+	font-size: 3vw;
+}
+
+
+.list-rows{
+	display:grid !important;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-column-end: span 4;
+}
+
+.list-item{
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+
+.btn-add{
+	background: #FF8484;
+	border-radius: 30px;
+	text-align: center;
+	margin: auto;
+	padding: 1vw 2vw 1vw 2vw;
+	color: white;
+	font-weight: bold;
+}

@@ -20,6 +20,8 @@ pageEncoding="UTF-8"  %>
 	
 </head>
 <body>
+<%String userID = null; %>
+<%-- 
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -34,7 +36,7 @@ pageEncoding="UTF-8"  %>
 	}
 
 
-%>
+%>--%>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
@@ -71,18 +73,40 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 		<form method="post" action="./LoginAction.jsp">
 		<div class="form-row">
-			<div class="col-sm-6">
+			<div class="col-sm-12">
 				<div class="form-row" >
-					<div class="form-group col-sm-12">
+					<div class="form-group col-sm-2">
+						ID
+					</div>
+					<div class="form-group col-sm-10">
 						<input type="text" name="userID" class="form-control" required placeholder="ID">
 					</div>
-					<div class="form-group col-sm-12">
+				</div>
+				<div class="form-row" >
+					<div class="form-group col-sm-2 ">
+						<p class="mr-3" >PWD</p>
+					</div>
+					<div class="form-group col-sm-10">
 						<input type="password" name="userPWD" class="form-control" required placeholder="Password">
 					</div>
 				</div>
+				<div class="form-row" >	
+					<div class="form-group col-sm-6">
+						<input type="text" name="userEmail" class="form-control" required placeholder="Email">
+					</div>	
+					<div class="form-group col-sm-6">
+						<button type="button" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">Code Send</button>
+					</div>
+				</div>
+				<div class="form-row" >	
+					<div class="form-group col-sm-12">
+						<input type="text" name="authCode" class="form-control" required placeholder="Code">
+					</div>
+				</div>	
+				</div>
 			</div>
-			<div class="col-sm-6 row-sm-2">
-				<button type="submit" class="btn" style="background:#FF8484; width:90%; height:90%; color:white;">Login</button>
+			<div class="col-sm-12">
+				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">Login</button>
 			</div>
 		</div>
 		</form>

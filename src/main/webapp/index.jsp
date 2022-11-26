@@ -13,9 +13,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>강의 평가 웹 사이트</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css">
+	<link rel="stylesheet" href="./css/custom.css?ver=1">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -78,8 +78,109 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 	
-	<section class="container mt-3" style="max-width: 500px;">
-	<h3>여기는 Main Page입니다.</h3>	
+	<section class="container mt-3" style="max-width: 700px;">
+	<h3 class="mb-5">Main Page</h3>	
+	
+	<div class="list mb-5">
+		<div class="list-title">
+			<h4 style="margin:auto;">Admin list</h4>
+			<a href="www,naver.com" class="btn-add" >Add Survey</a>
+		</div>
+		<div class="list-content">
+			<div class="list-option">
+				<div class="list-option-itme">
+					날짜
+				</div>
+				<div class="list-option-itme">
+					이름
+				</div>
+				<div class="list-option-itme">
+					Edit
+				</div>
+				<div class="list-option-itme">
+					Result
+				</div>
+			</div>
+			<div class="list-rows" >
+				<div class="list-item">
+				2022.11.24
+				</div>
+				<div class="list-item">
+				한풍 지원서
+				</div>
+				<div class="list-item">
+				edit
+				</div>
+				<div class="list-item">
+				result
+				</div>
+			</div>
+			<div class="list-rows" >
+				<div class="list-item">
+				2022.11.24
+				</div>
+				<div class="list-item">
+				한풍 지원서
+				</div>
+				<div class="list-item">
+				edit
+				</div>
+				<div class="list-item">
+				result
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="list mb-5">
+		<div class="list-title">
+			<h4 style="margin:auto;">User list</h4>
+			<a href="www,naver.com" class="btn-add" >Add Survey</a>
+		</div>
+		<div class="list-content">
+			<div class="list-option">
+				<div class="list-option-itme">
+					날짜
+				</div>
+				<div class="list-option-itme">
+					이름
+				</div>
+				<div class="list-option-itme">
+					Edit
+				</div>
+				<div class="list-option-itme">
+					Result
+				</div>
+			</div>
+			<div class="list-rows" >
+				<div class="list-item">
+				2022.11.24
+				</div>
+				<div class="list-item">
+				한풍 지원서
+				</div>
+				<div class="list-item">
+				edit
+				</div>
+				<div class="list-item">
+				result
+				</div>
+			</div>
+			<div class="list-rows" >
+				<div class="list-item">
+				2022.11.24
+				</div>
+				<div class="list-item">
+				한풍 지원서
+				</div>
+				<div class="list-item">
+				edit
+				</div>
+				<div class="list-item">
+				result
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	
 	</section>

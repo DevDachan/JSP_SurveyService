@@ -66,7 +66,7 @@ pageEncoding="UTF-8"  %>
 			</ul>
 		</div>
 	</nav>
-	
+
 	<section class="container mt-3" style="max-width: 500px;">
 		<form method="post" action="./LoginAction.jsp">
 		<div class="form-row">
@@ -76,17 +76,27 @@ pageEncoding="UTF-8"  %>
 						<input type="text" name="userID" class="form-control" required placeholder="ID">
 					</div>
 					<div class="form-group col-sm-12">
-						<input type="password" name="userPWD" class="form-control" required placeholder="Password">
+						<input type="password" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 row-sm-2">
-				<button type="submit" class="btn" style="background:#FF8484; width:90%; height:90%; color:white;">Login</button>
+			<div class="col-sm-6 row-sm-2 mb-3">
+				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">Login</button>
+			</div>
+			<div class="col-sm-12 mb-3">
+				<a href="http://localhost:8080/Survey_project/GoogleLoginAction.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#724A4A;color:white; ">Login with Google</a>
+			</div>
+			<div class="col-sm-12">
+				<a href="http://localhost:8080/Survey_project/Register.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">Register</a>
 			</div>
 		</div>
 		</form>
 	</section>
-	
+
+<%
+	var input = document.getElementById(id);
+
+%>
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
