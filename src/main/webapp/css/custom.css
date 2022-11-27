@@ -11,6 +11,19 @@ h5{
 body{
 	font-family:'Jeju Gothic';
 }
+input[type="password"]{
+	font-family:'Nanum Gothic' !important;
+}
+
+.edit-text{
+	font-family:'Jeju Gothic' !important;
+	border: 0px ;
+	border-radius: 20px;
+	background:#D9D9D9;
+	padding: 3px 10px 3px 10px;
+	
+	
+}
 
 .list{
 	width: 100%;
@@ -38,7 +51,7 @@ body{
 	margin-top: 20px;
 }
 
-.list-option-itme{
+.list-option-item{
 	font-size: 3vw;
 }
 
@@ -64,3 +77,71 @@ body{
 	color: white;
 	font-weight: bold;
 }
+
+#email:valid{
+	border-color: blue;
+}
+
+
+#email:invalid{
+	border-color: red;
+}
+
+.survey{
+	width: 100%;
+	display:grid !important; 
+	grid-template-columns: 1fr;
+}
+
+.survey-title{
+	grid-column-end: span 3;
+	display:grid !important;
+	text-align:left;
+	border-bottom: 3px solid #ADADAD;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.survey-title-text{
+	font-size: 30px;
+	margin:0px;
+}
+
+.survey-content{
+	display:grid !important;
+	grid-column-end: span 3;	
+	text-align: left;
+	margin-bottom: 20px;
+	padding-left:10px;
+}
+
+.survey-content-item{
+	font-size: 15px;
+}
+
+
+.survey-rows{
+	display:grid !important;
+	grid-template-columns: 1fr 2fr 1fr;
+	grid-column-end: span 3;
+}
+
+.survey-item{
+	text-align: center;
+	margin-bottom: 10px;
+}
+.survey-item-add{
+	text-align: center;
+	margin-bottom: 10px;
+	grid-column-end: span 3;
+}
+
+.survey-detail{
+	grid-column-end: span 3;
+}
+
+.survey-rows-text{
+	grid-column-end: span 3;
+}
+
+
+

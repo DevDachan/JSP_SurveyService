@@ -15,7 +15,7 @@ pageEncoding="UTF-8"  %>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css">
+	<link rel="stylesheet" href="./css/custom.css?ver=1">
 	
 	
 </head>
@@ -42,8 +42,20 @@ pageEncoding="UTF-8"  %>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
+				</li>
 				<li class="nav-item dropdown">
-				
+					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
+						회원 관리	
+					</a>
+					
 					<div class="dropdown-menu" aria-labelledby="dropdown">
 					
 <%
@@ -51,13 +63,13 @@ pageEncoding="UTF-8"  %>
 		
 %>
 						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Join.jsp">회원가입</a>
+						<a class="dropdown-item" href="Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="userLogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -93,10 +105,6 @@ pageEncoding="UTF-8"  %>
 		</form>
 	</section>
 
-<%
-	var input = document.getElementById(id);
-
-%>
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">

@@ -76,7 +76,9 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-
+	<a href="./adminSurvey.jsp"> Admin page </a>
+	
+	<form action="./userSurveyResult.jsp" method="post">
 <% 	
 	int type = 1;
 	for(int survey_num = 0; survey_num<3;survey_num++){
@@ -101,21 +103,15 @@ pageEncoding="UTF-8"  %>
 						
 						temp += "<div class='survey-item'><label><input type='radio' name='radio"+survey_num+"' value='radio' placeholder='helo'></label></div>";
 						// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-						temp += "<div class='survey-item'> <input class='edit-text' type='text' id='radio' name='radio' value='"+" Radio" +"'></label></div>";
-						temp += "<div class='survey-item'> <button class='btn' type='button' >-</button> </div>";
+						temp += "<div class='survey-item'> <label>"+" Radio" +"</label></div>";
+						
 						temp +="</div>";
-						if(i == leng-1){
-							temp += "<div class='survey-item-add'> <button class='btn btn-add' type='button' >+ Add option</button> </div>";
-						}
+						
 					}else if(type==2){
 						temp += "<div class='survey-rows'>"; 
 						temp += "<div class='survey-item'><label><input type='checkbox' name='checkbox"+survey_num+"' value='checkbox' placeholder='helo'></label></div>";
-						temp += "<div class='survey-item'> <input class='edit-text' type='text' id='checkbox' name='checkbox' value='"+" checkbox" +"'></label></div>";
-						temp += "<div class='survey-item'> <button class='btn' type='button' >-</button> </div>";
+						temp += "<div class='survey-item'> <label>"+" checkbox" +"</label></div>";
 						temp +="</div>";
-						if(i == leng-1){
-							temp += "<div class='survey-item-add'> <button class='btn btn-add' type='button' >+ Add option</button> </div>";
-						}
 					}else if(type==3){
 						temp += "<div class='survey-rows-text'>"; 
 						temp += "<textarea name='text' class='form-control' maxlength='2048' style='height:100pxpx;'></textarea>";
@@ -132,9 +128,9 @@ pageEncoding="UTF-8"  %>
 		type++;
 	}
 %>
-	<div style="text-align:center;">
-		<button type="button" class="btn btn-add" style="width:20%;margin:auto;" > + </button>
-	</div>
+	
+	<button type="submit" class="btn btn-primary" style="width:100%;" > submit </button>
+	</form>
 	
 	</section>
 	
@@ -143,7 +139,7 @@ pageEncoding="UTF-8"  %>
 
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
-		Copyright &copy; 2018 서다찬 All Rights Reserved
+		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
 	<script src="./js/jquery.min.js" ></script>

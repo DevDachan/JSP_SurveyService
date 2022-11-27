@@ -40,19 +40,25 @@ pageEncoding="UTF-8"  %>
 	}
 %>
 
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="index.jsp" >Survey Service </a>
+		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp">메인</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
 				</li>
 				<li class="nav-item dropdown">
 				
-					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown">
+					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
 						회원 관리	
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdown">
@@ -88,16 +94,16 @@ pageEncoding="UTF-8"  %>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
-				<div class="list-option-itme">
+				<div class="list-option-item">
 					날짜
 				</div>
-				<div class="list-option-itme">
+				<div class="list-option-item">
 					이름
 				</div>
-				<div class="list-option-itme">
+				<div class="list-option-item">
 					Edit
 				</div>
-				<div class="list-option-itme">
+				<div class="list-option-item">
 					Result
 				</div>
 			</div>
@@ -134,7 +140,6 @@ pageEncoding="UTF-8"  %>
 	<div class="list mb-5">
 		<div class="list-title">
 			<h4 style="margin:auto;">User list</h4>
-			<a href="www,naver.com" class="btn-add" >Add Survey</a>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
