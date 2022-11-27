@@ -17,14 +17,21 @@ pageEncoding="UTF-8"  %>
 	<!-- custom CSS insert -->
 	<link rel="stylesheet" href="./css/custom.css?ver=1">
 	<script>
-	/*
-	function sendCode(String Email){
-		UserDAO userDAO = new UserDAO(application);
+	
+	function sendCode(){
+		/*UserDAO userDAO = new UserDAO(application);
 		int result = userDAO.sendUserCode(Email);
 		if(result == -1){
 			Fail (please input correct email)
-		}
-	}*/
+		}*/
+		document.getElementById('code-title').style.display = "block";
+		document.getElementById('code-input').style.display = "block";
+		
+	}
+	function init_modal(){
+		document.getElementById('code-title').style.display = "none";
+		document.getElementById('code-input').style.display = "none";
+	}
 	
 	
 	</script>
@@ -141,7 +148,7 @@ pageEncoding="UTF-8"  %>
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id ="modal">이메일 인증 하기</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" onClick="init_modal()" aria-label="Close" >
 							<span aria-hidden="true">&times;</span>
 						</button>	
 					</div>
@@ -156,13 +163,13 @@ pageEncoding="UTF-8"  %>
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"placeholder="example@gmail.com" maxlength="30">	
 								</div>
 								<div class="form-group col-sm-12 mb-5">
-									<button type="button" class="btn btn-primary" style="width:100%;">Send Code</button>
+									<button type="button" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>Send Code</button>
 								</div>
 								<div class="form-group col-sm-4">
-									<label>Code</label>
+									<div id="code-title" style="display:none;"><label >Code</label></div>
 								</div>
 								<div class="form-group col-sm-8">
-									<input type="text" name="reportTitle" class="form-control" maxlength="30" required>	
+									<div id="code-input" style="display:none;"><input type="text" name="reportTitle" class="form-control" maxlength="30" required></div>	
 								</div>
 								
 								<div class="modal-footer col-sm-12">
@@ -170,7 +177,7 @@ pageEncoding="UTF-8"  %>
 										<button type="submit" class="btn btn-danger" style="width:100%;">Submit</button>
 									</div>
 									<div class="form-group col-sm-6">
-										<button type="button" class="btn btn-secondary" style="width:100%;" data-dismiss="modal">취소</button>
+										<button type="button" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="init_modal()">취소</button>
 									</div>
 									
 								</div>
