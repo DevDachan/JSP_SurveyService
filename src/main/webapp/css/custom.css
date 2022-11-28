@@ -130,7 +130,7 @@ input[type="password"]{
 	margin-bottom: 10px;
 }
 .survey-item-add{
-	text-align: center;
+	text-align: left;
 	margin-bottom: 10px;
 	grid-column-end: span 3;
 }

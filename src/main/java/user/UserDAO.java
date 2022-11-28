@@ -5,7 +5,7 @@ import javax.servlet.ServletContext;
 import util.DatabaseUtil;
 
 public class UserDAO extends DatabaseUtil {
-	
+	 
 	public UserDAO(ServletContext application) {
 		super(application);
 	}
