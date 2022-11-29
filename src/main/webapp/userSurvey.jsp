@@ -2,7 +2,7 @@
 pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
-<%@ page import='user.UserDAO' %>
+<%@ page import='survey.SurveyDAO' %>
 
 <!DOCTYPE html>
 <html>
@@ -26,6 +26,7 @@ pageEncoding="UTF-8"  %>
 <body>
 <% 
 	String userID = null;
+	SurveyDAO surveyDAO = new SurveyDAO(application);
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}
@@ -76,58 +77,12 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-	<a href="./adminSurvey.jsp"> Admin page </a>
+
 	
 	<form action="./userSurveyResult.jsp" method="post">
-<% 	
-	int type = 1;
-	for(int survey_num = 0; survey_num<3;survey_num++){
-		
+	<%=
+		surveyDAO.getUserSurvey("1")
 	%>
-	<div class="survey mb-5">
-		<div class="survey-title">
-			<p class="survey-title-text">지원 동기</p>
-		</div>
-		<div class="survey-content">
-			<div class="survey-content-item">
-			저희 동아리에 지원하게 된 계기가 어떻게 되시나요?
-			</div>
-		</div>
-			
-				<%
-				int leng = 3; 
-				String temp = "";
-				for(int i=0; i < leng; i++){
-					if(type == 1){
-						temp += "<div class='survey-rows'>"; 
-						
-						temp += "<div class='survey-item'><label><input type='radio' name='radio"+survey_num+"' value='radio' placeholder='helo'></label></div>";
-						// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-						temp += "<div class='survey-item'> <label>"+" Radio" +"</label></div>";
-						
-						temp +="</div>";
-						
-					}else if(type==2){
-						temp += "<div class='survey-rows'>"; 
-						temp += "<div class='survey-item'><label><input type='checkbox' name='checkbox"+survey_num+"' value='checkbox' placeholder='helo'></label></div>";
-						temp += "<div class='survey-item'> <label>"+" checkbox" +"</label></div>";
-						temp +="</div>";
-					}else if(type==3){
-						temp += "<div class='survey-rows-text'>"; 
-						temp += "<textarea name='text' class='form-control' maxlength='2048' style='height:100pxpx;'></textarea>";
-						temp +="</div>";
-						break;
-					}
-					
-				}
-				%>
-				<%= temp %>
-	</div>
-
-<%
-		type++;
-	}
-%>
 	
 	<button type="submit" class="btn btn-primary" style="width:100%;" > submit </button>
 	</form>

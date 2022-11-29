@@ -123,7 +123,7 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 
 <%=
-	surveyDAO.getSurvey("1")
+	surveyDAO.getAdminSurvey("1")
 %>
 
 
@@ -150,70 +150,3 @@ pageEncoding="UTF-8"  %>
 	
 </body>
 </html>
-
-<%--      ajax 이전 data         --%>
-<%-- 
-<% 	
-
-if(userID != null){
-	SurveyDTO[] result = surveyDAO.getSurveyData("1"); 
-	if(result[0].getContent().equals("Error!") == false){
-		
-	
-	for(int survey_num = 0; survey_num<1; survey_num++){
-		
-	%>
-	<div class="survey mb-5">
-		<div class="survey-title">
-			<p class="survey-title-text">지원 동기</p>
-		</div>
-		<div class="survey-content">
-			<div class="survey-content-item">
-			저희 동아리에 지원하게 된 계기가 어떻게 되시나요?
-			</div>
-		</div>
-			
-				<%
-				int leng = 4; 
-				String temp = "";
-				for(int i=0; i < result.length; i++){
-					if(result[i].getSurveyType().equals("radio")){
-						temp += "<div class='survey-rows'>"; 
-						
-						temp += "<div class='survey-item'><label><input type='radio' name='radio"+result[i].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
-						// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-						temp += "<div class='survey-item'> <input class='edit-text' type='text' id='radio' name='radio' value='"+result[i].getContent() +"'></label></div>";
-						temp += "<div class='survey-item'> <button class='btn' type='button' >-</button> </div>";
-						temp +="</div>";
-						if(i == leng-1){
-							temp += "<div class='survey-item-add'> <button class='btn btn-add' type='button' >+ Add option</button> </div>";
-						}
-					}else if(result[i].getSurveyType().equals("checkbox")){
-						temp += "<div class='survey-rows'>"; 
-						temp += "<div class='survey-item'><label><input type='checkbox' name='checkbox"+result[i].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
-						temp += "<div class='survey-item'> <input class='edit-text' type='text' id='checkbox' name='checkbox' value='"+result[i].getContent() +"'></label></div>";
-						temp += "<div class='survey-item'> <button class='btn' type='button' >-</button> </div>";
-						temp +="</div>";
-						if(i == leng-1){
-							temp += "<div class='survey-item-add'> <button class='btn btn-add' type='button' >+ Add option</button> </div>";
-						}
-					}else if(result[i].getSurveyType().equals("text")){
-						temp += "<div class='survey-rows-text'>"; 
-						temp += "<textarea name='text'" + result[i].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100pxpx;'></textarea>";
-						temp +="</div>";
-						break;
-					}
-					
-				}
-				%>
-				<%= temp %>
-	</div>
-
-<%
-		}
-	}
-}
-%>
-
-
---%>

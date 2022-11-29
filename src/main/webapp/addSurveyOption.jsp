@@ -40,29 +40,23 @@ int optionNum = request.getParameter("optionNum");
 	
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	int result = surveyDAO.addOption(surveyID, optionNum);
-	
+%>
+
+<%
 	if(result == 1){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('추가 성공!');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
-	}
-	else if(result == 0){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('데이터베이스 오류가 발생했습니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
-	}
+		%>
+{
+	"result" : "success"
+}
+
+<% 
+	}else{
 %>
 
 {
-	<%-- "name" : "<%= name %>",
-	"ID" : "<%= ID %>",
-	"password" : "<%= password %>"
-	--%>
-	"name" : "hello"
+	"result" : "fail"
 }
+
+<% 
+	}
+%>

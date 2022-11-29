@@ -4,6 +4,9 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='user.UserDAO' %>
 
+
+
+<%UserDAO userDAO = new UserDAO(application); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,29 +20,89 @@ pageEncoding="UTF-8"  %>
 	<!-- custom CSS insert -->
 	<link rel="stylesheet" href="./css/custom.css?ver=1">
 	<script>
-	
 	function sendCode(){
-		/*UserDAO userDAO = new UserDAO(application);
-		int result = userDAO.sendUserCode(Email);
-		if(result == -1){
-			Fail (please input correct email)
-		}*/
-		document.getElementById('code-title').style.display = "block";
-		document.getElementById('code-input').style.display = "block";
+		userEmail = document.getElementById('useremail').value;// input data
+		if(userEmail == null || userEmail == ""){
+			alert('올바른 mail을 입력해주세요');
+		}
+		check = 0;
+		$.ajax({
+    	 	type:'post',
+      	 	async:false, //false가 기본값임 - 비동기
+       		url:'http://localhost:8080/Survey_project/codeSendAction.jsp',
+        	dataType:'text',
+        	data:{
+        		userEmail:userEmail
+        		},
+        	success: function(res) {
+        		result = res.split('{')[1].split("}")[0];  		
+        		if(result.includes("Success")){
+        			check = 1;
+        			alert('전송 완료');
+        		}else{
+        			alert(result);
+        		}
+        	},
+       		error:function (data, textStatus) {
+            	console.log('error');
+      	  	}
+  	  	})
+  	  	if(check == 1){
+  			document.getElementById('code-title').style.display = "block";
+  			document.getElementById('code-input').style.display = "block";	
+  	  	}	
 		
 	}
+	
+	
 	function init_modal(){
 		document.getElementById('code-title').style.display = "none";
 		document.getElementById('code-input').style.display = "none";
 	}
 	
-	
+	function codeCheck(){	
+		inputCode = document.getElementById('code_input_value').value;// input data
+		userEmail = document.getElementById('useremail').value;// input data
+		check = 0;
+		$.ajax({
+    	 	type:'post',
+      	 	async:false, //false가 기본값임 - 비동기
+       		url:'http://localhost:8080/Survey_project/codeCheckAction.jsp',
+        	dataType:'text',
+        	data:{
+        		inputCode:inputCode,
+        		userEmail:userEmail
+        		},
+        	success: function(res) {
+        		result = res.split('{')[1].split("}")[0];  		
+        		if(result.includes("Success")){
+        			check = 1;
+        			alert('인증 완료!');
+        		}else{
+        			alert(result);
+        		}
+        	},
+        error:function (data, textStatus) {
+            console.log('error');
+        }
+  	  })
+  	  
+  	  	if(check == 1){
+  			document.getElementById('code-title').style.display = "block";
+  			document.getElementById('code-input').style.display = "block";
+			document.getElementById('email_auth_label').style.display = "block";
+  			document.getElementById('userEmail').value = userEmail;
+  			document.getElementById('email_auth_label').innerText = userEmail;
+  			document.getElementById('close_modal').click();
+  	  	}	
+		
+		
+	}
 	</script>
 	
 </head>
 <body>
-<%	String userID = null; %>
-<%-- 
+
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -54,7 +117,7 @@ pageEncoding="UTF-8"  %>
 	}
 
 
-%>--%>
+%>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
@@ -85,8 +148,7 @@ pageEncoding="UTF-8"  %>
 						<a class="dropdown-item" href="Login.jsp">로그인</a>
 						<a class="dropdown-item" href="Register.jsp">회원가입</a>
 <% 
-	}
-	else{
+	}else{
 		
 %>
 						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
@@ -100,7 +162,7 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-		<form method="post" action="./LoginAction.jsp">
+		<form method="post" action="./RegisterAction.jsp">
 		<div class="form-row">
 			<div class="col-sm-12">
 				<div class="form-row" >
@@ -121,24 +183,19 @@ pageEncoding="UTF-8"  %>
 				</div>
 				<div class="form-row" >	
 					<div class="form-group col-sm-6">
-						<input type="text" name="userEmail" class="form-control" required placeholder="Email">
-					</div>	
+						<label class="form-control" id="email_auth_label" style="text-align:center;display:none;">No</label>
+						<input type="hidden" id="userEmail" name="userEmail" value="Not">
+					</div>			
 					<div class="form-group col-sm-6">
-						<button type="button" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">Code Send</button>
-					</div>
+						<a class="btn btn-primary mx-1 " style="width:100%;" data-toggle="modal" href="#reportModal">이메일 인증하기</a>
+					</div>	
 				</div>
-				<div class="form-row" >	
-					<div class="form-group col-sm-12">
-						<input type="text" name="authCode" class="form-control" required placeholder="Code">
-					</div>				
-				</div>	
 			</div>	
 			<div class="col-sm-12">
 				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">Register</button>
 			</div>
 		</div>
 		</form>
-	<a class="btn btn-primary mx-1 mt-2" data-toggle="modal" href="#reportModal">이메일 인증하기</a>
 	</section>
 	
 
@@ -153,13 +210,13 @@ pageEncoding="UTF-8"  %>
 						</button>	
 					</div>
 					<div class="modal-body">
-						<form action="./emailCheckAction.jsp" method="post">
 							<div class="form-row">
+						
 								<div class="form-group col-sm-4">
 									<label>Email</label>
 								</div>
 								<div class="form-group col-sm-8">
-									<input type="email" name="userEmail" id="email" class="form-control" 
+									<input type="email" name="userEmail" id="useremail" class="form-control" 
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"placeholder="example@gmail.com" maxlength="30">	
 								</div>
 								<div class="form-group col-sm-12 mb-5">
@@ -169,20 +226,18 @@ pageEncoding="UTF-8"  %>
 									<div id="code-title" style="display:none;"><label >Code</label></div>
 								</div>
 								<div class="form-group col-sm-8">
-									<div id="code-input" style="display:none;"><input type="text" name="reportTitle" class="form-control" maxlength="30" required></div>	
+									<div id="code-input" style=""><input type="text" id="code_input_value" class="form-control" maxlength="30" required></div>	
 								</div>
 								
 								<div class="modal-footer col-sm-12">
 									<div class="form-group col-sm-6">
-										<button type="submit" class="btn btn-danger" style="width:100%;">Submit</button>
+										<button type="button" class="btn btn-danger" onClick="codeCheck()" style="width:100%;">Submit</button>
 									</div>
 									<div class="form-group col-sm-6">
-										<button type="button" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="init_modal()">취소</button>
+										<button type="button" id="close_modal" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="init_modal()">취소</button>
 									</div>
-									
 								</div>
 							</div>
-						</form>
 					</div>
 				</div>
 			</div>
