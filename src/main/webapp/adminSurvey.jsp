@@ -26,12 +26,12 @@ pageEncoding="UTF-8"  %>
 		}
 	</style>
 	<script>
-		function addOption(surveyID, optionNum){
-
+		function addComponent(surveyID, optionNum){
+			
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/addSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/addSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -45,12 +45,12 @@ pageEncoding="UTF-8"  %>
             }
       	  })  	
 		}
-		function deleteOption(surveyID, optionNum, componentNum){
+		function deleteComponent(surveyID, optionNum, componentNum){
 
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/deleteSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/deleteSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -65,6 +65,29 @@ pageEncoding="UTF-8"  %>
             }
       	  })  	
 		}
+		function addOption(){
+			
+			surveyID = document.getElementById("surveyID").value;
+			optionType = document.getElementById("optionType").value;
+			
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/addSurveyOption.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:surveyID, 
+            		optionType:optionType
+            		},
+            	success: function(res) {
+            		window.location.reload();	
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
+		
 	</script>
 </head>
 <body>
@@ -126,11 +149,22 @@ pageEncoding="UTF-8"  %>
 	surveyDAO.getAdminSurvey("1")
 %>
 
+	<form action="addSurveyOption.jsp" style="text-align:center;">
+		<div class="form-row">
+			<div class="form-group col-sm-6" style="text-align:right;">
+				<select name="optionType" id="optionType">
+				    <option value="radio">Radio</option>
+				    <option value="checkbox">Checkbox</option>
+				    <option value="text" selected="selected">Text</option>
+				</select>
+				<input type="hidden" id="surveyID" name="surveyID" value="1">
+			</div>
+			<div class="form-group col-sm-6" style="text-align:left;">
+				<button type="button" class="btn btn-add" style="width:40%;margin:auto;" onClick='addOption()' > + </button>
+			</div>
+		</div>
+	</form>
 
-	<div style="text-align:center;">
-		<button type="button" class="btn btn-add" style="width:20%;margin:auto;" > + </button>
-	</div>
-	
 	</section>
 	
 	<br/>

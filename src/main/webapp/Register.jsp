@@ -226,7 +226,7 @@ pageEncoding="UTF-8"  %>
 									<div id="code-title" style="display:none;"><label >Code</label></div>
 								</div>
 								<div class="form-group col-sm-8">
-									<div id="code-input" style=""><input type="text" id="code_input_value" class="form-control" maxlength="30" required></div>	
+									<div id="code-input" style="display:none;"><input type="text" id="code_input_value" class="form-control" maxlength="30" required></div>	
 								</div>
 								
 								<div class="modal-footer col-sm-12">

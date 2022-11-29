@@ -10,7 +10,7 @@ public class SurveyDAO extends DatabaseUtil {
 		super(application);
 	}
 	
-	public int deleteOption(String surveyID , int optionNum, int componentNum) {
+	public int deleteComponent(String surveyID , int optionNum, int componentNum) {
 		
 		String query = "DELETE FROM survey_option WHERE survey_id = ? AND option_num = ? AND component_num = ?;";
 		try {
@@ -32,8 +32,53 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 		
 	}
-	
-	public int addOption(String surveyID , int optionNum) {
+	public int addOption(String surveyID, String optionType) {
+		String getquery = "SELECT MAX(option_num) FROM option_detail where survey_id = ?";
+		int maxIndex = 0;
+		
+		try {
+			psmt = con.prepareStatement(getquery);
+			psmt.setString(1, surveyID);
+
+
+			rs = psmt.executeQuery();
+			rs.next();
+			maxIndex = rs.getInt(1)+1;
+			if(maxIndex == 1) {
+				return 0;
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		String query = "INSERT INTO option_detail VALUES(?,?,'test_title','test_content',?)";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, surveyID);
+			psmt.setInt(2, maxIndex);
+			psmt.setString(3, optionType);
+
+			int result = psmt.executeUpdate();
+			query = "INSERT INTO survey_option VALUES(?,?,?,?,'test');";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, surveyID);
+			psmt.setString(2, optionType);
+			psmt.setInt(3, maxIndex);
+			psmt.setInt(4, 1); // Component number
+			psmt.executeUpdate();
+			return result;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
+	public int addComponent(String surveyID , int optionNum) {
 		String getquery = "SELECT type, MAX(component_num) FROM survey_option where survey_id = ? AND option_num =?;";
 		String surveyType="";
 		int componentNum = 0;
@@ -170,14 +215,14 @@ public class SurveyDAO extends DatabaseUtil {
 					buf += "<div class='survey-item'><label><input type='radio' name='radio"+survey[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
 					// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
 					buf += "<div class='survey-item'> <input class='edit-text' type='text' id='radio' name='radio' value='"+survey[count].getContent() +"'></label></div>";
-					buf += "<div class='survey-item'> <button class='btn' type='button' onClick='deleteOption("+survey[count].getSurveyID() +
+					buf += "<div class='survey-item'> <button class='btn' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
 							","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
 					buf +="</div>";
 				}else if(survey[count].getSurveyType().equals("checkbox")){
 					buf += "<div class='survey-rows'>"; 
 					buf += "<div class='survey-item'><label><input type='checkbox' name='checkbox"+survey[count].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
 					buf += "<div class='survey-item'> <input class='edit-text' type='text' id='checkbox' name='checkbox' value='"+survey[count].getContent() +"'></label></div>";
-					buf += "<div class='survey-item'> <button class='btn' type='button' onClick='deleteOption("+survey[count].getSurveyID() +
+					buf += "<div class='survey-item'> <button class='btn' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
 							","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
 					buf +="</div>";
 				}else if(survey[count].getSurveyType().equals("text")){
@@ -189,7 +234,7 @@ public class SurveyDAO extends DatabaseUtil {
 			}
 			if(survey[count-1].getSurveyType().equals("text") == false) {
 				buf += "<div class='survey-item-add'> <button class='btn btn-add' type='button' name='add_btn"+(survey[count-1].getOptionNum())+
-						"' onClick='addOption("+survey[count-1].getSurveyID() +","+survey[count-1].getOptionNum() +")' >+ Add option</button> </div>";
+						"' onClick='addComponent("+survey[count-1].getSurveyID() +","+survey[count-1].getOptionNum() +")' >+ Add option</button> </div>";
 			}
 			
 			buf += "</div>";
