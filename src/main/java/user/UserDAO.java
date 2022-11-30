@@ -40,8 +40,8 @@ public class UserDAO extends DatabaseUtil {
 			psmt.setString(1, email);
 			
 			rs = psmt.executeQuery();
-			rs.next();
-			if(rs.getString(1) != null) {
+			
+			if(rs.next()) {
 				dup_check = 1;
 			}else {
 				dup_check = 0;
@@ -90,12 +90,13 @@ public class UserDAO extends DatabaseUtil {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, email);
 			rs = psmt.executeQuery();
-			rs.next();
-			if(rs.getString(1).equals(code)) {
-				return 1;
-			}else {
-				return 0;
-			}	
+			if(rs.next()){
+				if(rs.getString(1).equals(code)) {
+					return 1;
+				}else {
+					return 0;
+				}
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -103,45 +104,124 @@ public class UserDAO extends DatabaseUtil {
 		return 0;
 	}
 	public int registerUser(String userID, String userPWD, String userEmail) {
-		String query_select = "SELECT * FROM user WHERE id=?";
-		int dup_check = 0;
+		
 		try {
-			psmt = con.prepareStatement(query_select);
+			String idcheck = "SELECT * FROM user WHERE id=?";
+			psmt = con.prepareStatement(idcheck);
 			psmt.setString(1, userID);
 			
 			rs = psmt.executeQuery();
-			rs.next();
-			if(rs.getString(1) != null) {
-				dup_check = 1;
-			}else {
-				dup_check = 0;
+			
+			if(rs.next()) {
+				return 2;
+			}
+			
+			String emailcheck = "SELECT * FROM user WHERE user_email=?";
+			psmt = con.prepareStatement(emailcheck);
+			psmt.setString(1, userEmail);
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				return 3;
 			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		if(dup_check == 0) {
-			String query = "INSERT INTO user VALUES(?,?,?)";
+		String query = "INSERT INTO user VALUES(?,?,?)";
 			
-			try {
-				psmt = con.prepareStatement(query);
-				psmt.setString(1, userID);
-				psmt.setString(2, userPWD);
-				psmt.setString(3, userEmail);
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			psmt.setString(2, userPWD);
+			psmt.setString(3, userEmail);
 				
-				int result = psmt.executeUpdate();
-				
-				return result;
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}else {
-			return 2;
+			int result = psmt.executeUpdate();
+			if(result != 0) {
+				return 1;
+			}	
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		
-		
 		return 0;
 	}
-	
+	public String getHistoryList() {
+		return "";
+	}
+	public String getSurveyList(String userID) {
+		
+		String buf = "";		
+		String result ="<div class=\"list mb-5\">\r\n"
+				+ "		<div class=\"list-title\">\r\n"
+				+ "			<h4 style=\"margin:auto;\">Admin list</h4>\r\n"
+				+ "			<a href=\"addSurvey.jsp\" class=\"btn-add\" >Add Survey</a>\r\n"
+				+ "		</div>\r\n"
+				+ "		<div class=\"list-content\">\r\n"
+				+ "			<div class=\"list-option\">\r\n"
+				+ "				<div class=\"list-option-item\">\r\n"
+				+ "					ID\r\n"
+				+ "				</div>\r\n"
+				+ "				<div class=\"list-option-item\">\r\n"
+				+ "					이름\r\n"
+				+ "				</div>\r\n"
+				+ "				<div class=\"list-option-item\">\r\n"
+				+ "					Edit\r\n"
+				+ "				</div>\r\n"
+				+ "				<div class=\"list-option-item\">\r\n"
+				+ "					Result\r\n"
+				+ "				</div>\r\n"
+				+ "			</div>";
+		AdminDTO[] adminDTO = null;
+		int admin_len = 0;
+		try {
+			String query = "SELECT COUNT(*) FROM survey WHERE admin_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				admin_len = rs.getInt(1);
+			}else {
+				return "Empty";
+			}
+			              
+			adminDTO = new AdminDTO[admin_len];
+			query = "SELECT * FROM survey WHERE admin_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+				
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next()) {
+				adminDTO[i] = new AdminDTO(rs.getString(1),rs.getString(2));
+				i++;
+				if(i == admin_len) {
+					break;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		for(int step = 0; step<admin_len; step++) {
+			buf +="<div class=\"list-rows\" >\n"+ 
+						"<div class=\"list-item\">\n"+
+							adminDTO[step].getSurveyID()+ "\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							adminDTO[step].getSurveyName()+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<button type='button'>edit</button>\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<button type='button'>result</button>\n"+
+						"</div>\n"+
+				   "</div>";
+		}
+		
+		result = result + buf + "</div>\n</div>";
+		return result;
+	}
 }

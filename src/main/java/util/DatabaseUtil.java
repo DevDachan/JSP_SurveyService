@@ -38,7 +38,7 @@ public class DatabaseUtil {
 		}
 	}
 	
-	public void close() {
+	public void endclose() {
 		try {
 			if(rs != null) rs.close();
 			if(stmt != null) rs.close();

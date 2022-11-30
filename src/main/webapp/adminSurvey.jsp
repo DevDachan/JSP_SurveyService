@@ -18,7 +18,7 @@ pageEncoding="UTF-8"  %>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="./css/custom.css?after">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -87,7 +87,79 @@ pageEncoding="UTF-8"  %>
             }
       	  })  	
 		}
-		
+		function deleteOption(surveyID, optionNum){			
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/deleteSurveyOption.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:surveyID, 
+            		optionNum:optionNum
+            		},
+            	success: function(res) {
+            		window.location.reload();	
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
+		function editOption(surveyID, optionNum, type){
+			
+			if(type == 1){
+				content = document.getElementById("optionTitle"+optionNum).value;	
+				optionType = "title";
+			}else{
+				content = document.getElementById("optionContent"+optionNum).value;
+				optionType = "content";
+			}
+
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/editOption.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:surveyID, 
+            		optionNum:optionNum,
+            		content:content,
+            		type:optionType
+            		},
+            	success: function(res) {
+            		window.location.reload();	
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
+		function editComponent(surveyID, optionNum, componentNum,type){
+			if(type == 1){
+				optionType="radio";
+			}else if(type == 2){
+				optionType="checkbox";
+			}
+			content = document.getElementById(optionType+optionNum+componentNum).value;	
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/editComponent.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:surveyID, 
+            		optionNum:optionNum,
+            		componentNum:componentNum,
+            		content:content
+            		},
+            	success: function(res) {
+            		window.location.reload();	
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
 	</script>
 </head>
 <body>
@@ -184,3 +256,5 @@ pageEncoding="UTF-8"  %>
 	
 </body>
 </html>
+
+<% surveyDAO.endclose();%>

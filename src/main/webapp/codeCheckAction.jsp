@@ -27,9 +27,11 @@
 		}else{
 			result = "Fail";
 		}
+		userDAO.endclose();
 	}
 	
 %>
 
 
 {<%= result %>}
+

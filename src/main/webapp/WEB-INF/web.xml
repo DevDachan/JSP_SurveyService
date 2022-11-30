@@ -13,7 +13,7 @@
   <!-- MySQL DB info -->
   <context-param>
   	<param-name>MysqlDriver</param-name>
-  	<param-value>com.mysql.jdbc.Driver</param-value>
+  	<param-value>com.mysql.cj.jdbc.Driver</param-value>
   </context-param>
   <context-param>
   	<param-name>MysqlURL</param-name>

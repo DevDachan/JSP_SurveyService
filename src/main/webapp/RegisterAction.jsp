@@ -49,6 +49,13 @@
 		script.println("history.back();");
 		script.println("</script>");
 		script.close();
+	}else if (result == 3){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('이미 존재하는 Email입니다.');");
+		script.println("history.back();");
+		script.println("</script>");
+		script.close();
 	}else{
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
@@ -57,5 +64,4 @@
 		script.println("</script>");
 		script.close();
 	}
-	
 %>

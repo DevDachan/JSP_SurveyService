@@ -87,13 +87,13 @@ input[type="password"]{
 	border-color: red;
 }
 
-.survey{
+.option{
 	width: 100%;
 	display:grid !important; 
 	grid-template-columns: 1fr;
 }
 
-.survey-title{
+.option-title{
 	grid-column-end: span 3;
 	display:grid !important;
 	text-align:left;
@@ -101,12 +101,14 @@ input[type="password"]{
 	margin-bottom: 20px;
 	margin-top: 20px;
 }
-.survey-title-text{
+.option-title-text{
 	font-size: 30px;
+	border-radius: 10px;
+	height:60%;
 	margin:0px;
 }
 
-.survey-content{
+.option-content{
 	display:grid !important;
 	grid-column-end: span 3;	
 	text-align: left;
@@ -114,34 +116,39 @@ input[type="password"]{
 	padding-left:10px;
 }
 
-.survey-content-item{
+.option-content-item{
 	font-size: 15px;
 }
 
+.option-content-text{
+	border-radius:10px;
+	width: 100%;	
+}
 
-.survey-rows{
+.option-rows{
 	display:grid !important;
 	grid-template-columns: 1fr 2fr 1fr;
 	grid-column-end: span 3;
 }
 
-.survey-item{
+.option-item{
 	text-align: center;
 	margin-bottom: 10px;
 }
-.survey-item-add{
+.option-item-add{
 	text-align: left;
 	margin-bottom: 10px;
 	grid-column-end: span 3;
 }
 
-.survey-detail{
+.option-detail{
 	grid-column-end: span 3;
 }
 
-.survey-rows-text{
+.option-rows-text{
 	grid-column-end: span 3;
 }
 
-
-
+.btn-option-delete{
+	background: red;
+}

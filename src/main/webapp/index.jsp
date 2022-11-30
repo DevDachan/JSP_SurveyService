@@ -4,6 +4,8 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='user.UserDAO' %>
 
+
+<% UserDAO userDAO = new UserDAO(application); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,56 +89,9 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 700px;">
 	<h3 class="mb-5">Main Page</h3>	
 	
-	<div class="list mb-5">
-		<div class="list-title">
-			<h4 style="margin:auto;">Admin list</h4>
-			<a href="www,naver.com" class="btn-add" >Add Survey</a>
-		</div>
-		<div class="list-content">
-			<div class="list-option">
-				<div class="list-option-item">
-					날짜
-				</div>
-				<div class="list-option-item">
-					이름
-				</div>
-				<div class="list-option-item">
-					Edit
-				</div>
-				<div class="list-option-item">
-					Result
-				</div>
-			</div>
-			<div class="list-rows" >
-				<div class="list-item">
-				2022.11.24
-				</div>
-				<div class="list-item">
-				한풍 지원서
-				</div>
-				<div class="list-item">
-				edit
-				</div>
-				<div class="list-item">
-				result
-				</div>
-			</div>
-			<div class="list-rows" >
-				<div class="list-item">
-				2022.11.24
-				</div>
-				<div class="list-item">
-				한풍 지원서
-				</div>
-				<div class="list-item">
-				edit
-				</div>
-				<div class="list-item">
-				result
-				</div>
-			</div>
-		</div>
-	</div>
+	<%=
+		userDAO.getSurveyList(userID)
+	%>
 	<div class="list mb-5">
 		<div class="list-title">
 			<h4 style="margin:auto;">User list</h4>
@@ -186,6 +141,8 @@ pageEncoding="UTF-8"  %>
 			</div>
 		</div>
 	</div>
+	
+
 	
 	
 	</section>

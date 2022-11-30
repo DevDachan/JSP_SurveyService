@@ -82,10 +82,11 @@
 			}else{
 				result = "Mail Error";
 			}
+			userDAO.endclose();
 		}else{
 			result = "DB Error";
 		}
-	
+		
 %>
 
 

@@ -66,5 +66,5 @@ String userPwd = request.getParameter("userPWD");
 	}
 	
 %>
-
+<%userDAO.endclose();%>
 	
