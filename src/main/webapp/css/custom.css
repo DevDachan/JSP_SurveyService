@@ -152,3 +152,7 @@ input[type="password"]{
 .btn-option-delete{
 	background: red;
 }
+
+.warning{
+	color:red;
+}

@@ -275,7 +275,158 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 	}
 	
-	public String getAdminSurvey(String sid) {
+	public String[][] getOption(String sid) {
+		String[][] option = null;
+		int option_len = 0;
+		String count_option = "SELECT COUNT(*) FROM option_detail WHERE survey_id=?;";
+		try {
+			psmt = con.prepareStatement(count_option);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				option_len = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		String select_option = "SELECT * FROM option_detail WHERE survey_id = ?;";
+		option= new String[option_len][2];
+		try {
+			psmt = con.prepareStatement(select_option);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+		
+			int i = 0;
+			while(rs.next()){ // get survey content
+				option[i][0] = rs.getString(3);
+				option[i++][1] =  rs.getString(4);
+				if(i == option_len) {
+					break;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return option;
+	}
+	public SurveyDTO[] getComponent(String sid) {
+		SurveyDTO[] survey = null;
+		int survey_len = 0;
+		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
+		try {
+			psmt = con.prepareStatement(count_survey);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				survey_len = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ?;";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+
+			survey = new SurveyDTO[survey_len];
+			int i = 0;
+			while(rs.next()){ // get survey content
+				survey[i] = new SurveyDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				i++;
+				if(i == survey_len) {
+					break;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return survey;
+	}
+	
+	public String[][] getOptionResult(String sid) {
+		String[][] option = null;
+		int option_len = 0;
+		
+		try {
+			String query = "SELECT COUNT(*) FROM option_detail WHERE survey_id = ?";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				option_len = rs.getInt(1);
+			}
+
+			
+			query = "SELECT option_num, type FROM option_detail WHERE survey_id = ?";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+			option = new String[option_len][2];
+			int i = 0;
+			while(rs.next()) {
+				option[i][0] = rs.getString(1);
+				option[i++][1] = rs.getString(2);
+				
+				if(i == option_len) {
+					break;
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return option;
+	}
+	
+	public int getHistoryNum(String sid) {
+		String query = "SELECT MAX(history_index) FROM survey_history WHERE survey_id=?";
+		
+		try{
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, sid);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1)+1;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int addHistory(String sid,String userID,int history_index,int option_num,int component_num,String content,String date){
+		String query = "INSERT INTO survey_history VALUES(?,?,?,?,?,?,?)";
+		try{
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, sid);
+			psmt.setString(2, userID);
+			psmt.setInt(3, history_index);
+			psmt.setInt(4, option_num);
+			psmt.setInt(5, component_num);
+			psmt.setString(6, content);
+			psmt.setString(7, date);
+			
+			int result = psmt.executeUpdate();
+			return result;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+}
+
+
+
+
+
+
+/*
+ * public String getAdminSurvey(String sid) {
 		SurveyDTO[] survey = null;
 		
 		String buf = "";		
@@ -284,6 +435,10 @@ public class SurveyDAO extends DatabaseUtil {
 		int survey_len = 0;
 		String[] option_content;
 		String[] option_title ;
+		
+		//------------------- get survey data --------------------------------
+		
+		
 		
 		//-------------------- get Count length ------------------------------
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
@@ -310,7 +465,7 @@ public class SurveyDAO extends DatabaseUtil {
 			e.printStackTrace();
 		}
 		
-		//------------------------- get Survey data ------------------------------
+		//------------------------- get component data ------------------------------
 		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ?;";
 		try {
 			psmt = con.prepareStatement(query);
@@ -369,7 +524,7 @@ public class SurveyDAO extends DatabaseUtil {
 			temp_id = survey[count].getOptionNum();
 
 			while(count < survey.length && survey[count].getOptionNum() == temp_id){
-				if(survey[count].getSurveyType().equals("radio")){
+				if(survey[count].getOptionType().equals("radio")){
 					buf += "<div class='option-rows'>"; 
 					buf += "<div class='option-item'><label><input type='radio' name='radio"+survey[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
 					// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
@@ -377,7 +532,7 @@ public class SurveyDAO extends DatabaseUtil {
 					buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
 							","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
 					buf +="</div>";
-				}else if(survey[count].getSurveyType().equals("checkbox")){
+				}else if(survey[count].getOptionType().equals("checkbox")){
 					buf += "<div class='option-rows'>"; 
 					buf += "<div class='option-item'><label><input type='checkbox' name='checkbox"+survey[count].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
 					buf += "<div class='option-item'> <input class='edit-text' type='text' id='checkbox"+survey[count].getOptionNum()+
@@ -387,7 +542,7 @@ public class SurveyDAO extends DatabaseUtil {
 					buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
 							","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
 					buf +="</div>";
-				}else if(survey[count].getSurveyType().equals("text")){
+				}else if(survey[count].getOptionType().equals("text")){
 					buf += "<div class='option-rows-text'>"; 
 					buf += "<textarea name='text'" + survey[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;'></textarea>";
 					buf +="</div>";
@@ -400,7 +555,7 @@ public class SurveyDAO extends DatabaseUtil {
 				}
 				count++;			
 			}
-			if(survey[count-1].getSurveyType().equals("text") == false) {
+			if(survey[count-1].getOptionType().equals("text") == false) {
 				buf += "<div class='option-rows'>"+
 							"<div class='option-item'>"+
 								" <button class='btn btn-primary' type='button' id='add_btn"+(survey[count-1].getOptionNum())+
@@ -513,18 +668,18 @@ public class SurveyDAO extends DatabaseUtil {
 			temp_id = survey[count].getOptionNum();
 
 			while(count < survey.length && survey[count].getOptionNum() == temp_id){
-				if(survey[count].getSurveyType().equals("radio")){
+				if(survey[count].getOptionType().equals("radio")){
 					buf += "<div class='option-rows'>"; 
 					buf += "<div class='option-item'><label><input type='radio' name='radio"+survey[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
 					// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
 					buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+survey[count].getContent()+"</label></div>";
 					buf +="</div>";
-				}else if(survey[count].getSurveyType().equals("checkbox")){
+				}else if(survey[count].getOptionType().equals("checkbox")){
 					buf += "<div class='option-rows'>"; 
 					buf += "<div class='option-item'><label><input type='checkbox' name='checkbox"+survey[count].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
 					buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+survey[count].getContent() +"</label></div>";
 					buf +="</div>";
-				}else if(survey[count].getSurveyType().equals("text")){
+				}else if(survey[count].getOptionType().equals("text")){
 					buf += "<div class='option-rows-text'>"; 
 					buf += "<textarea name='text'" + survey[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;'></textarea>";
 					buf +="</div>";
@@ -538,5 +693,5 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return result;
 	}
-	
-}
+ * 
+ * */

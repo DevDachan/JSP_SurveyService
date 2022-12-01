@@ -2,8 +2,8 @@
 pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
-<%@ page import='user.UserDAO' %>
-
+<%@ page import='survey.SurveyDAO' %>
+<%@ page import='survey.SurveyDTO' %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,7 @@ pageEncoding="UTF-8"  %>
 	<!-- meta data add  -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	
-	<title>강의 평가 웹 사이트</title>
+	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->
@@ -25,12 +25,16 @@ pageEncoding="UTF-8"  %>
 </head>
 <body>
 <% 
+	String sid = request.getParameter("survey_id");
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}
 	int pageNumber = 1;
+
+
 %>
+
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
