@@ -4,7 +4,8 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
-
+<%@ page import='user.HistoryDTO' %>
+<%@ page import='user.UserDAO' %>
 
 <!DOCTYPE html>
 <html>
@@ -29,6 +30,8 @@ pageEncoding="UTF-8"  %>
 <% 
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
+	UserDAO userDAO = new UserDAO(application);
+	
 	int sid = 0;
 	if(request.getParameter("sid") != null){
 		sid = Integer.parseInt(request.getParameter("sid"));	
@@ -40,16 +43,13 @@ pageEncoding="UTF-8"  %>
 		script.println("</script>");
 		script.close();*/
 	}
+	int hid = 0;
+	if(request.getParameter("hid") != null){
+		hid = Integer.parseInt(request.getParameter("hid"));	
+	}
 	
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
-		if(surveyDAO.getPrvhistory(sid, userID) == 1){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("location.href = 'index.jsp'");
-			script.println("</script>");
-			script.close();
-		};
 	}
 	
 %>
@@ -98,18 +98,23 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-
+	<% 
+		HistoryDTO[] history = surveyDAO.getHistory(userID, sid,hid); 
+	%>
 	
-	<form action="./userSurveySubmit.jsp" method="post" id="survey-submit">
-	<input type="hidden" name="survey_id" value="<%=sid %>">
+	<form action="./userHistorySubmit.jsp" method="post" id="survey-submit">
+	<input type="hidden" name="sid" value="<%=sid %>">
+	
 	<%
 	
 	int count = 0;
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] survey = surveyDAO.getComponent(sid);
+	OptionDTO[] component = surveyDAO.getComponent(sid);
 	String[][] option = surveyDAO.getOption(sid);
+	
+	int hstep = 0;
 	
 	for(int option_num = 0; option_num< option.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
@@ -123,26 +128,39 @@ pageEncoding="UTF-8"  %>
 						"</div>\n"+
 						"</div>\n";
 		buf = "";
-		temp_id = survey[count].getOptionNum();
-
-		while(count < survey.length && survey[count].getOptionNum() == temp_id){
-			if(survey[count].getOptionType().equals("radio")){
+		temp_id = component[count].getOptionNum();
+		while(count < component.length && component[count].getOptionNum() == temp_id){
+			if(component[count].getOptionType().equals("radio")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='radio' name='radio"+survey[count].getOptionNum()+"' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
-				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+survey[count].getContent()+"</label></div>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
+					hstep++;
+				}else{
+					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+				}
+				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("checkbox")){
+			}else if(component[count].getOptionType().equals("checkbox")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='checkbox' name='checkbox"+survey[count].getOptionNum()+"[]' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
-				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+survey[count].getContent() +"</label></div>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";
+					hstep++;
+				}else{
+					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";					
+				}
+				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("text")){
+			}else if(component[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text" + survey[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'>"+history[hstep].getContent()+"</textarea>";
+					hstep++;
+				}else{
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				}
 				buf +="</div>";
 			}
-			count++;			
+			count++;
 		}
 		buf +="<div class='option-rows-text'> <label class='warning' style='display:none;'>* 필수로 하나는 선택해주세요</label> </div>";
 		buf += "</div>";
@@ -156,11 +174,10 @@ pageEncoding="UTF-8"  %>
 	</form>
 	
 	</section>
-	
 	<br/>
+	
 
-
-
+	
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
@@ -176,3 +193,4 @@ pageEncoding="UTF-8"  %>
 </html>
 
 <%surveyDAO.endclose();%>
+<%userDAO.endclose();%>

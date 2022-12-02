@@ -43,13 +43,6 @@ pageEncoding="UTF-8"  %>
 	
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
-		if(surveyDAO.getPrvhistory(sid, userID) == 1){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("location.href = 'index.jsp'");
-			script.println("</script>");
-			script.close();
-		};
 	}
 	
 %>
@@ -101,7 +94,7 @@ pageEncoding="UTF-8"  %>
 
 	
 	<form action="./userSurveySubmit.jsp" method="post" id="survey-submit">
-	<input type="hidden" name="survey_id" value="<%=sid %>">
+	<input type="hidden" name="sid" value="<%=sid %>">
 	<%
 	
 	int count = 0;

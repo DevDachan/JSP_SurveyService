@@ -25,7 +25,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('세션 정보가 존재하지 않습니다.');");
-		script.println("location.href = 'Login.jsp;");
+		script.println("location.href = 'Login.jsp'");
 		script.println("</script>");
 		script.close();
 	}

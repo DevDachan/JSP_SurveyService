@@ -2,11 +2,14 @@
 pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
+<%@ page import='survey.SurveyDAO' %>
 <%@ page import='user.UserDAO' %>
 <%@ page import='user.AdminDTO' %>
-<%@ page import='user.HistoryDTO' %>
+<%@ page import='user.HistoryListDTO' %>
 
-<% UserDAO userDAO = new UserDAO(application); %>
+<% UserDAO userDAO = new UserDAO(application); 
+   SurveyDAO surveyDAO = new SurveyDAO(application);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,22 +157,22 @@ pageEncoding="UTF-8"  %>
 				</div> 
 			</div>
 		<%
-		HistoryDTO[] historyDTO = userDAO.getHistoryList(userID);
+		HistoryListDTO[] historyListDTO = surveyDAO.getHistoryList(userID);
 		String historyList ="";
 		
-		for(int step = 0; step<historyDTO.length; step++) {
+		for(int step = 0; step<historyListDTO.length; step++) {
 			historyList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
-								historyDTO[step].getSurveyDate()+ "\n"+
+								historyListDTO[step].getSurveyDate()+ "\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-								historyDTO[step].getSurveyName()+
+								historyListDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='adminSurvey.jsp?sid="+historyDTO[step].getSurveyID()+"' class='btn btn-primary'>edit</a>\n"+
+							"<a href='userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>edit</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<button type='button'>result</button>\n"+
+							"<a href='deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-primary'>delete</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}

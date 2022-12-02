@@ -25,7 +25,7 @@ pageEncoding="UTF-8"  %>
 </head>
 <body>
 <% 
-	int sid = Integer.parseInt(request.getParameter("survey_id"));
+	int sid = Integer.parseInt(request.getParameter("sid"));
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");

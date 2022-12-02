@@ -375,7 +375,11 @@ pageEncoding="UTF-8"  %>
 			<a href="deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-add">DELETE</a>
 		</div>
 	</div>
-
+	<div class="form-row">
+		<div class="form-group col-sm-12 form-survey-delete">
+			<a href="userSurvey.jsp?sid=<%=sid %>" class="btn btn-add">미리보기</a>
+		</div>
+	</div>
 	</section>
 	
 	<br/>

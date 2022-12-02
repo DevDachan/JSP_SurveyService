@@ -147,39 +147,8 @@ public class UserDAO extends DatabaseUtil {
 		}
 		return 0;
 	}
-	public HistoryDTO[] getHistoryList(String userID) {
-		HistoryDTO[] historyDTO = null;
-		int history_len = 0;
-		try {
-			String query = "SELECT COUNT(DISTINCT survey_id) FROM survey_history WHERE user_id=? ";
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, userID);
-			rs = psmt.executeQuery();
-			if(rs.next()) {
-				history_len = rs.getInt(1);
-			}
-			              
-			historyDTO = new HistoryDTO[history_len];
-			query = "SELECT DISTINCT survey_id, name , date FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY history_index";
-			
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, userID);
-				
-			rs = psmt.executeQuery();
-			int i = 0;
-			while(rs.next()) {
-				historyDTO[i] = new HistoryDTO(rs.getString(1),rs.getString(2),rs.getString(3));
-				i++;
-				if(i == history_len) {
-					break;
-				}
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return historyDTO;
-	}
+	
+	
 	public AdminDTO[] getAdminList(String userID) {
 		AdminDTO[] adminDTO = null;
 		int admin_len = 0;

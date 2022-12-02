@@ -1,46 +1,44 @@
 package user;
 
 public class HistoryDTO {
-	private String surveyID;
-	private String surveyName;
-	private String surveyDate;
+	private int optionNum;
+	private int componentNum;
+	private String content;
+	
 	public HistoryDTO() {
 		
 	}
 	
-	
-	
-	public HistoryDTO(String surveyID, String surveyName, String surveyDate) {
+	public HistoryDTO(int optionNum, int componentNum, String content) {
 		super();
-		this.surveyID = surveyID;
-		this.surveyName = surveyName;
-		this.surveyDate = surveyDate;
+		this.optionNum = optionNum;
+		this.componentNum = componentNum;
+		this.content = content;
 	}
 
+	public int getOptionNum() {
+		return optionNum;
+	}
 
+	public void setOptionNum(int optionNum) {
+		this.optionNum = optionNum;
+	}
 
-	public String getSurveyID() {
-		return surveyID;
+	public int getComponentNum() {
+		return componentNum;
 	}
-	public void setSurveyID(String surveyID) {
-		this.surveyID = surveyID;
+
+	public void setComponentNum(int componentNum) {
+		this.componentNum = componentNum;
 	}
-	public String getSurveyName() {
-		return surveyName;
+
+	public String getContent() {
+		return content;
 	}
-	public void setSurveyName(String surveyName) {
-		this.surveyName = surveyName;
+
+	public void setContent(String content) {
+		this.content = content;
 	}
-	public String getSurveyDate() {
-		return surveyDate;
-	}
-	public void setSurveyDate(String surveyDate) {
-		this.surveyDate = surveyDate;
-	}
-	
-	
-	
-	
 	
 	
 

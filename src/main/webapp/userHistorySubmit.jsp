@@ -19,12 +19,13 @@ pageEncoding="UTF-8"  %>
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	String[][] list = surveyDAO.getOptionResult(sid); // [i][0] = option_num  [i][1] = option type
 
-	int history_index = surveyDAO.getHistoryNum(sid);
+	int history_index = surveyDAO.getHistoryNum(sid)-1;
 	
 	int result = 0;	
 	
 	LocalDateTime  now = LocalDateTime .now();
 	String date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	surveyDAO.deletePrvHistory(userID, sid,history_index);
 	
 	for(int i = 0; i<list.length; i++){
 		System.out.print("option = "+list[i][1]+"\n");

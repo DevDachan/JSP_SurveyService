@@ -2,6 +2,8 @@ package survey;
 
 import javax.servlet.ServletContext;
 
+import user.HistoryDTO;
+import user.HistoryListDTO;
 import util.DatabaseUtil;
 
 public class SurveyDAO extends DatabaseUtil {
@@ -552,6 +554,139 @@ public class SurveyDAO extends DatabaseUtil {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		return 0;
+	}
+	
+	public int deletePrvHistory(String uid, int sid, int hid) {
+		
+		try {
+			String query = "SELECT DISTINCT user_id FROM survey_history WHERE survey_id = ? AND history_index = ?";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			psmt.setInt(2, hid);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getString(1).equals(uid)) {
+					query = "DELETE FROM survey_history WHERE survey_id = ? AND history_index = ?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, sid);
+					psmt.setInt(2, hid);
+					int result = psmt.executeUpdate();
+					return result;
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
+	
+	public HistoryDTO[] getHistory(String uid, int sid,int hid) {
+		HistoryDTO[] historyDTO = null;
+		int history_len = 0;
+		try {
+			String query = "SELECT COUNT(*) FROM survey_history WHERE user_id=? AND survey_id=? AND history_index =? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, uid);
+			psmt.setInt(2, sid);
+			psmt.setInt(3, hid);
+	
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				history_len = rs.getInt(1);
+			}
+	
+			historyDTO = new HistoryDTO[history_len];
+			query = "SELECT option_num,component_num,content FROM survey_history WHERE user_id=? AND survey_id=? AND history_index =? ORDER BY option_num,component_num ASC";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, uid);
+			psmt.setInt(2, sid);
+			psmt.setInt(3, hid);
+					
+			
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next()) {
+				historyDTO[i] = new HistoryDTO(rs.getInt(1),rs.getInt(2),rs.getString(3));
+				i++;
+				if(i == history_len) {
+					break;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return historyDTO;
+	}
+	
+	public HistoryListDTO[] getHistoryList(String userID) {
+		HistoryListDTO[] historyDTO = null;
+		int history_len = 0;
+		try {
+			String query = "SELECT COUNT(distinct survey_id, history_index) FROM survey_history WHERE user_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				history_len = rs.getInt(1);
+			}
+			              
+			historyDTO = new HistoryListDTO[history_len];
+			query = "SELECT DISTINCT history_index, survey_id, name , date FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY date,option_num,component_num ";
+			
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+				
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next()) {
+				historyDTO[i] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1));
+				i++;
+				if(i == history_len) {
+					break;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return historyDTO;
+	}
+	
+	public int deleteHistory(String userID, int sid, int hid) {
+		try {
+			String query = "SELECT DISTINCT user_id FROM survey_history WHERE survey_id =? AND history_index =?";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			psmt.setInt(2, hid);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getString(1).equals(userID)) {
+					query = "DELETE FROM survey_history WHERE survey_id =? AND history_index =?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, sid);
+					psmt.setInt(2, hid);
+					int result = psmt.executeUpdate();
+					if(result > 0) {
+						return 1;
+					}
+				}else {
+					return 0;
+				}
+			} 
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		return 0;
 	}
 }
