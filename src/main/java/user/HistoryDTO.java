@@ -1,20 +1,22 @@
 package user;
 
-public class AdminDTO {
+public class HistoryDTO {
 	private String surveyID;
 	private String surveyName;
-	private String surveyContent;
-	public AdminDTO() {
+	private String surveyDate;
+	public HistoryDTO() {
 		
 	}
 	
 	
-	public AdminDTO(String surveyID, String surveyName, String surveyContent) {
+	
+	public HistoryDTO(String surveyID, String surveyName, String surveyDate) {
 		super();
 		this.surveyID = surveyID;
 		this.surveyName = surveyName;
-		this.surveyContent = surveyContent;
+		this.surveyDate = surveyDate;
 	}
+
 
 
 	public String getSurveyID() {
@@ -29,12 +31,15 @@ public class AdminDTO {
 	public void setSurveyName(String surveyName) {
 		this.surveyName = surveyName;
 	}
-	public String getSurveyContent() {
-		return surveyContent;
+	public String getSurveyDate() {
+		return surveyDate;
 	}
-	public void setSurveyContent(String surveyContent) {
-		this.surveyContent = surveyContent;
+	public void setSurveyDate(String surveyDate) {
+		this.surveyDate = surveyDate;
 	}
+	
+	
+	
 	
 	
 	

@@ -11,51 +11,122 @@ public class SurveyDAO extends DatabaseUtil {
 	}
 	
 	public int addSurvey(String userID) {
+		int sid = 0;
+		while(true) {
+			try {
+				double rand = Math.random();
+				int randomCode = Integer.parseInt(Double.toString(rand).substring(2, 10));
+				String test = "SELECT id FROM survey WHERE id =?";
+				psmt = con.prepareStatement(test);
+				psmt.setInt(1, randomCode);
+				
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					if(rs.getInt(1) != randomCode) {
+						break;
+					}
+				}else {
+					sid = randomCode;
+					break;
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(sid != 0) {
+			try {
+				String query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'Radio')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO survey_option VALUES(?,'checkbox',2,1,'Checkbox')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO survey_option VALUES(?,'text',3,1,'Text')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO option_detail VALUES(?,1,'Title','content','radio')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO option_detail VALUES(?,2,'Title','content','checkbox')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO option_detail VALUES(?,3,'Title','content','text')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
+				
+				
+				query = "INSERT INTO survey VALUES(?,'Example',?,'This is content space')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.setString(2,userID);
+				psmt.executeUpdate();
+				
+				return sid;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+		
+		return sid;
+	}
+	
+	
+	public int deleteSurvey(String userID, int surveyID) {
+		String query = "SELECT admin_id FROM survey WHERE id=?;";
 		try {
-			String query = "INSERT INTO survey_option VALUES('randomID','radio',1,1,'Radio')";
 			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			query = "INSERT INTO survey_option VALUES('randomID','checkbox',2,1,'Checkbox')";
-			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			query = "INSERT INTO survey_option VALUES('randomID','text',3,1,'Text')";
-			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			query = "INSERT INTO option_detail VALUES('randomID',1,'Title','content','radio')";
-			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			query = "INSERT INTO option_detail VALUES('randomID',2,'Title','content','checkbox')";
-			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			query = "INSERT INTO option_detail VALUES('randomID',3,'Title','content','text')";
-			psmt = con.prepareStatement(query);
-			psmt.executeUpdate();
-			
-			
-			
-			query = "INSERT INTO survey VALUES('randomID','test',?)";
-			psmt = con.prepareStatement(query);
-			psmt.setString(1,userID);
-			int result = psmt.executeUpdate();
-			return result;
+			psmt.setInt(1, surveyID);
+				
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getString(1).equals(userID)) {
+					query = "DELETE FROM survey WHERE id=?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, surveyID);
+					psmt.executeUpdate();
+
+					query = "DELETE FROM survey_option WHERE survey_id=?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, surveyID);
+					psmt.executeUpdate();
+
+					query = "DELETE FROM option_detail WHERE survey_id=?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, surveyID);
+					psmt.executeUpdate();
+
+					return 1;
+					
+				}else {
+					return 2;
+				}
+			}
+			return 1;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 		return 0;
+		
 	}
 	
-	public int editComponent(String surveyID, int optionNum,int componentNum ,String content) {
+	public int editComponent(int surveyID, int optionNum,int componentNum ,String content) {
 		String query = "UPDATE survey_option SET content=? WHERE survey_id = ? AND option_num = ? AND component_num=?;";
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, content);
-			psmt.setString(2, surveyID);
+			psmt.setInt(2, surveyID);
 			psmt.setInt(3, optionNum);
 			psmt.setInt(4, componentNum);
 				
@@ -67,20 +138,17 @@ public class SurveyDAO extends DatabaseUtil {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 		return 0;
 	}
 	
-	public int editOption(String surveyID, int optionNum ,String content, String type) {
+	public int editOption(int surveyID, int optionNum ,String content, String type) {
 		
 		if(type.equals("title")) {
 			String query = "UPDATE option_detail SET option_title=? WHERE survey_id = ? AND option_num = ?;";
 			try {
 				psmt = con.prepareStatement(query);
 				psmt.setString(1, content);
-				psmt.setString(2, surveyID);
+				psmt.setInt(2, surveyID);
 				psmt.setInt(3, optionNum);
 					
 				int result = psmt.executeUpdate();
@@ -96,7 +164,7 @@ public class SurveyDAO extends DatabaseUtil {
 			try {
 				psmt = con.prepareStatement(query);
 				psmt.setString(1, content);
-				psmt.setString(2, surveyID);
+				psmt.setInt(2, surveyID);
 				psmt.setInt(3, optionNum);
 					
 				int result = psmt.executeUpdate();
@@ -109,19 +177,52 @@ public class SurveyDAO extends DatabaseUtil {
 			}
 			
 		}
-		
-		
-		
 		return 0;
 	}
 	
+	public int editSurvey(int surveyID, String content, String type) {
+		if(type.equals("surveyTitle")) {
+			String query = "UPDATE survey SET name=? WHERE id = ?;";
+			try {
+				psmt = con.prepareStatement(query);
+				psmt.setString(1, content);
+				psmt.setInt(2, surveyID);
+					
+				int result = psmt.executeUpdate();
+				if(result == 0) {
+					return 0;
+				}
+				return 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}else {
+			String query = "UPDATE survey SET content=? WHERE id = ?;";
+			try {
+				psmt = con.prepareStatement(query);
+				psmt.setString(1, content);
+				psmt.setInt(2, surveyID);
+					
+				int result = psmt.executeUpdate();
+				if(result == 0) {
+					return 0;
+				}
+				return 1;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return 0;
+		
+	}
 	
-	public int deleteComponent(String surveyID , int optionNum, int componentNum) {
+	public int deleteComponent(int surveyID , int optionNum, int componentNum) {
 		
 		String query = "DELETE FROM survey_option WHERE survey_id = ? AND option_num = ? AND component_num = ?;";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setInt(2, optionNum);
 			psmt.setInt(3, componentNum);
 			
@@ -132,14 +233,14 @@ public class SurveyDAO extends DatabaseUtil {
 			
 			query = "SELECT COUNT(*) FROM survey_option WHERE survey_id=? AND option_num = ?;";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setInt(2, optionNum);
 			rs = psmt.executeQuery();
 			if(rs.next()){
 				if(rs.getInt(1) == 0) {
 					query = "DELETE FROM option_detail WHERE survey_id=? AND option_num = ?;";
 					psmt = con.prepareStatement(query);
-					psmt.setString(1, surveyID);
+					psmt.setInt(1, surveyID);
 					psmt.setInt(2, optionNum);
 					psmt.executeUpdate();
 				}
@@ -154,12 +255,12 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 		
 	}
-	public int deleteOption(String surveyID, int optionNum) {
+	public int deleteOption(int surveyID, int optionNum) {
 		String query = "DELETE FROM option_detail WHERE survey_id=? AND option_num = ?";
 		
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setInt(2, optionNum);
 			
 			int result = psmt.executeUpdate();
@@ -168,7 +269,7 @@ public class SurveyDAO extends DatabaseUtil {
 			}else {
 				query = "DELETE FROM survey_option WHERE survey_id=? AND option_num = ?";
 				psmt = con.prepareStatement(query);
-				psmt.setString(1, surveyID);
+				psmt.setInt(1, surveyID);
 				psmt.setInt(2, optionNum);
 				result = psmt.executeUpdate();
 				if(result == 0) {
@@ -184,13 +285,13 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 	}
 	
-	public int addOption(String surveyID, String optionType) {
+	public int addOption(int surveyID, String optionType) {
 		String getquery = "SELECT MAX(option_num) FROM option_detail where survey_id = ?";
 		int maxIndex = 0;
 		
 		try {
 			psmt = con.prepareStatement(getquery);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 
 
 			rs = psmt.executeQuery();
@@ -211,14 +312,14 @@ public class SurveyDAO extends DatabaseUtil {
 		String query = "INSERT INTO option_detail VALUES(?,?,'test_title','test_content',?)";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setInt(2, maxIndex);
 			psmt.setString(3, optionType);
 
 			int result = psmt.executeUpdate();
 			query = "INSERT INTO survey_option VALUES(?,?,?,?,'test');";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setString(2, optionType);
 			psmt.setInt(3, maxIndex);
 			psmt.setInt(4, 1); // Component number
@@ -232,13 +333,13 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return 0;
 	}
-	public int addComponent(String surveyID , int optionNum) {
+	public int addComponent(int surveyID , int optionNum) {
 		String getquery = "SELECT type, MAX(component_num) FROM survey_option where survey_id = ? AND option_num =?;";
 		String surveyType="";
 		int componentNum = 0;
 		try {
 			psmt = con.prepareStatement(getquery);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setInt(2, optionNum);
 
 			rs = psmt.executeQuery();
@@ -261,7 +362,7 @@ public class SurveyDAO extends DatabaseUtil {
 		String query = "INSERT INTO survey_option VALUES(?,?,?,?,'New option')";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, surveyID);
+			psmt.setInt(1, surveyID);
 			psmt.setString(2, surveyType);
 			psmt.setInt(3, optionNum);
 			psmt.setInt(4, componentNum);
@@ -275,13 +376,13 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 	}
 	
-	public String[][] getOption(String sid) {
+	public String[][] getOption(int sid) {
 		String[][] option = null;
 		int option_len = 0;
 		String count_option = "SELECT COUNT(*) FROM option_detail WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_option);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				option_len = rs.getInt(1);
@@ -293,7 +394,7 @@ public class SurveyDAO extends DatabaseUtil {
 		option= new String[option_len][2];
 		try {
 			psmt = con.prepareStatement(select_option);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 		
 			int i = 0;
@@ -310,13 +411,32 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return option;
 	}
-	public SurveyDTO[] getComponent(String sid) {
-		SurveyDTO[] survey = null;
+	public SurveyDTO getSurvey(int sid) {
+		SurveyDTO surveyDTO = null;
+		try {
+			              
+			String query = "SELECT * FROM survey WHERE id=?";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				surveyDTO = new SurveyDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return surveyDTO;
+	}
+	
+	
+	public OptionDTO[] getComponent(int sid) {
+		OptionDTO[] survey = null;
 		int survey_len = 0;
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_survey);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				survey_len = rs.getInt(1);
@@ -327,13 +447,13 @@ public class SurveyDAO extends DatabaseUtil {
 		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ?;";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 
-			survey = new SurveyDTO[survey_len];
+			survey = new OptionDTO[survey_len];
 			int i = 0;
 			while(rs.next()){ // get survey content
-				survey[i] = new SurveyDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				survey[i] = new OptionDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
 				if(i == survey_len) {
 					break;
@@ -346,14 +466,14 @@ public class SurveyDAO extends DatabaseUtil {
 		return survey;
 	}
 	
-	public String[][] getOptionResult(String sid) {
+	public String[][] getOptionResult(int sid) {
 		String[][] option = null;
 		int option_len = 0;
 		
 		try {
 			String query = "SELECT COUNT(*) FROM option_detail WHERE survey_id = ?";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				option_len = rs.getInt(1);
@@ -362,7 +482,7 @@ public class SurveyDAO extends DatabaseUtil {
 			
 			query = "SELECT option_num, type FROM option_detail WHERE survey_id = ?";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			option = new String[option_len][2];
 			int i = 0;
@@ -380,13 +500,29 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return option;
 	}
-	
-	public int getHistoryNum(String sid) {
+	public int getPrvhistory(int sid, String uid) {
+		String query = "SELECT * FROM survey_history WHERE survey_id=? AND user_id=?";
+		int result = 0;
+		try{
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			psmt.setString(2, uid);	
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				result =  1;
+			}
+			return result;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public int getHistoryNum(int sid) {
 		String query = "SELECT MAX(history_index) FROM survey_history WHERE survey_id=?";
 		
 		try{
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				return rs.getInt(1)+1;
@@ -398,11 +534,11 @@ public class SurveyDAO extends DatabaseUtil {
 		return 0;
 	}
 	
-	public int addHistory(String sid,String userID,int history_index,int option_num,int component_num,String content,String date){
+	public int addHistory(int sid,String userID,int history_index,int option_num,int component_num,String content,String date){
 		String query = "INSERT INTO survey_history VALUES(?,?,?,?,?,?,?)";
 		try{
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			psmt.setString(2, userID);
 			psmt.setInt(3, history_index);
 			psmt.setInt(4, option_num);
@@ -426,8 +562,8 @@ public class SurveyDAO extends DatabaseUtil {
 
 
 /*
- * public String getAdminSurvey(String sid) {
-		SurveyDTO[] survey = null;
+ * public String getAdminSurvey(int sid) {
+		OptionDTO[] survey = null;
 		
 		String buf = "";		
 		String result ="";
@@ -444,7 +580,7 @@ public class SurveyDAO extends DatabaseUtil {
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_survey);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				survey_len = rs.getInt(1);				
@@ -456,7 +592,7 @@ public class SurveyDAO extends DatabaseUtil {
 		String count_option = "SELECT COUNT(*) FROM option_detail WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_option);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				option_len = rs.getInt(1);
@@ -469,13 +605,13 @@ public class SurveyDAO extends DatabaseUtil {
 		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ?;";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 
-			survey = new SurveyDTO[survey_len];
+			survey = new OptionDTO[survey_len];
 			int i = 0;
 			while(rs.next()){ // get survey content
-				survey[i] = new SurveyDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				survey[i] = new OptionDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
 				if(i == survey_len) {
 					break;
@@ -491,7 +627,7 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		try {
 			psmt = con.prepareStatement(query2);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 		
 			int i = 0;
@@ -575,8 +711,8 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return result;
 	}
-	public String getUserSurvey(String sid) {
-		SurveyDTO[] survey = null;
+	public String getUserSurvey(int sid) {
+		OptionDTO[] survey = null;
 		
 		String buf = "";		
 		String result ="";
@@ -589,7 +725,7 @@ public class SurveyDAO extends DatabaseUtil {
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_survey);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				survey_len = rs.getInt(1);
@@ -600,7 +736,7 @@ public class SurveyDAO extends DatabaseUtil {
 		String count_option = "SELECT COUNT(*) FROM option_detail WHERE survey_id=?;";
 		try {
 			psmt = con.prepareStatement(count_option);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				option_len = rs.getInt(1);
@@ -613,13 +749,13 @@ public class SurveyDAO extends DatabaseUtil {
 		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ?;";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 
-			survey = new SurveyDTO[survey_len];
+			survey = new OptionDTO[survey_len];
 			int i = 0;
 			while(rs.next()){ // get survey content
-				survey[i] = new SurveyDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				survey[i] = new OptionDTO(rs.getString(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
 				if(i == survey_len) {
 					break;
@@ -635,7 +771,7 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		try {
 			psmt = con.prepareStatement(query2);
-			psmt.setString(1, sid);
+			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 		
 			int i = 0;

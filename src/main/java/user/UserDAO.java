@@ -147,10 +147,78 @@ public class UserDAO extends DatabaseUtil {
 		}
 		return 0;
 	}
-	public String getHistoryList() {
-		return "";
+	public HistoryDTO[] getHistoryList(String userID) {
+		HistoryDTO[] historyDTO = null;
+		int history_len = 0;
+		try {
+			String query = "SELECT COUNT(DISTINCT survey_id) FROM survey_history WHERE user_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				history_len = rs.getInt(1);
+			}
+			              
+			historyDTO = new HistoryDTO[history_len];
+			query = "SELECT DISTINCT survey_id, name , date FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY history_index";
+			
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+				
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next()) {
+				historyDTO[i] = new HistoryDTO(rs.getString(1),rs.getString(2),rs.getString(3));
+				i++;
+				if(i == history_len) {
+					break;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return historyDTO;
 	}
-	public String getSurveyList(String userID) {
+	public AdminDTO[] getAdminList(String userID) {
+		AdminDTO[] adminDTO = null;
+		int admin_len = 0;
+		try {
+			String query = "SELECT COUNT(*) FROM survey WHERE admin_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				admin_len = rs.getInt(1);
+			}
+			              
+			adminDTO = new AdminDTO[admin_len];
+			query = "SELECT * FROM survey WHERE admin_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+				
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next()) {
+				adminDTO[i] = new AdminDTO(rs.getString(1),rs.getString(2),rs.getString(3));
+				i++;
+				if(i == admin_len) {
+					break;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return adminDTO;
+		
+	}
+}
+	
+
+
+/*
+ * public String getSurveyList(String userID) {
 		
 		String buf = "";		
 		String result ="<div class=\"list mb-5\">\r\n"
@@ -194,7 +262,7 @@ public class UserDAO extends DatabaseUtil {
 			rs = psmt.executeQuery();
 			int i = 0;
 			while(rs.next()) {
-				adminDTO[i] = new AdminDTO(rs.getString(1),rs.getString(2));
+				adminDTO[i] = new AdminDTO(rs.getString(1),rs.getString(2),rs.getString(3));
 				i++;
 				if(i == admin_len) {
 					break;
@@ -224,4 +292,6 @@ public class UserDAO extends DatabaseUtil {
 		result = result + buf + "</div>\n</div>";
 		return result;
 	}
-}
+ * 
+ * */
+ 

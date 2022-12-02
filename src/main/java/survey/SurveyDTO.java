@@ -1,56 +1,28 @@
 package survey;
 
 public class SurveyDTO {
-	private String surveyID;
-	private String optionType;
-	private int optionNum;
-	private int componentNum;
-	private String content;
+	
+	private int surveyId;
 	private String surveyName;
+	private String adminId;
+	private String surveyContent;
 	
-	
-	public SurveyDTO(String surveyID, String optionType, int optionNum, int componentNum, String content,
-			String surveyName) {
-		super();
-		this.surveyID = surveyID;
-		this.optionType = optionType;
-		this.optionNum = optionNum;
-		this.componentNum = componentNum;
-		this.content = content;
-		this.surveyName = surveyName;
-	}
 	public SurveyDTO() {
-		
 	}
-	public String getSurveyID() {
-		return surveyID;
+	
+	
+	public SurveyDTO(int surveyId, String surveyName, String adminId, String surveyContent) {
+		super();
+		this.surveyId = surveyId;
+		this.surveyName = surveyName;
+		this.adminId = adminId;
+		this.surveyContent = surveyContent;
 	}
-	public void setSurveyID(String surveyID) {
-		this.surveyID = surveyID;
+	public int getSurveyId() {
+		return surveyId;
 	}
-	public String getOptionType() {
-		return optionType;
-	}
-	public void setOptionType(String optionType) {
-		this.optionType = optionType;
-	}
-	public int getOptionNum() {
-		return optionNum;
-	}
-	public void setOptionNum(int optionNum) {
-		this.optionNum = optionNum;
-	}
-	public int getComponentNum() {
-		return componentNum;
-	}
-	public void setComponentNum(int componentNum) {
-		this.componentNum = componentNum;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setSurveyId(int surveyId) {
+		this.surveyId = surveyId;
 	}
 	public String getSurveyName() {
 		return surveyName;
@@ -58,7 +30,19 @@ public class SurveyDTO {
 	public void setSurveyName(String surveyName) {
 		this.surveyName = surveyName;
 	}
+	public String getAdminId() {
+		return adminId;
+	}
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
+	}
+	public String getSurveyContent() {
+		return surveyContent;
+	}
+	public void setSurveyContent(String surveyContent) {
+		this.surveyContent = surveyContent;
+	}
 	
-
+	
 	
 }

@@ -3,6 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
+<%@ page import='survey.OptionDTO' %>
 <%@ page import='survey.SurveyDTO' %>
 
 <%SurveyDAO surveyDAO = new SurveyDAO(application); %>
@@ -18,7 +19,7 @@ pageEncoding="UTF-8"  %>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?after">
+	<link rel="stylesheet" href="./css/custom.css">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -160,6 +161,31 @@ pageEncoding="UTF-8"  %>
             }
       	  })  	
 		}
+		function editSurvey(surveyID, type){
+			if(type == 1){
+				optionType="surveyTitle";
+			}else if(type == 2){
+				optionType="surveyContent";
+			}
+			content = document.getElementById(optionType).value;	
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/editSurvey.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:surveyID,
+            		type:optionType,
+            		content:content
+            		},
+            	success: function(res) {
+            		window.location.reload();	
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
 	</script>
 </head>
 <body>
@@ -169,7 +195,17 @@ pageEncoding="UTF-8"  %>
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}
-	int pageNumber = 1;
+	int sid = 0;
+	if(request.getParameter("sid") != null){
+		sid = Integer.parseInt(request.getParameter("sid"));	
+	}else{
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("history.back();");
+		script.println("</script>");
+		script.close();
+	}
+	
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
@@ -217,73 +253,94 @@ pageEncoding="UTF-8"  %>
 	
 	<section class="container mt-3" style="max-width: 500px;">
 
+<%
+	SurveyDTO survey = surveyDAO.getSurvey(sid);	
+%>
+<div class="survey">
+	<div class = "form-row">
+		<div class="survey-title form-group col-sm-12">
+			<textarea maxlength='50' class='option-title-text' 
+				id='surveyTitle' 
+				onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%>
+				</textarea>
+		</div>
+		<div class="survey-content form-group col-sm-12">
+			<textarea maxlength='2048' class='option-title-text' 
+				id='surveyContent' 
+				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%>
+			</textarea>
+		</div>
+	</div>
+</div>
+
 
 <%
-
 	int count = 0;
 	int temp_id;
 	String buf ="";
 	String result = "";
-	String sid = "1";
-	SurveyDTO[] survey = surveyDAO.getComponent(sid);
-	String[][] option = surveyDAO.getOption(sid);
-	
-	for(int option_num = 0; option_num< option.length; option_num++){
+	OptionDTO[] option = surveyDAO.getComponent(sid);
+	String[][] option_detail = surveyDAO.getOption(sid);
+
+	for(int option_num = 0; option_num< option_detail.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 							"<div class='option-title'>\n" + 
-								"<textarea maxlength='30' class='option-title-text' id='optionTitle"+survey[count].getOptionNum()+"' onChange='editOption("+sid+","+survey[count].getOptionNum()+",1)'>"+ option[option_num][0]+"</textarea>\n" + 
+								"<textarea maxlength='50' class='option-title-text' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num][0]+"</textarea>\n" + 
 							"</div>\n"+
 						"<div class='option-content'>\n"+
 							"<div class='option-content-item'>\n"+
-								"<textarea maxlength='2048' class='option-content-text' id='optionContent"+survey[count].getOptionNum()+"' onChange='editOption("+sid+","+survey[count].getOptionNum()+",2)' >"+option[option_num][1]+"</textarea>\n" + 
+								"<textarea maxlength='2048' class='option-content-text' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num][1]+"</textarea>\n" + 
 							"</div>\n"+
 						"</div>\n";
 	
 		buf = "";
-		temp_id = survey[count].getOptionNum();
+		temp_id = option[count].getOptionNum();
 	
-		while(count < survey.length && survey[count].getOptionNum() == temp_id){
-			if(survey[count].getOptionType().equals("radio")){
+		while(count < option.length && option[count].getOptionNum() == temp_id){
+			if(option[count].getOptionType().equals("radio")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><label><input type='radio' name='radio"+survey[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
+				buf += "<div class='option-item'><label><input type='radio' name='radio"+option[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
 				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-				buf += "<div class='option-item'> <input class='edit-text' type='text' id='radio' name='radio' value='"+survey[count].getContent() +"'></label></div>";
-				buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
-						","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
+				buf += "<div class='option-item'> <input class='edit-text' type='text' id='radio"+option[count].getOptionNum()+
+						option[count].getComponentNum()+"' name='radio"+option[count].getOptionNum()+option[count].getComponentNum()+
+						"' value='"+option[count].getContent() +
+						"' onChange='editComponent("+sid+","+option[count].getOptionNum()+","+option[count].getComponentNum()+",1)'></label></div>";
+				buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+option[count].getSurveyID() +
+						","+option[count].getOptionNum()+","+option[count].getComponentNum() +")' >-</button> </div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("checkbox")){
+			}else if(option[count].getOptionType().equals("checkbox")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><label><input type='checkbox' name='checkbox"+survey[count].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
-				buf += "<div class='option-item'> <input class='edit-text' type='text' id='checkbox"+survey[count].getOptionNum()+
-						survey[count].getComponentNum()+"' name='checkbox"+survey[count].getOptionNum()+survey[count].getComponentNum()+
-						"' value='"+survey[count].getContent() +
-						"' onChange='editComponent("+sid+","+survey[count].getOptionNum()+","+survey[count].getComponentNum()+",2)'></label></div>";
-				buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+survey[count].getSurveyID() +
-						","+survey[count].getOptionNum()+","+survey[count].getComponentNum() +")' >-</button> </div>";
+				buf += "<div class='option-item'><label><input type='checkbox' name='checkbox"+option[count].getComponentNum()+"' value='checkbox' placeholder='helo'></label></div>";
+				buf += "<div class='option-item'> <input class='edit-text' type='text' id='checkbox"+option[count].getOptionNum()+
+						option[count].getComponentNum()+"' name='checkbox"+option[count].getOptionNum()+option[count].getComponentNum()+
+						"' value='"+option[count].getContent() +
+						"' onChange='editComponent("+sid+","+option[count].getOptionNum()+","+option[count].getComponentNum()+",2)'></label></div>";
+				buf += "<div class='option-item'> <button class='btn btn-option-delete' type='button' onClick='deleteComponent("+option[count].getSurveyID() +
+						","+option[count].getOptionNum()+","+option[count].getComponentNum() +")' >-</button> </div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("text")){
+			}else if(option[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text'" + survey[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;'></textarea>";
 				buf +="</div>";
 				buf += "<div class='option-rows'>"+
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'></div>"+	
-						" <button class='option-item mt-3 btn btn-add' type='button' id='delete_btn"+(survey[count].getOptionNum())+
-						"' onClick='deleteOption("+survey[count].getSurveyID() +","+survey[count].getOptionNum() +")' >Delete</button>"+
+						" <button class='option-item mt-3 btn btn-add' type='button' id='delete_btn"+(option[count].getOptionNum())+
+						"' onClick='deleteOption("+option[count].getSurveyID() +","+option[count].getOptionNum() +")' >Delete</button>"+
 						"</div>";
 			}
 			count++;			
 		}
-		if(survey[count-1].getOptionType().equals("text") == false) {
+		if(option[count-1].getOptionType().equals("text") == false) {
 			buf += "<div class='option-rows'>"+
 						"<div class='option-item'>"+
-							" <button class='btn btn-primary' type='button' id='add_btn"+(survey[count-1].getOptionNum())+
-							"' onClick='addComponent("+survey[count-1].getSurveyID() +","+survey[count-1].getOptionNum() +")' >+ Add option</button>"+
+							" <button class='btn btn-primary' type='button' id='add_btn"+(option[count-1].getOptionNum())+
+							"' onClick='addComponent("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >+ Add option</button>"+
 						"</div>"+
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'>"+
-							" <button class='btn btn-add' type='button' id='delete_btn"+(survey[count-1].getOptionNum())+
-							"' onClick='deleteOption("+survey[count-1].getSurveyID() +","+survey[count-1].getOptionNum() +")' >Delete</button>"+
+							" <button class='btn btn-add' type='button' id='delete_btn"+(option[count-1].getOptionNum())+
+							"' onClick='deleteOption("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >Delete</button>"+
 						"</div>"+
 					" </div>";
 		}
@@ -292,6 +349,7 @@ pageEncoding="UTF-8"  %>
 		result = result + start + buf;
 	}
 %>
+
 <%= result %>
 
 
@@ -304,13 +362,19 @@ pageEncoding="UTF-8"  %>
 				    <option value="checkbox">Checkbox</option>
 				    <option value="text" selected="selected">Text</option>
 				</select>
-				<input type="hidden" id="surveyID" name="surveyID" value="1">
+				<input type="hidden" id="surveyID" name="surveyID" value=<%=sid %>>
 			</div>
 			<div class="form-group col-sm-6" style="text-align:left;">
 				<button type="button" class="btn btn-add" style="width:40%;margin:auto;" onClick='addOption()' > + </button>
 			</div>
 		</div>
 	</form>
+	
+	<div class="form-row">
+		<div class="form-group col-sm-12 form-survey-delete">
+			<a href="deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-add">DELETE</a>
+		</div>
+	</div>
 
 	</section>
 	

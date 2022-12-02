@@ -91,6 +91,9 @@ input[type="password"]{
 	width: 100%;
 	display:grid !important; 
 	grid-template-columns: 1fr;
+	border: 2px solid black;
+	border-radius:20px;
+	padding: 15px;
 }
 
 .option-title{
@@ -98,14 +101,15 @@ input[type="password"]{
 	display:grid !important;
 	text-align:left;
 	border-bottom: 3px solid #ADADAD;
-	margin-bottom: 20px;
-	margin-top: 20px;
+	padding-bottom: 5px;
+	margin: 20px 0 10px 0;
+	
 }
 .option-title-text{
 	font-size: 30px;
-	border-radius: 10px;
-	height:60%;
+	height: 55px;
 	margin:0px;
+	padding:2px 10px 2px 10px;
 }
 
 .option-content{
@@ -113,16 +117,16 @@ input[type="password"]{
 	grid-column-end: span 3;	
 	text-align: left;
 	margin-bottom: 20px;
-	padding-left:10px;
 }
 
 .option-content-item{
+	
 	font-size: 15px;
 }
 
 .option-content-text{
-	border-radius:10px;
 	width: 100%;	
+	padding:5px 0px 0px 10px;
 }
 
 .option-rows{
@@ -155,4 +159,10 @@ input[type="password"]{
 
 .warning{
 	color:red;
+}
+.btn-survey-delete{
+}
+
+.form-survey-delete{
+	text-align: center;
 }

@@ -3,7 +3,8 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='user.UserDAO' %>
-
+<%@ page import='user.AdminDTO' %>
+<%@ page import='user.HistoryDTO' %>
 
 <% UserDAO userDAO = new UserDAO(application); %>
 <!DOCTYPE html>
@@ -56,7 +57,7 @@ pageEncoding="UTF-8"  %>
 					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
+					<a class="nav-link" href="adminSurvey.jsp?sid=1" style="color:white;">Admin Survey</a>
 				</li>
 				<li class="nav-item dropdown">
 				
@@ -88,59 +89,95 @@ pageEncoding="UTF-8"  %>
 	
 	<section class="container mt-3" style="max-width: 700px;">
 	<h3 class="mb-5">Main Page</h3>	
-	
-	<%=
-		userDAO.getSurveyList(userID)
-	%>
 	<div class="list mb-5">
 		<div class="list-title">
-			<h4 style="margin:auto;">User list</h4>
+			<h4 style="margin:auto;">설문지 리스트</h4>
+				<a href="addSurvey.jsp" class="btn-add" >Add Survey</a>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
-				<div class="list-option-itme">
-					날짜
+				<div class="list-option-item">
+					ID
+			 	</div>
+				<div class="list-option-item">
+					이름 
+				</div> 
+				<div class="list-option-item">
+					수정 
 				</div>
-				<div class="list-option-itme">
-					이름
-				</div>
-				<div class="list-option-itme">
-					Edit
-				</div>
-				<div class="list-option-itme">
-					Result
-				</div>
+			 	<div class="list-option-item">
+			 		결과 
+				</div> 
 			</div>
-			<div class="list-rows" >
-				<div class="list-item">
-				2022.11.24
-				</div>
-				<div class="list-item">
-				한풍 지원서
-				</div>
-				<div class="list-item">
-				edit
-				</div>
-				<div class="list-item">
-				result
-				</div>
-			</div>
-			<div class="list-rows" >
-				<div class="list-item">
-				2022.11.24
-				</div>
-				<div class="list-item">
-				한풍 지원서
-				</div>
-				<div class="list-item">
-				edit
-				</div>
-				<div class="list-item">
-				result
-				</div>
-			</div>
+		<%
+		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
+		String adminList ="";
+		
+		for(int step = 0; step<adminDTO.length; step++) {
+			adminList +="<div class=\"list-rows\" >\n"+ 
+						"<div class=\"list-item\">\n"+
+							adminDTO[step].getSurveyID()+ "\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							adminDTO[step].getSurveyName()+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<a href='adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>edit</a>\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<button type='button'>result</button>\n"+
+						"</div>\n"+
+				   "</div>";
+		}
+		%>
+		<%= adminList %>
 		</div>
 	</div>
+	
+	<div class="list mb-5">
+		<div class="list-title">
+			<h4 style="margin:auto;">과거 설문 내역</h4>
+		</div>
+		<div class="list-content">
+			<div class="list-option">
+				<div class="list-option-item">
+					날짜
+			 	</div>
+				<div class="list-option-item">
+					이름 
+				</div> 
+				<div class="list-option-item">
+					수정
+				</div>
+			 	<div class="list-option-item">
+			 		삭제 
+				</div> 
+			</div>
+		<%
+		HistoryDTO[] historyDTO = userDAO.getHistoryList(userID);
+		String historyList ="";
+		
+		for(int step = 0; step<historyDTO.length; step++) {
+			historyList +="<div class=\"list-rows\" >\n"+ 
+						"<div class=\"list-item\">\n"+
+								historyDTO[step].getSurveyDate()+ "\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+								historyDTO[step].getSurveyName()+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<a href='adminSurvey.jsp?sid="+historyDTO[step].getSurveyID()+"' class='btn btn-primary'>edit</a>\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<button type='button'>result</button>\n"+
+						"</div>\n"+
+				   "</div>";
+		}
+		%>
+		<%= historyList %>
+		</div>
+	</div>
+	
 	
 
 	

@@ -3,7 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
-<%@ page import='survey.SurveyDTO' %>
+<%@ page import='survey.OptionDTO' %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,14 +25,12 @@ pageEncoding="UTF-8"  %>
 </head>
 <body>
 <% 
-	String sid = request.getParameter("survey_id");
+	int sid = Integer.parseInt(request.getParameter("survey_id"));
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}
 	int pageNumber = 1;
-
-
 %>
 
 
@@ -80,7 +78,7 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-	<h3>여기는 User Survey Result 페이지입니다.</h3>	
+	<h3>제출 완료!!</h3>	
 	
 	
 	</section>

@@ -29,7 +29,7 @@
 		userEmail = request.getParameter("userEmail");			
 		UserDAO userDAO = new UserDAO(application);
 		
-		String randomCode = "hihi";
+		String randomCode = "";
 		double rand = Math.random();
 	    randomCode = Double.toString(rand).substring(2, 10);
 		int setResult = userDAO.setUserCode(userEmail,randomCode);
