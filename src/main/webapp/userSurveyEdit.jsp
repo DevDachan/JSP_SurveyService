@@ -6,6 +6,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.OptionDTO' %>
 <%@ page import='user.HistoryDTO' %>
 <%@ page import='user.UserDAO' %>
+<%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
 <html>
@@ -36,12 +37,13 @@ pageEncoding="UTF-8"  %>
 	if(request.getParameter("sid") != null){
 		sid = Integer.parseInt(request.getParameter("sid"));	
 	}else{
-		sid = 1;
-		/*PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();*/
+		%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"존재하지 않는 설문입니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'index.jsp';"/>
+		</jsp:include>	
+		<% 	
 	}
 	int hid = 0;
 	if(request.getParameter("hid") != null){

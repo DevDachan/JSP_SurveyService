@@ -11,7 +11,7 @@ pageEncoding="UTF-8"  %>
 	<!-- meta data add  -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	
-	<title>강의 평가 웹 사이트</title>
+	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<!-- custom CSS insert -->

@@ -4,7 +4,7 @@
 <%@ page import="survey.OptionDTO" %>
 <%@ page import="survey.SurveyDAO" %>
 <%@ page import="java.io.PrintWriter" %>
-
+<%@ page import='java.net.URLEncoder' %>
 
 
 <%
@@ -23,11 +23,13 @@
 	// 하나라도 옳지 않은 내용이 존재하거나 null값이 존재 할 경우에는 오류 alert와 함께 이전 페이지로
 	if(userID == null || surveyID ==0){
 		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('세션 정보가 존재하지 않습니다.');");
-		script.println("location.href = 'Login.jsp'");
-		script.println("</script>");
-		script.close();
+		%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'index.jsp';" />
+		</jsp:include>	
+<% 		
 	}
 	
 	SurveyDAO surveyDAO = new SurveyDAO(application);
@@ -40,19 +42,21 @@
 		script.println("</script>");
 		script.close();
 	}else if(result == 2){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('Admin 정보가 일치하지 않습니다.');");
-		script.println("location.href = 'index.jsp'");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"유저 정보가 일치하지 않습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 		
 	}else{
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('데이터베이스 오류가 발생했습니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 
 	}
 	
 %>

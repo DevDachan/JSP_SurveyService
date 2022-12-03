@@ -5,6 +5,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
 <%@ page import='survey.SurveyDTO' %>
+<%@ page import='java.net.URLEncoder' %>
 
 <%SurveyDAO surveyDAO = new SurveyDAO(application); %>
 
@@ -199,11 +200,14 @@ pageEncoding="UTF-8"  %>
 	if(request.getParameter("sid") != null){
 		sid = Integer.parseInt(request.getParameter("sid"));	
 	}else{
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 				
+		
 	}
 	
 %>

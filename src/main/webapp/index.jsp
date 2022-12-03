@@ -7,7 +7,10 @@ pageEncoding="UTF-8"  %>
 <%@ page import='user.AdminDTO' %>
 <%@ page import='user.HistoryListDTO' %>
 
-<% UserDAO userDAO = new UserDAO(application); 
+<%@ page import='java.net.URLEncoder' %>
+
+<% 
+   UserDAO userDAO = new UserDAO(application); 
    SurveyDAO surveyDAO = new SurveyDAO(application);
 %>
 <!DOCTYPE html>
@@ -21,7 +24,7 @@ pageEncoding="UTF-8"  %>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="./css/custom.css?after">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -30,6 +33,8 @@ pageEncoding="UTF-8"  %>
 	</style>
 </head>
 <body>
+
+
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -37,14 +42,16 @@ pageEncoding="UTF-8"  %>
 	}
 	int pageNumber = 1;
 	if(userID == null){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('세션 정보가 존재하지 않습니다.');");
-		script.println("location.href = 'Login.jsp';");
-		script.println("</script>");
-		script.close();
-	}
+	%>
+	<jsp:include page='alert.jsp'> 
+			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
+			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
+			<jsp:param name="url" value="location.href = 'Login.jsp';" />
+	</jsp:include>
+<%
+}
 %>
+
 
 		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
@@ -180,10 +187,7 @@ pageEncoding="UTF-8"  %>
 		<%= historyList %>
 		</div>
 	</div>
-	
-	
 
-	
 	
 	</section>
 	

@@ -17,7 +17,7 @@
 <%@ page import="util.SHA256" %>
 
 <%@ page import="java.util.*" %>
-
+<%@ page import='java.net.URLEncoder' %>
 
 <%
 	//사용자로부터 입력받는 것은 모두 UTF-8을 사용하겠다.
@@ -70,12 +70,13 @@
 				Transport.send(msg);
 			} catch(Exception e){
 				e.printStackTrace();
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert('오류가 발생했습니다.');");
-				script.println("history.back();");
-				script.println("</script>");
-				script.close();
+		%>
+				<jsp:include page='alert.jsp'> 
+						<jsp:param name="title" value="<%=URLEncoder.encode(\"Error\", \"UTF-8\") %>" />
+						<jsp:param name="content" value="<%=URLEncoder.encode(\"오류가 발생했습니다.\", \"UTF-8\") %>" />
+						<jsp:param name="url" value="location.href = 'index.jsp';" />
+				</jsp:include>	
+		<% 		
 			}
 			
 				result = "Success";

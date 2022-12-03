@@ -4,6 +4,7 @@
 <%@ page import="user.UserDTO" %>
 <%@ page import="user.UserDAO" %>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import='java.net.URLEncoder' %>
 
 String userId = request.getParameter("userID"); 
 String userPwd = request.getParameter("userPWD");  
@@ -24,12 +25,13 @@ String userPwd = request.getParameter("userPWD");
 	}
 	// 하나라도 옳지 않은 내용이 존재하거나 null값이 존재 할 경우에는 오류 alert와 함께 이전 페이지로
 	if(userID == null || userPassword == null ){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('입력이 안 된 사항이 있습니다.');");
-		script.println("location.href = 'Login.jsp';");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"입력이 안 된 사항이 있습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'Login.jsp';" />
+		</jsp:include>	
+<% 		
 	}
 	
 	UserDAO userDAO = new UserDAO(application);
@@ -43,26 +45,30 @@ String userPwd = request.getParameter("userPWD");
 		script.println("</script>");
 		script.close();
 	}else if (result == -1){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('존재하지 않는 아이디입니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"존재하지 않는 아이디입니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 				
 	}else if (result == 0){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('올바른 비밀번호를 입력해주세요.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"올바른 비밀번호를 입력해주세요.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 					
+		
 	}else{
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('데이터베이스 오류가 발생했습니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 				
 	}
 	
 %>

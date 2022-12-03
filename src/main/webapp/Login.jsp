@@ -3,6 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='user.UserDAO' %>
+<%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
 <html>
@@ -25,12 +26,13 @@ pageEncoding="UTF-8"  %>
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('로그인 정보가 존재합니다.');");
-		script.println("location.href = 'index.jsp';");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 정보가 존재합니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'index.jsp';" />
+		</jsp:include>	
+<% 		
 	}
 
 %>
@@ -108,7 +110,7 @@ pageEncoding="UTF-8"  %>
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
-		Copyright &copy; 2018 서다찬 All Rights Reserved
+		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
 	<script src="./js/jquery.min.js" ></script>

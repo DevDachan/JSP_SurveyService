@@ -3,7 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='user.UserDAO' %>
-
+<%@ page import='java.net.URLEncoder' %>
 
 
 <%UserDAO userDAO = new UserDAO(application); %>
@@ -108,12 +108,14 @@ pageEncoding="UTF-8"  %>
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('로그인 정보가 존재합니다.');");
-		script.println("location.href = 'index.jsp';");
-		script.println("</script>");
-		script.close();
+%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 정보가 존재합니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'index.jsp';"/>
+		</jsp:include>	
+<% 					
+				
 	}
 
 
@@ -200,7 +202,7 @@ pageEncoding="UTF-8"  %>
 	
 
 	<%-- tabindex: 키보드 포커싱 제외, Tab을 눌렀을때 이동하지 않도록 --%>
-	<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+	<div class="modal fade" id="reportModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modal" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">

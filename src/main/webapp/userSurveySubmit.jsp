@@ -6,7 +6,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.time.format.DateTimeFormatter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
-
+<%@ page import='java.net.URLEncoder' %>
 
 <% 
 	request.setCharacterEncoding("UTF-8");
@@ -34,12 +34,13 @@ pageEncoding="UTF-8"  %>
 				int component_num = Integer.parseInt(request.getParameterValues("checkbox"+list[i][0]+"[]")[k]);
 				result = surveyDAO.addHistory(sid,userID,history_index,Integer.parseInt(list[i][0]),component_num,"checkbox",date);	
 				if(result == 0){
-					PrintWriter script = response.getWriter();
-					script.println("<script>");
-					script.println("alert('DB Error');");
-					script.println("history.back();");
-					script.println("</script>");
-					script.close();
+					%>
+					<jsp:include page='alert.jsp'> 
+							<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+							<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
+							<jsp:param name="url" value="history.back();"/>
+					</jsp:include>	
+					<% 	
 					}
 			}
 			
@@ -49,12 +50,13 @@ pageEncoding="UTF-8"  %>
 			int component_num = Integer.parseInt(request.getParameter("radio"+list[i][0]));
 			result = surveyDAO.addHistory(sid,userID,history_index,Integer.parseInt(list[i][0]),component_num,"radio",date);	
 			if(result == 0){
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert('DB Error');");
-				script.println("history.back();");
-				script.println("</script>");
-				script.close();
+				%>
+				<jsp:include page='alert.jsp'> 
+						<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+						<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
+						<jsp:param name="url" value="history.back();"/>
+				</jsp:include>	
+				<% 	
 			}
 		}
 		else if (list[i][1].equals("text") && request.getParameter("text"+list[i][0]) != null){
@@ -62,12 +64,13 @@ pageEncoding="UTF-8"  %>
 			String content = request.getParameter("text"+list[i][0]);
 			result = surveyDAO.addHistory(sid,userID,history_index,Integer.parseInt(list[i][0]),1,content,date);	
 			if(result == 0){
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert('DB Error');");
-				script.println("history.back();");
-				script.println("</script>");
-				script.close();
+				%>
+				<jsp:include page='alert.jsp'> 
+						<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
+						<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
+						<jsp:param name="url" value="history.back();"/>
+				</jsp:include>	
+				<% 	
 			}	
 		}
 		

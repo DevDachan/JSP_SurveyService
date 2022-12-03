@@ -15,6 +15,17 @@ input[type="password"]{
 	font-family:'Nanum Gothic' !important;
 }
 
+.alert-box{
+	background-color: skyblue;
+	padding: 20px;
+	color: white;
+	border-radius: 5px;
+	background: rgba(0, 0, 0, 0.8);
+	display: none;
+	
+}
+
+
 .edit-text{
 	font-family:'Jeju Gothic' !important;
 	border: 0px ;
