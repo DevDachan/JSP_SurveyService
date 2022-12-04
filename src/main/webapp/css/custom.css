@@ -79,16 +79,6 @@ input[type="password"]{
 }
 
 
-.btn-add{
-	background: #FF8484;
-	border-radius: 30px;
-	text-align: center;
-	margin: auto;
-	padding: 1vw 2vw 1vw 2vw;
-	color: white;
-	font-weight: bold;
-}
-
 #email:valid{
 	border-color: blue;
 }
@@ -102,9 +92,11 @@ input[type="password"]{
 	width: 100%;
 	display:grid !important; 
 	grid-template-columns: 1fr;
-	border: 2px solid black;
 	border-radius:20px;
 	padding: 15px;
+	border: 2px solid #826D6D;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	
 }
 
 .option-title{
@@ -171,9 +163,34 @@ input[type="password"]{
 .warning{
 	color:red;
 }
-.btn-survey-delete{
+.btn-delete{
+	color: #fff;
+    background-color: red;
+    border-color: red;
+	
 }
 
 .form-survey-delete{
 	text-align: center;
+}
+
+.component-textarea{
+	border:0px;
+}
+
+
+.btn-add{
+	color: #fff;
+    background-color: #E598BB;
+    border-color: #E598BB;
+	
+}
+
+.select-option{
+	border: 0px;
+	border-radius: 5px;
+	color: white;
+    background-color: #E598BB;
+    height: 100%;
+    padding: 5px;
 }

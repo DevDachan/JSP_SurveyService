@@ -3,9 +3,13 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
+<%@ page import='survey.SurveyDTO' %>
 <%@ page import='survey.OptionDTO' %>
-<%@ page import='user.HistoryDTO' %>
+<%@ page import='survey.OptionDetailDTO' %>
+<%@ page import='history.HistoryDTO' %>
 <%@ page import='user.UserDAO' %>
+
+<%@ page import='history.HistoryDAO' %>
 <%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
@@ -32,6 +36,7 @@ pageEncoding="UTF-8"  %>
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	UserDAO userDAO = new UserDAO(application);
+	HistoryDAO historyDAO = new HistoryDAO(application);
 	
 	int sid = 0;
 	if(request.getParameter("sid") != null){
@@ -64,13 +69,7 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -100,9 +99,22 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-	<% 
-		HistoryDTO[] history = surveyDAO.getHistory(userID, sid,hid); 
+	
+	<%
+		HistoryDTO[] history = historyDAO.getHistory(userID, sid,hid); 
+		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
 	%>
+	<div class="survey">
+		<div class = "form-row">
+			<div class="survey-title form-group col-sm-12">
+				<label class='option-title-text' id='surveyTitle'><%=surveyDetail.getSurveyName()%></label>
+			</div>
+			<div class="survey-content form-group col-sm-12" style="height:auto;">
+				<label class='option-title-text form-control' style="font-size:15px;height:auto;" 
+				id='surveyTitle'><%=surveyDetail.getSurveyContent()%></label>
+			</div>
+		</div>
+	</div>
 	
 	<form action="./userHistorySubmit.jsp" method="post" id="survey-submit">
 	<input type="hidden" name="sid" value="<%=sid %>">
@@ -114,19 +126,19 @@ pageEncoding="UTF-8"  %>
 	String buf ="";
 	String result = "";
 	OptionDTO[] component = surveyDAO.getComponent(sid);
-	String[][] option = surveyDAO.getOption(sid);
+	OptionDetailDTO[] option = surveyDAO.getOption(sid);
 	
 	int hstep = 0;
 	
 	for(int option_num = 0; option_num< option.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 						"<div class='option-title'>\n" + 
-						"<p class='option-title-text'>"+ option[option_num][0]+
+						"<p class='option-title-text'>"+ option[option_num].getOptionTitle()+
 						"</p>\n" + 
 						"</div>\n"+
 						"<div class='option-content'>\n"+
 						"<div class='option-content-item'>\n"+
-							option[option_num][1]+
+							option[option_num].getOptionContent()+
 						"</div>\n"+
 						"</div>\n";
 		buf = "";
@@ -196,3 +208,4 @@ pageEncoding="UTF-8"  %>
 
 <%surveyDAO.endclose();%>
 <%userDAO.endclose();%>
+<%historyDAO.endclose();%>

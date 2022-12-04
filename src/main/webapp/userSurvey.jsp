@@ -4,6 +4,8 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.OptionDetailDTO' %>
+<%@ page import='survey.SurveyDTO' %>
 
 <%@ page import='java.net.URLEncoder' %>
 <!DOCTYPE html>
@@ -44,6 +46,8 @@ pageEncoding="UTF-8"  %>
 	
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
+	}else{
+		userID = "Guest";
 	}
 	
 %>
@@ -56,13 +60,7 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -71,7 +69,7 @@ pageEncoding="UTF-8"  %>
 					<div class="dropdown-menu" aria-labelledby="dropdown">
 					
 <%
-	if(userID == null){
+	if(userID == null || userID.equals("Guest")){
 		
 %>
 						<a class="dropdown-item" href="Login.jsp">로그인</a>
@@ -93,6 +91,24 @@ pageEncoding="UTF-8"  %>
 	
 	<section class="container mt-3" style="max-width: 500px;">
 
+	<%
+		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
+	%>
+	<div class="survey">
+		<div class = "form-row">
+			<div class="survey-title form-group col-sm-12">
+				<textarea maxlength='50' class='form-control option-title-text' 
+					id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=surveyDetail.getSurveyName()%></textarea>
+			</div>
+			<div class="survey-content form-group col-sm-12">
+				<textarea maxlength='2048' class='form-control option-title-text' 
+					id='surveyContent' style='font-size: 15px;'
+					onChange='editSurvey(<%=sid%>,2)'><%= surveyDetail.getSurveyContent()%></textarea>
+			</div>
+		</div>
+	</div>
+
+
 	
 	<form action="./userSurveySubmit.jsp" method="post" id="survey-submit">
 	<input type="hidden" name="sid" value="<%=sid %>">
@@ -103,17 +119,17 @@ pageEncoding="UTF-8"  %>
 	String buf ="";
 	String result = "";
 	OptionDTO[] survey = surveyDAO.getComponent(sid);
-	String[][] option = surveyDAO.getOption(sid);
-	
+	OptionDetailDTO[] option = surveyDAO.getOption(sid);
+
 	for(int option_num = 0; option_num< option.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 						"<div class='option-title'>\n" + 
-						"<p class='option-title-text'>"+ option[option_num][0]+
+						"<p class='option-title-text'>"+ option[option_num].getOptionTitle()+
 						"</p>\n" + 
 						"</div>\n"+
 						"<div class='option-content'>\n"+
 						"<div class='option-content-item'>\n"+
-							option[option_num][1]+
+							option[option_num].getOptionContent()+
 						"</div>\n"+
 						"</div>\n";
 		buf = "";

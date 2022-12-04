@@ -1,4 +1,4 @@
-package user;
+package history;
 
 public class HistoryListDTO {
 	private String surveyID;

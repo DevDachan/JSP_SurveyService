@@ -4,6 +4,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='survey.SurveyDTO' %>
 <%@ page import='java.net.URLEncoder' %>
 
@@ -192,23 +193,27 @@ pageEncoding="UTF-8"  %>
 <body>
 <% 
 	request.setCharacterEncoding("UTF-8");
-	String userID = null;
-	if(session.getAttribute("userID") != null){
-		userID = (String) session.getAttribute("userID");
+	if(session.getAttribute("userID") == null){
+%>
+		<jsp:include page='alert.jsp'> 
+			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
+			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
+			<jsp:param name="url" value="location.href = 'Login.jsp';" />
+		</jsp:include>
+<% 				
 	}
-	int sid = 0;
-	if(request.getParameter("sid") != null){
-		sid = Integer.parseInt(request.getParameter("sid"));	
-	}else{
+	else if(request.getParameter("sid") == null){
 %>
 		<jsp:include page='alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();" />
 		</jsp:include>	
-<% 				
+<% 					
 		
-	}
+	}else{
+		String userID = (String) session.getAttribute("userID");
+		int sid = Integer.parseInt(request.getParameter("sid"));	
 	
 %>
 
@@ -220,14 +225,9 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
-				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
 						회원 관리	
@@ -258,21 +258,18 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 
 <%
-	SurveyDTO survey = surveyDAO.getSurvey(sid);	
+	SurveyDTO survey = surveyDAO.getSurvey(sid);
 %>
 <div class="survey">
 	<div class = "form-row">
 		<div class="survey-title form-group col-sm-12">
-			<textarea maxlength='50' class='option-title-text' 
-				id='surveyTitle' 
-				onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%>
-				</textarea>
+			<textarea maxlength='50' class='form-control option-title-text' 
+				id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%></textarea>
 		</div>
 		<div class="survey-content form-group col-sm-12">
-			<textarea maxlength='2048' class='option-title-text' 
-				id='surveyContent' 
-				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%>
-			</textarea>
+			<textarea maxlength='2048' class='form-control option-title-text' 
+				id='surveyContent' style='font-size: 15px;'
+				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%></textarea>
 		</div>
 	</div>
 </div>
@@ -284,16 +281,16 @@ pageEncoding="UTF-8"  %>
 	String buf ="";
 	String result = "";
 	OptionDTO[] option = surveyDAO.getComponent(sid);
-	String[][] option_detail = surveyDAO.getOption(sid);
+	OptionDetailDTO[] option_detail = surveyDAO.getOption(sid);
 
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 							"<div class='option-title'>\n" + 
-								"<textarea maxlength='50' class='option-title-text' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num][0]+"</textarea>\n" + 
+								"<textarea maxlength='50' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
 							"</div>\n"+
 						"<div class='option-content'>\n"+
 							"<div class='option-content-item'>\n"+
-								"<textarea maxlength='2048' class='option-content-text' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num][1]+"</textarea>\n" + 
+								"<textarea maxlength='2048' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
 							"</div>\n"+
 						"</div>\n";
 	
@@ -329,7 +326,7 @@ pageEncoding="UTF-8"  %>
 				buf += "<div class='option-rows'>"+
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'></div>"+	
-						" <button class='option-item mt-3 btn btn-add' type='button' id='delete_btn"+(option[count].getOptionNum())+
+						" <button class='option-item mt-3 btn btn-delete'  type='button' id='delete_btn"+(option[count].getOptionNum())+
 						"' onClick='deleteOption("+option[count].getSurveyID() +","+option[count].getOptionNum() +")' >Delete</button>"+
 						"</div>";
 			}
@@ -343,8 +340,8 @@ pageEncoding="UTF-8"  %>
 						"</div>"+
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'>"+
-							" <button class='btn btn-add' type='button' id='delete_btn"+(option[count-1].getOptionNum())+
-							"' onClick='deleteOption("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >Delete</button>"+
+							" <button class='btn btn-delete' type='button' id='delete_btn"+(option[count-1].getOptionNum())+
+							"' onClick='deleteOption("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >Delete ALL</button>"+
 						"</div>"+
 					" </div>";
 		}
@@ -361,7 +358,7 @@ pageEncoding="UTF-8"  %>
 	<form action="addSurveyOption.jsp" style="text-align:center;">
 		<div class="form-row">
 			<div class="form-group col-sm-6" style="text-align:right;">
-				<select name="optionType" id="optionType">
+				<select name="optionType" class="select-option" id="optionType">
 				    <option value="radio">Radio</option>
 				    <option value="checkbox">Checkbox</option>
 				    <option value="text" selected="selected">Text</option>
@@ -373,25 +370,25 @@ pageEncoding="UTF-8"  %>
 			</div>
 		</div>
 	</form>
+	<div class="form-row">
+		<div class="form-group col-sm-12 form-survey-delete">
+			<a href="userSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-sm-12 mt-4 form-survey-delete">
+			<a href="deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-delete" style="width:100%;">Delete Survey </a>
+		</div>
+	</div>
 	
-	<div class="form-row">
-		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-add">DELETE</a>
-		</div>
-	</div>
-	<div class="form-row">
-		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="userSurvey.jsp?sid=<%=sid %>" class="btn btn-add">미리보기</a>
-		</div>
-	</div>
 	</section>
 	
 	<br/>
-
+<% }// if(sid != null) %>
 
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
-		Copyright &copy; 2018 서다찬 All Rights Reserved
+		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
 	<script src="./js/jquery.min.js" ></script>

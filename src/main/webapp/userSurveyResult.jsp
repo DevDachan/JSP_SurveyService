@@ -42,13 +42,7 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp" style="color:white;">Admin Survey</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">

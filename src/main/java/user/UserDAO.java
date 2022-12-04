@@ -106,25 +106,28 @@ public class UserDAO extends DatabaseUtil {
 	public int registerUser(String userID, String userPWD, String userEmail) {
 		
 		try {
-			String idcheck = "SELECT * FROM user WHERE id=?";
+			String idcheck = "SELECT id FROM user WHERE id=?";
 			psmt = con.prepareStatement(idcheck);
 			psmt.setString(1, userID);
 			
 			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
-				return 2;
+					return 2;
 			}
 			
-			String emailcheck = "SELECT * FROM user WHERE user_email=?";
-			psmt = con.prepareStatement(emailcheck);
-			psmt.setString(1, userEmail);
-			
-			rs = psmt.executeQuery();
-			
-			if(rs.next()) {
-				return 3;
+			if(userEmail.equals("Not") == false) {
+				String emailcheck = "SELECT id FROM user WHERE user_email=?";
+				psmt = con.prepareStatement(emailcheck);
+				psmt.setString(1, userEmail);
+				
+				rs = psmt.executeQuery();
+				
+				if(rs.next()) {
+					return 3;
+				}
 			}
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

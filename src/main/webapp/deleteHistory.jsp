@@ -2,10 +2,22 @@
     pageEncoding="UTF-8"%>
 
 <%@ page import="survey.SurveyDAO" %>
-
+<%@ page import='history.HistoryDAO' %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import='java.net.URLEncoder' %>
 
+<head>
+	<meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
+	<!-- meta data add  -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
+	<title>Survey Service</title>
+	<!-- Bootstrap insert -->
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<!-- custom CSS insert -->
+	<link rel="stylesheet" href="./css/custom.css?ver=1">
+</head>
+
+<body>
 
 <%
 	//사용자로부터 입력받는 것은 모두 UTF-8을 사용하겠다.
@@ -35,8 +47,8 @@
 <% 				
 	}
 	
-	SurveyDAO surveyDAO = new SurveyDAO(application);
-	int result = surveyDAO.deleteHistory(userID,sid,hid);
+	HistoryDAO historyDAO = new HistoryDAO(application);
+	int result = historyDAO.deleteHistory(userID,sid,hid);
 	
 	if(result != 0){
 		PrintWriter script = response.getWriter();
@@ -45,12 +57,21 @@
 		script.println("</script>");
 		script.close();
 	}else{
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('데이터베이스 오류가 발생했습니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
+		%>
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"Error\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다..\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 		
 	}
 	
 %>
+
+	<!-- JQuery Java Script Add -->
+	<script src="./js/jquery.min.js" ></script>
+	<!-- Popper Java Script Add -->
+	<script src="./js/popper.min.js" ></script>
+	<!-- Bootstrap Java Script Add -->
+	<script src="./js/bootstrap.min.js" ></script>
+</body>

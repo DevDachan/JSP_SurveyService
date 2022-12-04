@@ -9,7 +9,7 @@
 	String content = URLDecoder.decode(request.getParameter("content"), "UTF-8");
 	String url = URLDecoder.decode(request.getParameter("url"), "UTF-8");
 %>
-<a id="sessionModal" data-toggle="modal" href="#loginModal" style="display:none;"></a>	
+<a id="sessionModal" data-toggle="modal" href="#Modal" style="display:none;"></a>	
 	
 
 <script>
@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="modal fade" id="loginModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal fade" id="Modal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="modal" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

@@ -1,4 +1,4 @@
-package user;
+package history;
 
 public class HistoryDTO {
 	private int optionNum;

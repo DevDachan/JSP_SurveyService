@@ -5,13 +5,14 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='user.UserDAO' %>
 <%@ page import='user.AdminDTO' %>
-<%@ page import='user.HistoryListDTO' %>
+<%@ page import='history.HistoryListDTO' %>
+<%@ page import='history.HistoryDAO' %>
 
 <%@ page import='java.net.URLEncoder' %>
 
 <% 
    UserDAO userDAO = new UserDAO(application); 
-   SurveyDAO surveyDAO = new SurveyDAO(application);
+   HistoryDAO historyDAO = new HistoryDAO(application);
 %>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@ pageEncoding="UTF-8"  %>
 	<!-- meta data add  -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	
-	<title>강의 평가 웹 사이트</title>
+	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css">
 	<!-- custom CSS insert -->
@@ -36,20 +37,18 @@ pageEncoding="UTF-8"  %>
 
 
 <% 
-	String userID = null;
-	if(session.getAttribute("userID") != null){
-		userID = (String) session.getAttribute("userID");
-	}
-	int pageNumber = 1;
-	if(userID == null){
+
+	if(session.getAttribute("userID") == null){
 	%>
-	<jsp:include page='alert.jsp'> 
-			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
-			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-			<jsp:param name="url" value="location.href = 'Login.jsp';" />
-	</jsp:include>
-<%
-}
+		<jsp:include page='alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="location.href = 'Login.jsp';" />
+		</jsp:include>
+	<%
+	
+	}else{
+	String userID = (String) session.getAttribute("userID");
 %>
 
 
@@ -61,13 +60,10 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">Main</a>
+					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="adminSurvey.jsp?sid=1" style="color:white;">Admin Survey</a>
 				</li>
 				<li class="nav-item dropdown">
 				
@@ -98,11 +94,10 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 700px;">
-	<h3 class="mb-5">Main Page</h3>	
 	<div class="list mb-5">
 		<div class="list-title">
-			<h4 style="margin:auto;">설문지 리스트</h4>
-				<a href="addSurvey.jsp" class="btn-add" >Add Survey</a>
+			<h4 class="ml-4" style="margin:auto;">설문 리스트</h4>
+				<a href="addSurvey.jsp" class="btn btn-add" >Add Survey</a>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
@@ -135,7 +130,7 @@ pageEncoding="UTF-8"  %>
 							"<a href='adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>edit</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<button type='button'>result</button>\n"+
+							"<a href='adminResult.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>result</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}
@@ -146,7 +141,7 @@ pageEncoding="UTF-8"  %>
 	
 	<div class="list mb-5">
 		<div class="list-title">
-			<h4 style="margin:auto;">과거 설문 내역</h4>
+			<h4 class="ml-4" style="margin:auto;">과거 설문 내역</h4>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
@@ -164,7 +159,7 @@ pageEncoding="UTF-8"  %>
 				</div> 
 			</div>
 		<%
-		HistoryListDTO[] historyListDTO = surveyDAO.getHistoryList(userID);
+		HistoryListDTO[] historyListDTO = historyDAO.getHistoryList(userID);
 		String historyList ="";
 		
 		for(int step = 0; step<historyListDTO.length; step++) {
@@ -179,7 +174,7 @@ pageEncoding="UTF-8"  %>
 							"<a href='userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>edit</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-primary'>delete</a>\n"+
+							"<a href='deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >delete</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}
@@ -190,11 +185,12 @@ pageEncoding="UTF-8"  %>
 
 	
 	</section>
-	
+<%	}// if userID == null 
+%>		
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
-		Copyright &copy; 2018 서다찬 All Rights Reserved
+		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
 	<script src="./js/jquery.min.js" ></script>
