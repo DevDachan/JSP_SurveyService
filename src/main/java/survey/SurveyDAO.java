@@ -310,7 +310,7 @@ public class SurveyDAO extends DatabaseUtil {
 			e.printStackTrace();
 		}
 		
-		String query = "INSERT INTO option_detail VALUES(?,?,'test_title','test_content',?)";
+		String query = "INSERT INTO option_detail VALUES(?,?,'제목','질문 내용',?)";
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, surveyID);
@@ -318,7 +318,7 @@ public class SurveyDAO extends DatabaseUtil {
 			psmt.setString(3, optionType);
 
 			int result = psmt.executeUpdate();
-			query = "INSERT INTO survey_option VALUES(?,?,?,?,'test');";
+			query = "INSERT INTO survey_option VALUES(?,?,?,?,'선택 내용');";
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, surveyID);
 			psmt.setString(2, optionType);

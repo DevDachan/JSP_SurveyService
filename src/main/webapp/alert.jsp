@@ -37,7 +37,7 @@
 					</div>		
 					<div class="modal-footer col-sm-12">
 						<div class="form-group col-sm-12">
-							<button type="button" id="close_modal" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="<%=url%>">close</button>
+							<button type="button" id="close_modal" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="<%=url%>">닫기</button>
 						</div>
 					</div>
 				</div>

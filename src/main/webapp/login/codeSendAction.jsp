@@ -25,9 +25,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 </head>
 
 <body>
@@ -85,10 +85,10 @@
 			} catch(Exception e){
 				e.printStackTrace();
 		%>
-				<jsp:include page='alert.jsp'> 
+				<jsp:include page='../alert.jsp'> 
 						<jsp:param name="title" value="<%=URLEncoder.encode(\"Error\", \"UTF-8\") %>" />
 						<jsp:param name="content" value="<%=URLEncoder.encode(\"오류가 발생했습니다.\", \"UTF-8\") %>" />
-						<jsp:param name="url" value="location.href = 'index.jsp';" />
+						<jsp:param name="url" value="location.href = '../index.jsp';" />
 				</jsp:include>	
 		<% 		
 			}
@@ -109,9 +109,9 @@
 <%= result %>
 }
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 </body>

@@ -14,9 +14,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 	
 	
 </head>
@@ -27,10 +27,10 @@ pageEncoding="UTF-8"  %>
 		userID = (String) session.getAttribute("userID");
 	
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 정보가 존재합니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = 'index.jsp';" />
+				<jsp:param name="url" value="location.href = '../index.jsp';" />
 		</jsp:include>	
 <% 		
 	}
@@ -38,7 +38,7 @@ pageEncoding="UTF-8"  %>
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -89,13 +89,13 @@ pageEncoding="UTF-8"  %>
 				</div>
 			</div>
 			<div class="col-sm-6 row-sm-2 mb-3">
-				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">Login</button>
+				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
 			</div>
 			<div class="col-sm-12 mb-3">
 				<a href="http://localhost:8080/Survey_project/GoogleLoginAction.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#724A4A;color:white; ">Login with Google</a>
 			</div>
 			<div class="col-sm-12">
-				<a href="http://localhost:8080/Survey_project/Register.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">Register</a>
+				<a href="http://localhost:8080/Survey_project/login/Register.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>
 			</div>
 		</div>
 		</form>
@@ -107,11 +107,11 @@ pageEncoding="UTF-8"  %>
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

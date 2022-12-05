@@ -11,9 +11,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 </head>
 
 <body>
@@ -38,7 +38,7 @@
 	// 하나라도 옳지 않은 내용이 존재하거나 null값이 존재 할 경우에는 오류 alert와 함께 이전 페이지로
 	if(userID == null || userPassword == null || userEmail == null){
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"입력이 안 된 사항이 있습니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();"/>
@@ -53,12 +53,12 @@
 		session.setAttribute("userID",userID);
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("location.href = 'index.jsp';");
+		script.println("location.href = '../index.jsp';");
 		script.println("</script>");
 		script.close();
 	}else if (result == 2){
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"이미 존재하는 아이디입니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();"/>
@@ -67,7 +67,7 @@
 		
 	}else if (result == 3){
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"이미 존재하는 Email입니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();"/>
@@ -75,7 +75,7 @@
 <% 						
 	}else{
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"DB 오류가 발생했습니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();"/>
@@ -85,9 +85,9 @@
 %>
 
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 </body>

@@ -43,7 +43,7 @@ pageEncoding="UTF-8"  %>
 		<jsp:include page='alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = 'Login.jsp';" />
+				<jsp:param name="url" value="location.href = './login/Login.jsp';" />
 		</jsp:include>
 	<%
 	
@@ -53,7 +53,7 @@ pageEncoding="UTF-8"  %>
 
 
 		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -63,7 +63,7 @@ pageEncoding="UTF-8"  %>
 					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="userSurvey.jsp" style="color:white;">User Survey</a>
+					<a class="nav-link" href="./user/userSurvey.jsp" style="color:white;">User Survey</a>
 				</li>
 				<li class="nav-item dropdown">
 				
@@ -76,14 +76,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="./login/Login.jsp">로그인</a>
+						<a class="dropdown-item" href="./login/Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="./login/LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -97,12 +97,12 @@ pageEncoding="UTF-8"  %>
 	<div class="list mb-5">
 		<div class="list-title">
 			<h4 class="ml-4" style="margin:auto;">설문 리스트</h4>
-				<a href="addSurvey.jsp" class="btn btn-add" >Add Survey</a>
+				<a href="./admin/addSurvey.jsp" class="btn btn-add" >설문지 만들기</a>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
 				<div class="list-option-item">
-					ID
+					설문번호
 			 	</div>
 				<div class="list-option-item">
 					이름 
@@ -127,10 +127,10 @@ pageEncoding="UTF-8"  %>
 							adminDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>edit</a>\n"+
+							"<a href='./admin/adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='adminResult.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>result</a>\n"+
+							"<a href='./admin/adminResult.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>결과</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}
@@ -171,10 +171,10 @@ pageEncoding="UTF-8"  %>
 								historyListDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>edit</a>\n"+
+							"<a href='./user/userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >delete</a>\n"+
+							"<a href='./user/deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}

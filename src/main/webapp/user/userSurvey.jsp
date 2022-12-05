@@ -17,9 +17,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -31,36 +31,32 @@ pageEncoding="UTF-8"  %>
 <% 
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
-	int sid = 0;
-	if(request.getParameter("sid") != null){
-		sid = Integer.parseInt(request.getParameter("sid"));	
-	}else{
+	if(request.getParameter("sid") == null){
 		%>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"존재하지 않는 설문입니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = 'index.jsp';"/>
+				<jsp:param name="url" value="location.href = '../index.jsp';"/>
 		</jsp:include>	
 		<% 	
-	}
-	
-	if(session.getAttribute("userID") != null){
-		userID = (String) session.getAttribute("userID");
 	}else{
-		userID = "Guest";
-	}
-	
+		if(session.getAttribute("userID") != null){
+			userID = (String) session.getAttribute("userID");
+		}else{
+			userID = "Guest";
+		}
+		int sid = Integer.parseInt(request.getParameter("sid"));
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
+					<a class="nav-link" href="../index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -72,14 +68,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null || userID.equals("Guest")){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -97,13 +93,11 @@ pageEncoding="UTF-8"  %>
 	<div class="survey">
 		<div class = "form-row">
 			<div class="survey-title form-group col-sm-12">
-				<textarea maxlength='50' class='form-control option-title-text' 
-					id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=surveyDetail.getSurveyName()%></textarea>
+				<label class='option-title-text' id='surveyTitle'><%=surveyDetail.getSurveyName()%></label>
 			</div>
-			<div class="survey-content form-group col-sm-12">
-				<textarea maxlength='2048' class='form-control option-title-text' 
-					id='surveyContent' style='font-size: 15px;'
-					onChange='editSurvey(<%=sid%>,2)'><%= surveyDetail.getSurveyContent()%></textarea>
+			<div class="survey-content form-group col-sm-12" style="height:auto;">
+				<label class='option-title-text form-control' style="font-size:15px;height:auto;" 
+				id='surveyTitle'><%=surveyDetail.getSurveyContent()%></label>
 			</div>
 		</div>
 	</div>
@@ -162,24 +156,24 @@ pageEncoding="UTF-8"  %>
 	<%=	result %>
 	
 	
-	<button type="submit" class="btn btn-primary" style="width:100%;"> submit </button>
+	<button type="submit" class="btn btn-primary" style="width:100%;"> 제출하기 </button>
 	</form>
 	
 	</section>
 	
 	<br/>
 
-
+<%} %>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

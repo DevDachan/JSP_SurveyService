@@ -13,9 +13,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -35,14 +35,14 @@ pageEncoding="UTF-8"  %>
 
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
+					<a class="nav-link" href="../index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -54,14 +54,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -83,11 +83,11 @@ pageEncoding="UTF-8"  %>
 		Copyright &copy; 2018 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

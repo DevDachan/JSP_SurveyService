@@ -19,9 +19,9 @@ pageEncoding="UTF-8"  %>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css">
+	<link rel="stylesheet" href="../css/custom.css">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -37,10 +37,10 @@ pageEncoding="UTF-8"  %>
 		userID = (String) session.getAttribute("userID");
 	}else{
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = 'Login.jsp';" />
+				<jsp:param name="url" value="location.href = '../login/Login.jsp';" />
 		</jsp:include>	
 <% 				
 		
@@ -50,7 +50,7 @@ pageEncoding="UTF-8"  %>
 		sid = Integer.parseInt(request.getParameter("sid"));	
 	}else{
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();" />
@@ -62,14 +62,14 @@ pageEncoding="UTF-8"  %>
 %>
 
 		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
+					<a class="nav-link" href="../index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -81,14 +81,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -124,7 +124,7 @@ pageEncoding="UTF-8"  %>
 				temp += "<div class='option'>";
 					temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
 					temp += "<div class='form-row'>";
-					temp += "<div class='form-group col-sm-12' style='border-right:2px solid black;'> Empty </div>";
+					temp += "<div class='form-group col-sm-12' style='border-right:2px solid black;'> 아직 설문 내용이 없습니다 </div>";
 					temp += "</div>";
 				temp += "</div>";	
 			}
@@ -201,7 +201,7 @@ pageEncoding="UTF-8"  %>
 
 
 	
-	<a href="index.jsp" class="btn btn-primary mt-5" style="width:100%;">뒤로 가기</a>
+	<a href="../index.jsp" class="btn btn-primary mt-5" style="width:100%;">뒤로 가기</a>
 	
 	
 	</section>
@@ -212,11 +212,11 @@ pageEncoding="UTF-8"  %>
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

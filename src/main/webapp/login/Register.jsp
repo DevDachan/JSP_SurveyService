@@ -16,9 +16,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css?ver=1">
+	<link rel="stylesheet" href="../css/custom.css?ver=1">
 	<script>
 	function sendCode(){
 		userEmail = document.getElementById('useremail').value;// input data
@@ -31,7 +31,7 @@ pageEncoding="UTF-8"  %>
 		$.ajax({
     	 	type:'post',
       	 	async:false, //false가 기본값임 - 비동기
-       		url:'http://localhost:8080/Survey_project/codeSendAction.jsp',
+       		url:'http://localhost:8080/Survey_project/login/codeSendAction.jsp',
         	dataType:'text',
         	data:{
         		userEmail:userEmail
@@ -69,7 +69,7 @@ pageEncoding="UTF-8"  %>
 		$.ajax({
     	 	type:'post',
       	 	async:false, //false가 기본값임 - 비동기
-       		url:'http://localhost:8080/Survey_project/codeCheckAction.jsp',
+       		url:'http://localhost:8080/Survey_project/login/codeCheckAction.jsp',
         	dataType:'text',
         	data:{
         		inputCode:inputCode,
@@ -110,10 +110,10 @@ pageEncoding="UTF-8"  %>
 		userID = (String) session.getAttribute("userID");
 	
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 정보가 존재합니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = 'index.jsp';"/>
+				<jsp:param name="url" value="location.href = '../index.jsp';"/>
 		</jsp:include>	
 <% 					
 				
@@ -124,14 +124,14 @@ pageEncoding="UTF-8"  %>
 
 	
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="Login.jsp" style="color:white;">로그인</a>
+					<a class="nav-link" href="./Login.jsp" style="color:white;">로그인</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -143,13 +143,13 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="./Login.jsp">로그인</a>
+						<a class="dropdown-item" href="./Register.jsp">회원가입</a>
 <% 
 	}else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="./LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -190,7 +190,7 @@ pageEncoding="UTF-8"  %>
 				</div>
 			</div>	
 			<div class="col-sm-12">
-				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">Register</button>
+				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">가입하기</button>
 			</div>
 		</div>
 		</form>
@@ -218,10 +218,10 @@ pageEncoding="UTF-8"  %>
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"placeholder="example@gmail.com" maxlength="30">	
 								</div>
 								<div class="form-group col-sm-12 mb-5">
-									<button type="button" id="sendCodeBtn" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>Send Code</button>
+									<button type="button" id="sendCodeBtn" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>인증 코드 보내기</button>
 								</div>
 								<div class="form-group col-sm-4">
-									<div id="code-title" style="display:none;"><label >Code</label></div>
+									<div id="code-title" style="display:none;"><label >코드</label></div>
 								</div>
 								<div class="form-group col-sm-8">
 									<div id="code-input" style="display:none;"><input type="text" id="code_input_value" class="form-control" maxlength="30" required></div>	
@@ -232,7 +232,7 @@ pageEncoding="UTF-8"  %>
 								
 								<div class="modal-footer col-sm-12">
 									<div class="form-group col-sm-6">
-										<button type="button" class="btn btn-danger" onClick="codeCheck()" style="width:100%;">Submit</button>
+										<button type="button" class="btn btn-danger" onClick="codeCheck()" style="width:100%;">확인</button>
 									</div>
 									<div class="form-group col-sm-6">
 										<button type="button" id="close_modal" class="btn btn-secondary" style="width:100%;" data-dismiss="modal" onClick="init_modal()">취소</button>
@@ -251,11 +251,11 @@ pageEncoding="UTF-8"  %>
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

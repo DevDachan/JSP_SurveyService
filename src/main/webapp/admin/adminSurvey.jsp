@@ -19,9 +19,9 @@ pageEncoding="UTF-8"  %>
 	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
-	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
-	<link rel="stylesheet" href="./css/custom.css">
+	<link rel="stylesheet" href="../css/custom.css">
 	<style type="text/css">
 		a, a:hover{
 			color: #000000;
@@ -30,11 +30,10 @@ pageEncoding="UTF-8"  %>
 	</style>
 	<script>
 		function addComponent(surveyID, optionNum){
-			
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/addSurveyComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/addSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -53,7 +52,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/deleteSurveyComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/deleteSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -76,7 +75,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/addSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/addSurveyOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -94,7 +93,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/deleteSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/deleteSurveyOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -121,7 +120,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/editOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/editOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -147,7 +146,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/editComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/editComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -173,7 +172,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/editSurvey.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/editSurvey.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID,
@@ -195,16 +194,16 @@ pageEncoding="UTF-8"  %>
 	request.setCharacterEncoding("UTF-8");
 	if(session.getAttribute("userID") == null){
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-			<jsp:param name="url" value="location.href = 'Login.jsp';" />
+			<jsp:param name="url" value="location.href = '../login/Login.jsp';" />
 		</jsp:include>
 <% 				
 	}
 	else if(request.getParameter("sid") == null){
 %>
-		<jsp:include page='alert.jsp'> 
+		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
 				<jsp:param name="url" value="history.back();" />
@@ -218,14 +217,14 @@ pageEncoding="UTF-8"  %>
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
+		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
+					<a class="nav-link" href="../index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item active">
 				<li class="nav-item dropdown">
@@ -238,14 +237,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -327,7 +326,7 @@ pageEncoding="UTF-8"  %>
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'></div>"+	
 						" <button class='option-item mt-3 btn btn-delete'  type='button' id='delete_btn"+(option[count].getOptionNum())+
-						"' onClick='deleteOption("+option[count].getSurveyID() +","+option[count].getOptionNum() +")' >Delete</button>"+
+						"' onClick='deleteOption("+option[count].getSurveyID() +","+option[count].getOptionNum() +")' >질문 삭제</button>"+
 						"</div>";
 			}
 			count++;			
@@ -336,12 +335,12 @@ pageEncoding="UTF-8"  %>
 			buf += "<div class='option-rows'>"+
 						"<div class='option-item'>"+
 							" <button class='btn btn-primary' type='button' id='add_btn"+(option[count-1].getOptionNum())+
-							"' onClick='addComponent("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >+ Add option</button>"+
+							"' onClick='addComponent("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >+ 옵션 추가</button>"+
 						"</div>"+
 						"<div class='option-item'></div>"+	
 						"<div class='option-item'>"+
 							" <button class='btn btn-delete' type='button' id='delete_btn"+(option[count-1].getOptionNum())+
-							"' onClick='deleteOption("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >Delete ALL</button>"+
+							"' onClick='deleteOption("+option[count-1].getSurveyID() +","+option[count-1].getOptionNum() +")' >질문 삭제</button>"+
 						"</div>"+
 					" </div>";
 		}
@@ -355,7 +354,7 @@ pageEncoding="UTF-8"  %>
 
 
 
-	<form action="addSurveyOption.jsp" style="text-align:center;">
+	<form action="./addSurveyOption.jsp" style="text-align:center;">
 		<div class="form-row">
 			<div class="form-group col-sm-6" style="text-align:right;">
 				<select name="optionType" class="select-option" id="optionType">
@@ -372,12 +371,12 @@ pageEncoding="UTF-8"  %>
 	</form>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="userSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
+			<a href="../user/userSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
 		</div>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-sm-12 mt-4 form-survey-delete">
-			<a href="deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-delete" style="width:100%;">Delete Survey </a>
+			<a href="./deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-delete" style="width:100%;">설문조사 삭제하기</a>
 		</div>
 	</div>
 	
@@ -391,11 +390,11 @@ pageEncoding="UTF-8"  %>
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
-	<script src="./js/jquery.min.js" ></script>
+	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->
-	<script src="./js/popper.min.js" ></script>
+	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
-	<script src="./js/bootstrap.min.js" ></script>
+	<script src="../js/bootstrap.min.js" ></script>
 	
 	
 </body>

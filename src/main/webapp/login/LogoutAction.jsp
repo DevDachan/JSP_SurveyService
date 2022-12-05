@@ -8,6 +8,6 @@
 %>
 
 	<script>
-		location.href = 'Login.jsp';
+		location.href = './Login.jsp';
 	</script>
 	
