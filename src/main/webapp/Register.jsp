@@ -22,10 +22,12 @@ pageEncoding="UTF-8"  %>
 	<script>
 	function sendCode(){
 		userEmail = document.getElementById('useremail').value;// input data
+		document.getElementById("codeError").style.display = "none";
 		if(userEmail == null || userEmail == ""){
-			alert('올바른 mail을 입력해주세요');
+			document.getElementById("sendCodeBtn").innerText = "이메일을 입력해주세요";	
 		}
 		check = 0;
+		document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
 		$.ajax({
     	 	type:'post',
       	 	async:false, //false가 기본값임 - 비동기
@@ -38,9 +40,9 @@ pageEncoding="UTF-8"  %>
         		result = res.split('{')[1].split("}")[0];  		
         		if(result.includes("Success")){
         			check = 1;
-        			alert('전송 완료');
+        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";	
         		}else{
-        			alert(result);
+        			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
         		}
         	},
        		error:function (data, textStatus) {
@@ -77,9 +79,8 @@ pageEncoding="UTF-8"  %>
         		result = res.split('{')[1].split("}")[0];  		
         		if(result.includes("Success")){
         			check = 1;
-        			alert('인증 완료!');
         		}else{
-        			alert(result);
+        			document.getElementById("codeError").style.display = "block";
         		}
         	},
         error:function (data, textStatus) {
@@ -121,6 +122,7 @@ pageEncoding="UTF-8"  %>
 
 %>
 
+	
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">Survey Service </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
@@ -216,13 +218,16 @@ pageEncoding="UTF-8"  %>
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"placeholder="example@gmail.com" maxlength="30">	
 								</div>
 								<div class="form-group col-sm-12 mb-5">
-									<button type="button" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>Send Code</button>
+									<button type="button" id="sendCodeBtn" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>Send Code</button>
 								</div>
 								<div class="form-group col-sm-4">
 									<div id="code-title" style="display:none;"><label >Code</label></div>
 								</div>
 								<div class="form-group col-sm-8">
 									<div id="code-input" style="display:none;"><input type="text" id="code_input_value" class="form-control" maxlength="30" required></div>	
+								</div>
+								<div class="form-group col-sm-12" style="color:red;">
+									<label id="codeError" style="text-align:center;display:none;" > 올바른 코드를 입력해주세요 </label>
 								</div>
 								
 								<div class="modal-footer col-sm-12">
