@@ -117,12 +117,9 @@ public class HistoryDAO extends DatabaseUtil{
 			
 			rs = psmt.executeQuery();
 			int i = 0;
-			while(rs.next()) {
-				historyDTO[i] = new HistoryDTO(rs.getInt(1),rs.getInt(2),rs.getString(3));
-				i++;
-				if(i == history_len) {
-					break;
-				}
+			while(rs.next() && i<history_len) {
+				historyDTO[i++] = new HistoryDTO(rs.getInt(1),rs.getInt(2),rs.getString(3));
+				
 			}
 			
 		}catch(Exception e){
@@ -152,12 +149,8 @@ public class HistoryDAO extends DatabaseUtil{
 				
 			rs = psmt.executeQuery();
 			int i = 0;
-			while(rs.next()) {
-				historyDTO[i] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1));
-				i++;
-				if(i == history_len) {
-					break;
-				}
+			while(rs.next() && i<history_len) {
+				historyDTO[i++] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1));
 			}
 			
 		}catch(Exception e){
@@ -219,12 +212,9 @@ public class HistoryDAO extends DatabaseUtil{
 				
 				rs = psmt.executeQuery(); 
 				history = new HistoryCountDTO[component_len];
-				while(rs.next()) {
+				while(rs.next() && i <component_len) {
 					history[i++] = new HistoryCountDTO(rs.getInt(1),0,rs.getString(2));
 
-					if(i == component_len) {
-						break;
-					}
 				}			
 				String optionQuery = "SELECT component_num,COUNT(*) FROM survey_history WHERE survey_id = ? AND option_num = ? GROUP BY component_num;";
 				psmt = con.prepareStatement(optionQuery);
@@ -273,11 +263,8 @@ public class HistoryDAO extends DatabaseUtil{
 				
 				rs = psmt.executeQuery(); 
 				history = new String[text_len];
-				while(rs.next()) {
-					history[i++] = rs.getString(1);
-					if(i == text_len) {
-						break;
-					}				
+				while(rs.next() && i < text_len) {
+					history[i++] = rs.getString(1);		
 				}
 				
 			}			

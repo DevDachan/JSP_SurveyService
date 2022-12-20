@@ -94,6 +94,46 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 700px;">
+<%-- 
+	<div class = "row">
+		<div class="col-xl-3 col-md-6 mb-3">
+			<div class="card bg-primary">
+				<div class="card-body">
+					<h3>hello </h3>
+				</div>
+				<div class="card-footer">
+					<a class="stretched-link" href="http://www.naver.com">hi</a>
+				</div>
+			</div>
+		</div>
+		
+		<%
+		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
+		String adminList ="<div class='row'>";
+		
+		for(int step = 0; step<adminDTO.length; step++) {
+			adminList +="<div class='col-xl-3 col-md-6 mb-3'>\n"+ 
+						"<div class='card bg-primary'>\n"+
+							"<div class='card-body' style='color:white'>"+
+								"<h3>"+ adminDTO[step].getSurveyName() + "</h3>\n"+
+							"</div>\n"+
+							"<div>\n"+
+								adminDTO[step].getSurveyID()+
+							"</div>\n"+
+							"<div class='card-footer'>\n"+
+								"<a href='./admin/adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"' style='width:100%'>수정하기</a>\n"+
+							"</div>\n"+
+				   		"</div>\n" + 
+						"</div>";
+		}
+		adminList += "</div>";
+		%>
+		<%= adminList %>
+	</div>
+	
+	--%>
+	
+	
 	<div class="list mb-5">
 		<div class="list-title">
 			<h4 class="ml-4" style="margin:auto;">설문 리스트</h4>
@@ -130,7 +170,7 @@ pageEncoding="UTF-8"  %>
 							"<a href='./admin/adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./admin/adminResult.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>결과</a>\n"+
+							"<a href='./admin/adminStats.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>결과</a>\n"+
 						"</div>\n"+
 				   "</div>";
 		}

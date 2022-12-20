@@ -45,7 +45,7 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="" style="color:white;">가이드라인</a>
+					<a class="nav-link" href="https://github.com/DevDachan/Survey-service-JSP" style="color:white;">Github</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">

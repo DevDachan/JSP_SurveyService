@@ -20,11 +20,7 @@ public class DatabaseUtil {
 			
 			String driver = application.getInitParameter("MysqlDriver");
 			Class.forName(driver);		
-			/*
-			String dbURL = "jdbc:mysql://localhost:3306/dbtest?useSSL=false";
-			String dbID = "root";
-			String dbPassword = "7894";
-			*/
+
 			String dbURL = application.getInitParameter("MysqlURL");
 			String dbID = application.getInitParameter("MysqlID");
 			String dbPassword = application.getInitParameter("MysqlPassword");

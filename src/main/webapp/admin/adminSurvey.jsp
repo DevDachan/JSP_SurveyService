@@ -287,11 +287,11 @@ pageEncoding="UTF-8"  %>
 							"<div class='option-title'>\n" + 
 								"<textarea maxlength='50' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
 							"</div>\n"+
-						"<div class='option-content'>\n"+
-							"<div class='option-content-item'>\n"+
-								"<textarea maxlength='2048' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
-							"</div>\n"+
-						"</div>\n";
+							"<div class='option-content'>\n"+
+								"<div class='option-content-item'>\n"+
+									"<textarea maxlength='2048' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+								"</div>\n"+
+							"</div>\n";
 	
 		buf = "";
 		temp_id = option[count].getOptionNum();
@@ -372,6 +372,11 @@ pageEncoding="UTF-8"  %>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
 			<a href="../user/userSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-sm-12 form-survey-delete">
+			<a href="../admin/adminSurveyResult.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">결과 페이지 구성하기</a>
 		</div>
 	</div>
 	<div class="form-row">

@@ -63,7 +63,7 @@ input[type="password"]{
 }
 
 .list-option-item{
-	font-size: 3vw;
+	font-size: min(3vw,40px);
 }
 
 
@@ -121,6 +121,8 @@ input[type="password"]{
 	text-align: left;
 	margin-bottom: 20px;
 }
+
+
 
 .option-content-item{
 	
@@ -193,4 +195,10 @@ input[type="password"]{
     background-color: #E598BB;
     height: 100%;
     padding: 5px;
+}
+
+
+
+.result-content{
+	width:100%;
 }

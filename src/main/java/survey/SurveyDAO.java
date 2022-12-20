@@ -50,23 +50,23 @@ public class SurveyDAO extends DatabaseUtil {
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,1,'Title','content','radio')";
+				query = "INSERT INTO option_detail VALUES(?,1,'제목','질문 내용','radio')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,2,'Title','content','checkbox')";
+				query = "INSERT INTO option_detail VALUES(?,2,'제목','질문 내용','checkbox')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,3,'Title','content','text')";
+				query = "INSERT INTO option_detail VALUES(?,3,'제목','질문 내용','text')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
 				
-				query = "INSERT INTO survey VALUES(?,'Example',?,'This is content space')";
+				query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.setString(2,userID);
@@ -417,12 +417,9 @@ public class SurveyDAO extends DatabaseUtil {
 
 			survey = new OptionDTO[survey_len];
 			int i = 0;
-			while(rs.next()){ // get survey content
+			while(rs.next() && i <survey_len){ // get survey content
 				survey[i] = new OptionDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
-				if(i == survey_len) {
-					break;
-				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -452,12 +449,9 @@ public class SurveyDAO extends DatabaseUtil {
 			rs = psmt.executeQuery();
 		
 			int i = 0;
-			while(rs.next()){ // get survey content
+			while(rs.next() && i < option_len){ // get survey content
 				option[i++] = new OptionDetailDTO(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
 				
-				if(i == option_len) {
-					break;
-				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();

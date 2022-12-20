@@ -171,12 +171,9 @@ public class UserDAO extends DatabaseUtil {
 				
 			rs = psmt.executeQuery();
 			int i = 0;
-			while(rs.next()) {
-				adminDTO[i] = new AdminDTO(rs.getString(1),rs.getString(2),rs.getString(3));
-				i++;
-				if(i == admin_len) {
-					break;
-				}
+			while(rs.next() && i < admin_len) {
+				adminDTO[i++] = new AdminDTO(rs.getString(1),rs.getString(2),rs.getString(3));
+		
 			}
 			
 		}catch(Exception e){
