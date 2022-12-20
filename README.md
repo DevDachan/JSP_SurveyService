@@ -6,6 +6,8 @@
 ## Getting Started
 서비스는 기본적으로 JSP언어로 작성이 되었으며 tomcat container를 사용해 구동이 됩니다. 
 
+## Preview
+<이미지 넣기>
 
 
 ### 개발 환경
@@ -16,6 +18,9 @@
 
 [mysql version 8.0.28](https://dev.mysql.com/downloads/installer/) - DB
 
+
+### Installation
+- Clone the repo: ```git clone https://github.com/DevDachan/Survey-service-JSP.git```
 
 -------------
 ### page 흐름
@@ -121,28 +126,6 @@
 ```  
   
   
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
