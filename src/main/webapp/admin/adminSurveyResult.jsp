@@ -4,9 +4,10 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.SurveyDTO' %>
-<%@ page import='survey.ResultDTO' %>
-<%@ page import='survey.ResultDAO' %>
+<%@ page import='result.ResultDTO' %>
+<%@ page import='result.ResultDAO' %>
 <%@ page import='survey.OptionDetailDTO' %>
+
 <%@ page import='java.net.URLEncoder' %>
 
 <%
@@ -33,38 +34,36 @@ pageEncoding="UTF-8"  %>
 		}
 	</style>
 	<script>
-		function addComponent(surveyID, optionNum){
-			$.ajax({
-        	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/addSurveyComponent.jsp',
-            	dataType:'text',
-            	data:{
-            		surveyID:surveyID, 
-            		optionNum:optionNum
-            		},
-            	success: function(res) {
-            		window.location.reload();	
-            	},
-            error:function (data, textStatus) {
-                console.log('error');
-            }
-      	  })  	
+		function resize(obj) {
+		  obj.style.height = "auto";
+		  obj.style.height = (obj.scrollHeight)+"px";
+		  obj.style.width = "100%";
+		  
 		}
-		function deleteComponent(surveyID, optionNum, componentNum){
-
+	
+		function editContent(componentNumber){
+			
+			document.getElementById("ta_content"+componentNumber).style.height = 'auto';
+			document.getElementById("ta_content"+componentNumber).style.height = (12+ document.getElementById("ta_content"+componentNumber).scrollHeight) + "px";
+			
+			surveyID = document.getElementById("surveyID").value;
+			optionNumber = document.getElementById("optionNumber").value;
+		
+			content = document.getElementById("ta_content"+componentNumber).value;	
+			
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/deleteSurveyComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionEditResult.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
-            		optionNum:optionNum,
-            		componentNum:componentNum
+            		optionNumber:optionNumber,
+            		componentNumber:componentNumber,
+            		content:content
             		},
             	success: function(res) {
-            		window.location.reload();	
+  	
             	},
             error:function (data, textStatus) {
                 console.log('error');
@@ -74,11 +73,11 @@ pageEncoding="UTF-8"  %>
 		
 		function changeOption(){
 			surveyID = document.getElementById("surveyID").value;
-			optionNumber = document.getElementById("optionNumber").value;
+			optionNumber = document.getElementById("selectOption").value;
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/changeResultOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionChangeResultOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -165,9 +164,9 @@ pageEncoding="UTF-8"  %>
 	SurveyDTO survey = surveyDAO.getSurvey(sid);
 	ResultDTO[] result = resultDAO.getResult(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
-
-%>
-
+	%>
+	<input type="hidden" id="surveyID" name="surveyID" value=<%=sid %>>	
+	<input type="hidden" id="optionNumber" name="optionNumber" value="<%=result[0].getOptionNum() %>" />
 
 	<h3 class="mb-2">결과 페이지 구성</h3>
 	<div class="survey mb-5">
@@ -182,42 +181,62 @@ pageEncoding="UTF-8"  %>
 	
 	
 		<div class="form-row">
-			<div class="form-group col-sm-6" style="text-align:right;">
-				<select name="optionNumber" class="select-option" id="optionNumber">
+			<div class="form-group col-sm-3"><h3> Radio </h3></div>
+			<div class="form-row form-group col-sm-9">
+				<select name="selectOption" class="select-option" id="selectOption">
+					<option value="0">기본 페이지</option>
 				<%
 					for(int i =0; i<option.length; i++){
-						%>
-							<option value="<%=option[i].getOptionNum()%>"><%=option[i].getOptionNum()%></option>
-						<% 
+						if(option[i].getType().equals("radio") ){
+							if(option[i].getOptionNum() == result[0].getOptionNum()){
+							%>
+								<option value="<%=option[i].getOptionNum()%>" selected><%=option[i].getOptionNum()%></option>
+							<%	
+							}else{
+							%>
+								<option value="<%=option[i].getOptionNum()%>"><%=option[i].getOptionNum()%></option>
+							<%}
+						}
 					}
 				%>
 				</select>
-				<input type="hidden" id="surveyID" name="surveyID" value=<%=sid %>>
-			</div>
-			<div class="form-group col-sm-6" style="text-align:left;">
-				<button type="button" class="btn btn-add" style="width:40%;margin:auto;" onClick='changeOption()' > 선택하기 </button>
+				<button type="button" class="btn btn-add" style="width:40%;margin-left:10px;" onClick='changeOption()' > 선택하기 </button>
 			</div>
 		</div>
 	
 	<div class="row">
 <% 
 	for(int i = 0; i<result.length; i++){
+		if(result[0].getOptionNum() == 0 ){
+		%>
+			<div class="row col-sm-12">		
+			<div class="col-sm-4">
+				<label id="lb_optionNum">Default</label>
+			</div>
+			<div class="col-sm-8">
+			</div>
+			<div class="col-sm-12">
+				<textarea maxlength='2048' onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content" placeholder="결과 페이지를 작성해주세요" onChange="editContent(<%= 0%>)"><%=result[i].getResultContent()%></textarea>
+			</div>
+			</div>
+		<%
+		}else{
 		%>
 		<div class="row col-sm-12">		
-		<div class="col-sm-4">
-			<label id="lb_optionNum"><%=result[i].getOptionNum()%></label>
+		<div class="col-sm-2">
+			<label id="lb_optionNum"><%=result[i].getComponentNum()%></label>
 		</div>
-		<div class="col-sm-4">
-			<label id="lb_componentNum"><%=result[i].getComponentNum()%></label>
+		<div class="col-sm-6">
+			<label id="lb_optionNum"><%=result[i].getComponentContent()%></label>
 		</div>
 		<div class="col-sm-4">
 		</div>
 		
 		<div class="col-sm-12">
-			<textarea maxlength='2048' class="result-content" id="ta_content"><%=result[i].getContent()%></textarea>
+			<textarea maxlength='2048' onClick="resize(this)" onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content<%=result[i].getComponentNum() %>" placeholder="결과 페이지를 작성해주세요" onChange="editContent(<%=result[i].getComponentNum() %>)"><%=result[i].getResultContent()%></textarea>
 		</div>
 		</div>
-<% 
+		<%}
 	}
 %>
 	</div>

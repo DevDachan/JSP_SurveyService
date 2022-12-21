@@ -200,5 +200,7 @@ input[type="password"]{
 
 
 .result-content{
+	padding:5px;
 	width:100%;
+	height:auto;
 }

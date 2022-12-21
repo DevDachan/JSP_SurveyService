@@ -1,4 +1,4 @@
-package survey;
+package result;
 
 import java.util.ArrayList;
 
@@ -64,27 +64,41 @@ public class ResultDAO extends DatabaseUtil {
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				optionNum = rs.getInt(1);
-			
-				String countQuery = "SELECT COUNT(*) FROM survey_result WHERE survey_id=? AND option_num=?";
 				
-				psmt = con.prepareStatement(countQuery);
-				psmt.setInt(1, surveyID);
-				psmt.setInt(2, optionNum);
-
-				rs = psmt.executeQuery();
-				
-				if(rs.next()) {
-					count = rs.getInt(1);
-					String query ="SELECT * FROM survey_result WHERE survey_id=? AND option_num=?";
+				if(optionNum !=0) {
+					String countQuery = "SELECT COUNT(*) FROM survey_result WHERE survey_id=? AND option_num=?";
+					psmt = con.prepareStatement(countQuery);
+					psmt.setInt(1, surveyID);
+					psmt.setInt(2, optionNum);
+	
+					rs = psmt.executeQuery();
+					
+					if(rs.next()) {
+						count = rs.getInt(1);
+						String query ="SELECT survey_id,option_num,component_num, content, result_content FROM (SELECT survey_id,option_num,component_num, content AS result_content FROM survey_result WHERE survey_id=? AND option_num=?) AS a LEFT JOIN survey_option USING(survey_id, option_num, component_num);";
+						psmt = con.prepareStatement(query);
+						psmt.setInt(1, surveyID);
+						psmt.setInt(2, optionNum);
+						rs = psmt.executeQuery();
+						resultDTO = new ResultDTO[count];
+	
+						int step = 0;
+						while(rs.next() && step<count) {
+							resultDTO[step++] = new ResultDTO(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getString(4),rs.getString(5));
+						}
+						return resultDTO;
+					}
+				}else {
+					String query ="SELECT survey_id,option_num,component_num, content, result_content FROM (SELECT survey_id,option_num,component_num, content AS result_content FROM survey_result WHERE survey_id=? AND option_num=?) AS a LEFT JOIN survey_option USING(survey_id, option_num, component_num);";
 					psmt = con.prepareStatement(query);
 					psmt.setInt(1, surveyID);
 					psmt.setInt(2, optionNum);
 					rs = psmt.executeQuery();
-					resultDTO = new ResultDTO[count];
+					resultDTO = new ResultDTO[1];
 
 					int step = 0;
-					while(rs.next() && step<count) {
-						resultDTO[step++] = new ResultDTO(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getString(4));
+					if(rs.next()) {
+						resultDTO[step] = new ResultDTO(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getString(4),rs.getString(5));
 					}
 					return resultDTO;
 				}
@@ -95,7 +109,22 @@ public class ResultDAO extends DatabaseUtil {
 		}
 		return resultDTO;
 	}
-	
+	public int editContent(int surveyID, int optionNum, int componentNum, String content) {
+		String query = "UPDATE survey_result SET content=? WHERE survey_id = ? AND option_num = ? AND component_num =? ";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, content);
+			psmt.setInt(2, surveyID);
+			psmt.setInt(3, optionNum);
+			psmt.setInt(4, componentNum);
+			psmt.executeUpdate();
+
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	public int changeResultOption(int surveyID, int optionNum) {
 		String countQuery = "SELECT component_num FROM survey_option WHERE survey_id=? AND option_num=?";
 		
@@ -123,7 +152,7 @@ public class ResultDAO extends DatabaseUtil {
 						psmt.setInt(1, surveyID);
 						psmt.setInt(2, optionNum);
 						psmt.setInt(3, componentList.get(i));
-						psmt.setString(4, "empty");
+						psmt.setString(4, "");
 						
 						psmt.executeUpdate();
 					}
@@ -140,6 +169,53 @@ public class ResultDAO extends DatabaseUtil {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	public String userResultContent(int surveyID,String userID, String date) {
+		int resultOption = 0;
+		int selectComponent = 0;
+		String resultOptionQuery = "SELECT result_option FROM survey WHERE id=?";
+		String historyQuery = "SELECT option_num, component_num FROM survey_history WHERE survey_id= ? AND user_id=? AND date =?";
+		String contentQuery = "SELECT content FROM survey_result WHERE survey_id= ? AND option_num =? AND component_num =?";
+
+		try {
+			
+			psmt = con.prepareStatement(resultOptionQuery);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();			
+			if(rs.next()) {
+				resultOption = rs.getInt(1);
+			}
+
+			psmt = con.prepareStatement(historyQuery);
+			psmt.setInt(1, surveyID);
+			psmt.setString(2, userID);
+			psmt.setString(3, date);
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				if(rs.getInt(1) == resultOption) {
+					selectComponent = rs.getInt(2);
+					break;
+				}
+			}
+			
+			psmt = con.prepareStatement(contentQuery);
+			psmt.setInt(1, surveyID);
+			psmt.setInt(2, resultOption);
+			psmt.setInt(3, selectComponent);
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
 	}
 }
 

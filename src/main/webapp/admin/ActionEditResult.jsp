@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
-<%@ page import="survey.ResultDAO" %>
+<%@ page import="result.ResultDAO" %>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import='java.net.URLEncoder' %>
 <head>
@@ -23,18 +22,24 @@
 	request.setCharacterEncoding("UTF-8");
 	int surveyID= 0;
 	int optionNum = 0;
-
+	int componentNum = 0;
+	String content = null;
 	// 만약 사용자에게 data가 올바르게 들어왔을 경우(request) 해당 data를 local instance에 넣기
 	if(request.getParameter("surveyID")!= null ){
 		surveyID = Integer.parseInt(request.getParameter("surveyID"));			
 	}
-	if(request.getParameter("optionNum")!= null ){
-		optionNum= Integer.parseInt(request.getParameter("optionNum"));
+	if(request.getParameter("optionNumber")!= null ){
+		optionNum= Integer.parseInt(request.getParameter("optionNumber"));
 	}
-
+	if(request.getParameter("componentNumber")!= null ){
+		componentNum= Integer.parseInt(request.getParameter("componentNumber"));
+	}
+	if(request.getParameter("content")!= null ){
+		content= request.getParameter("content");
+	}
 	
 	// 하나라도 옳지 않은 내용이 존재하거나 null값이 존재 할 경우에는 오류 alert와 함께 이전 페이지로
-	if(surveyID == 0 || optionNum == 0){
+	if(surveyID == 0 || optionNum == 0 || componentNum == 0 || content== null){
 %>
 		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
@@ -45,11 +50,11 @@
 	}
 	
 	ResultDAO resultDAO = new ResultDAO(application);
-	int result = resultDAO.changeResultOption(surveyID, optionNum);
+	int result = resultDAO.editContent(surveyID, optionNum, componentNum, content);
 %>
 
 <%
-	if(result == 1){
+	if(result !=0 ){
 		%>
 {
 	"result" : "success"

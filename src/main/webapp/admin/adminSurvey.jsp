@@ -129,7 +129,6 @@ pageEncoding="UTF-8"  %>
             		type:optionType
             		},
             	success: function(res) {
-            		window.location.reload();	
             	},
             error:function (data, textStatus) {
                 console.log('error');
@@ -155,7 +154,6 @@ pageEncoding="UTF-8"  %>
             		content:content
             		},
             	success: function(res) {
-            		window.location.reload();	
             	},
             error:function (data, textStatus) {
                 console.log('error');
@@ -180,7 +178,6 @@ pageEncoding="UTF-8"  %>
             		content:content
             		},
             	success: function(res) {
-            		window.location.reload();	
             	},
             error:function (data, textStatus) {
                 console.log('error');
@@ -320,7 +317,7 @@ pageEncoding="UTF-8"  %>
 				buf +="</div>";
 			}else if(option[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;' placeholder='이곳은 사용자가 작성하는 공간입니다\n 저장되지 않습니다'></textarea>";
 				buf +="</div>";
 				buf += "<div class='option-rows'>"+
 						"<div class='option-item'></div>"+	

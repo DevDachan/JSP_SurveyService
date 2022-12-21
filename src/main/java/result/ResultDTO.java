@@ -1,22 +1,30 @@
-package survey;
+package result;
 
 public class ResultDTO {
 	private int surveyID;
 	private int optionNum;
 	private int componentNum;
-	private String content;
-	
+	private String componentContent;
+	private String resultContent;
 	public ResultDTO() {
 		
 	}
 	
-	public ResultDTO(int surveyID, int optionNum, int componentNum, String content) {
+	
+	
+	
+	public ResultDTO(int surveyID, int optionNum, int componentNum, String componentContent, String resultContent) {
 		super();
 		this.surveyID = surveyID;
 		this.optionNum = optionNum;
 		this.componentNum = componentNum;
-		this.content = content;
+		this.componentContent = componentContent;
+		this.resultContent = resultContent;
 	}
+
+
+
+
 	public int getSurveyID() {
 		return surveyID;
 	}
@@ -35,12 +43,20 @@ public class ResultDTO {
 	public void setComponentNum(int componentNum) {
 		this.componentNum = componentNum;
 	}
-	public String getContent() {
-		return content;
+	public String getComponentContent() {
+		return componentContent;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setComponentContent(String componentContent) {
+		this.componentContent = componentContent;
 	}
+	public String getResultContent() {
+		return resultContent;
+	}
+	public void setResultContent(String resultContent) {
+		this.resultContent = resultContent;
+	}
+	
+	
 	
 
 

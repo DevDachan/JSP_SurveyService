@@ -35,8 +35,6 @@ pageEncoding="UTF-8"  %>
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	HistoryDAO historyDAO = new HistoryDAO(application);
 	
-
-	
 	OptionDetailDTO[] list = surveyDAO.getOption(sid); // [i][0] = option_num  [i][1] = option type
 
 	int history_index = historyDAO.getHistoryNum(sid);
@@ -79,7 +77,6 @@ pageEncoding="UTF-8"  %>
 			}
 		}
 		else if (list[i].getType().equals("text") && request.getParameter("text"+list[i].getOptionNum()) != null){
-			System.out.print("hello");
 			String content = request.getParameter("text"+list[i].getOptionNum());
 			result = historyDAO.addHistory(sid,userID,history_index,list[i].getOptionNum(),1,content,date);	
 			if(result == 0){
@@ -96,8 +93,22 @@ pageEncoding="UTF-8"  %>
 	}
 
 %>
+
 <script>
-		location.href = "./userSurveyResult.jsp?sid=<%=sid%>";
+		var form = document.createElement('form');
+		var time;
+		
+		time = document.createElement('input');
+		time.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+		time.setAttribute('name', 'submitTime'); // 객체이름
+		time.setAttribute('value', '<%=date%>' ); //객체값
+		form.appendChild(time);
+		
+		form.setAttribute('method', 'post'); //get,post 가능
+		form.setAttribute('action', "./userSurveyResult.jsp?sid=<%=sid%>"); //보내는 url
+		document.body.appendChild(form);
+		form.submit();
+
 </script>
 
 	<!-- JQuery Java Script Add -->

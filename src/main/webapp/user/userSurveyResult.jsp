@@ -4,6 +4,11 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.OptionDTO' %>
+
+<%@ page import='result.ResultDTO' %>
+<%@ page import='result.ResultDAO' %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +34,13 @@ pageEncoding="UTF-8"  %>
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
+	}else{
+		userID = "unknown";
+	}
+	
+	String date = null;
+	if(request.getParameter("submitTime") != null){
+		date = request.getParameter("submitTime");
 	}
 	int pageNumber = 1;
 %>
@@ -73,6 +85,16 @@ pageEncoding="UTF-8"  %>
 	
 	<section class="container mt-3" style="max-width: 500px;">
 	<h3>제출 완료!!</h3>	
+	<%
+		ResultDAO resultDAO = new ResultDAO(application);
+		String content = resultDAO.userResultContent(sid, userID,date);
+		if(content == ""){
+			content = "제출이 완료 되었습니다!";
+		}
+	%>
+	
+	
+	<%= content %>
 	
 	
 	</section>

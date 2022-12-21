@@ -35,12 +35,12 @@ public class SurveyDAO extends DatabaseUtil {
 		}
 		if(sid != 0) {
 			try {
-				String query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'Radio')";
+				String query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'선택 내용')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO survey_option VALUES(?,'checkbox',2,1,'Checkbox')";
+				query = "INSERT INTO survey_option VALUES(?,'checkbox',2,1,'선택 내용')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
@@ -66,12 +66,16 @@ public class SurveyDAO extends DatabaseUtil {
 				psmt.executeUpdate();
 				
 				
-				query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요')";
+				query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요',0)";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.setString(2,userID);
 				psmt.executeUpdate();
 				
+				query = "INSERT INTO survey_result VALUES(?,0,0,'')";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.executeUpdate();
 				return sid;
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -112,7 +116,10 @@ public class SurveyDAO extends DatabaseUtil {
 					psmt.setInt(1, surveyID);
 					psmt.executeUpdate();
 					
-					
+					query = "DELETE FROM survey_result WHERE survey_id=?";
+					psmt = con.prepareStatement(query);
+					psmt.setInt(1, surveyID);
+					psmt.executeUpdate();
 					return 1;
 					
 				}else {
@@ -251,6 +258,12 @@ public class SurveyDAO extends DatabaseUtil {
 					psmt.executeUpdate();
 				}
 			}
+			query = "DELETE FROM survey_result WHERE survey_id=? AND option_num=? AND component_num=?";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			psmt.setInt(2, optionNum);
+			psmt.setInt(3, componentNum);
+			psmt.executeUpdate();
 			
 			return 1;
 		}catch(Exception e) {
@@ -273,6 +286,29 @@ public class SurveyDAO extends DatabaseUtil {
 			if(result == 0) {
 				return 0;
 			}else {
+				
+				query = "SELECT result_option FROM survey WHERE id=?";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, surveyID);
+				rs = psmt.executeQuery();
+				
+				if(rs.next()) {
+					if(rs.getInt(1) == optionNum) {
+						query = "UPDATE survey SET result_option=0 WHERE id=?";
+						psmt = con.prepareStatement(query);
+						psmt.setInt(1, surveyID);
+						psmt.executeUpdate();
+					}
+				}
+				
+				query = "DELETE FROM survey_result WHERE survey_id=? AND option_num = ?";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, surveyID);
+				psmt.setInt(2, optionNum);
+				result = psmt.executeUpdate();
+				
+				
+				
 				query = "DELETE FROM survey_option WHERE survey_id=? AND option_num = ?";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, surveyID);
@@ -336,7 +372,7 @@ public class SurveyDAO extends DatabaseUtil {
 	}
 	public int addComponent(int surveyID , int optionNum) {
 		String getquery = "SELECT type, MAX(component_num) FROM survey_option where survey_id = ? AND option_num =?;";
-		String surveyType="";
+		String optionType="";
 		int componentNum = 0;
 		try {
 			psmt = con.prepareStatement(getquery);
@@ -345,9 +381,9 @@ public class SurveyDAO extends DatabaseUtil {
 
 			rs = psmt.executeQuery();
 			if(rs.next()) {
-				surveyType = rs.getString(1);
+				optionType = rs.getString(1);
 				componentNum = rs.getInt(2)+1;
-				if(surveyType==null) {
+				if(optionType==null) {
 					return 0;
 				}
 				if(componentNum==0) {
@@ -359,15 +395,36 @@ public class SurveyDAO extends DatabaseUtil {
 			e.printStackTrace();
 		}
 		
-		String query = "INSERT INTO survey_option VALUES(?,?,?,?,'New option')";
+		String query = "INSERT INTO survey_option VALUES(?,?,?,?,'선택 내용')";
+		
 		try {
+			if(optionType.equals("radio")) {
+				String resultquery = "SELECT COUNT(*) FROM survey_result WHERE survey_id=? AND option_num =?";
+				psmt = con.prepareStatement(resultquery);
+				psmt.setInt(1, surveyID);
+				psmt.setInt(2, optionNum);
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					if(rs.getInt(1) !=0) {
+						resultquery = "INSERT INTO survey_result VALUES(?,?,?,'')";
+						psmt = con.prepareStatement(resultquery);
+						psmt.setInt(1, surveyID);
+						psmt.setInt(2, optionNum);
+						psmt.setInt(3, componentNum);
+						psmt.executeUpdate();
+					}
+				}
+			}
+			
+			
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, surveyID);
-			psmt.setString(2, surveyType);
+			psmt.setString(2, optionType);
 			psmt.setInt(3, optionNum);
 			psmt.setInt(4, componentNum);
 			
 			int result = psmt.executeUpdate();
+			
 			return result;
 			
 		}catch(Exception e) {
@@ -427,6 +484,43 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return survey;
 	}
+	
+	public OptionDTO[] getSelectComponent(int sid, int option_num) {
+		OptionDTO[] survey = null;
+		int survey_len = 0;
+		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=? AND option_num=?;";
+		try {
+			psmt = con.prepareStatement(count_survey);
+			psmt.setInt(1, sid);
+			psmt.setInt(2, option_num);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				survey_len = rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		String query = "SELECT * FROM survey_option JOIN survey ON (survey_id = id) WHERE survey_id = ? AND option_num=?;";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			psmt.setInt(2, option_num);
+			rs = psmt.executeQuery();
+
+			survey = new OptionDTO[survey_len];
+			int i = 0;
+			while(rs.next() && i <survey_len){ // get survey content
+				survey[i] = new OptionDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				i++;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return survey;
+	}
+	
+	
 	public OptionDetailDTO[] getOption(int sid) {
 		OptionDetailDTO[] option = null;
 		int option_len = 0;
