@@ -251,7 +251,7 @@ pageEncoding="UTF-8"  %>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="../admin/adminSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">뒤로가기</a>
+			<a href="../admin/ViewAdminSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">뒤로가기</a>
 		</div>
 	</div>
 

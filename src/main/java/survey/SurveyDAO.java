@@ -12,6 +12,7 @@ public class SurveyDAO extends DatabaseUtil {
 	
 	public int addSurvey(String userID) {
 		int sid = 0;
+		
 		while(true) {
 			try {
 				double rand = Math.random();
@@ -35,7 +36,13 @@ public class SurveyDAO extends DatabaseUtil {
 		}
 		if(sid != 0) {
 			try {
-				String query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'선택 내용')";
+				String query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요',0,0,0)";
+				psmt = con.prepareStatement(query);
+				psmt.setInt(1, sid);
+				psmt.setString(2,userID);
+				psmt.executeUpdate();
+				
+				query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'선택 내용')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
@@ -63,13 +70,6 @@ public class SurveyDAO extends DatabaseUtil {
 				query = "INSERT INTO option_detail VALUES(?,3,'제목','질문 내용','text')";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
-				psmt.executeUpdate();
-				
-				
-				query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요',0)";
-				psmt = con.prepareStatement(query);
-				psmt.setInt(1, sid);
-				psmt.setString(2,userID);
 				psmt.executeUpdate();
 				
 				query = "INSERT INTO survey_result VALUES(?,0,0,'')";
@@ -443,7 +443,7 @@ public class SurveyDAO extends DatabaseUtil {
 			
 			rs = psmt.executeQuery();
 			if(rs.next()) {
-				surveyDTO = new SurveyDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
+				surveyDTO = new SurveyDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6),rs.getInt(7));
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -553,8 +553,69 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return option;
 	}
-
+	public int changeLimitState(int surveyID) {
+		String query = "SELECT limit_state FROM survey WHERE id=?";
+		
+		System.out.print("hi");
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getInt(1) == 0) {
+					String updateQuery = "UPDATE survey SET limit_state = 1 WHERE id=?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					return psmt.executeUpdate();
+					
+				}else {
+					String updateQuery = "UPDATE survey SET limit_state = 0 WHERE id=?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					return psmt.executeUpdate();
+										
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
+	public int changeEditState(int surveyID) {
+		String query = "SELECT edit_state FROM survey WHERE id=?";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getInt(1) == 0) {
+					String updateQuery = "UPDATE survey SET edit_state = 1 WHERE id=?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					return psmt.executeUpdate();
+					
+				}else {
+					String updateQuery = "UPDATE survey SET edit_state = 0 WHERE id=?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					return psmt.executeUpdate();
+										
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
 }
+
+
 
 
 

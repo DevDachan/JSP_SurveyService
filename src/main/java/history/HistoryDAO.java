@@ -142,7 +142,7 @@ public class HistoryDAO extends DatabaseUtil{
 			}
 			              
 			historyDTO = new HistoryListDTO[history_len];
-			query = "SELECT DISTINCT history_index, survey_id, name , date FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY date,option_num,component_num ";
+			query = "SELECT DISTINCT history_index, survey_id, name , date, edit_state FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY date,option_num,component_num ";
 			
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, userID);
@@ -150,7 +150,7 @@ public class HistoryDAO extends DatabaseUtil{
 			rs = psmt.executeQuery();
 			int i = 0;
 			while(rs.next() && i<history_len) {
-				historyDTO[i++] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1));
+				historyDTO[i++] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1),rs.getInt(5));
 			}
 			
 		}catch(Exception e){

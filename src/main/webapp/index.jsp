@@ -32,6 +32,37 @@ pageEncoding="UTF-8"  %>
 			text-decoration: none;
 		}
 	</style>
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+     	<script type="text/javascript">
+            function kakaoShare(surveyTitle,sid) {
+				Kakao.cleanup();
+				Kakao.init("ff87a0a2d649bcb736dbcbebed8135e9");      // 사용할 앱의 JavaScript 키
+		 
+				Kakao.Link.createDefaultButton({
+                	objectType:"feed",
+		    		container: document.querySelector("#kakao_href")
+            		,content : {
+            			title:surveyTitle
+            			,description:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // 콘텐츠 설명
+            			,imageUrl:"https://ifh.cc/g/1Drn85.jpg" // 썸네일 같은거
+            			,link : {
+            				mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid    // 모바일 카카오톡에서 사용하는 웹 링크 URL
+            				,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // PC버전 카카오톡에서 사용하는 웹 링크 URL
+            			}
+               		}, 
+               		buttons : [
+                    		 { title:"설문 참여하기"    // 공유했을 때 뜨는 버튼 제목
+                      		 , link : {
+                         		mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid // 모바일 카카오톡에서 사용하는 웹 링크 URL
+                       			,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid   
+                    			}	
+                    		}
+                    		]
+                 		});
+                 	document.getElementById("kakao_href").click(); // 새로고침
+            	 }
+         </script>
+	
 </head>
 <body>
 
@@ -62,11 +93,7 @@ pageEncoding="UTF-8"  %>
 				<li class="nav-item active">
 					<a class="nav-link" href="index.jsp" style="color:white;">메인 화면</a>
 				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="./user/userSurvey.jsp" style="color:white;">User Survey</a>
-				</li>
 				<li class="nav-item dropdown">
-				
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
 						회원 관리	
 					</a>
@@ -93,7 +120,10 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 	
-	<section class="container mt-3" style="max-width: 700px;">
+	
+	
+	
+	<section class="container mt-3" style="max-width: 900px;">
 <%-- 
 	<div class = "row">
 		<div class="col-xl-3 col-md-6 mb-3">
@@ -121,7 +151,7 @@ pageEncoding="UTF-8"  %>
 								adminDTO[step].getSurveyID()+
 							"</div>\n"+
 							"<div class='card-footer'>\n"+
-								"<a href='./admin/adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"' style='width:100%'>수정하기</a>\n"+
+								"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"' style='width:100%'>수정하기</a>\n"+
 							"</div>\n"+
 				   		"</div>\n" + 
 						"</div>";
@@ -137,7 +167,7 @@ pageEncoding="UTF-8"  %>
 	<div class="list mb-5">
 		<div class="list-title">
 			<h4 class="ml-4" style="margin:auto;">설문 리스트</h4>
-				<a href="./admin/addSurvey.jsp" class="btn btn-add" >설문지 만들기</a>
+				<a href="./admin/ActionAddSurvey.jsp" class="btn btn-add" >설문지 만들기</a>
 		</div>
 		<div class="list-content">
 			<div class="list-option">
@@ -151,13 +181,17 @@ pageEncoding="UTF-8"  %>
 					수정 
 				</div>
 			 	<div class="list-option-item">
-			 		결과 
+			 		통계 
+				</div>
+				<div class="list-option-item">
+			 		공유 
 				</div> 
 			</div>
 		<%
 		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
 		String adminList ="";
 		
+
 		for(int step = 0; step<adminDTO.length; step++) {
 			adminList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
@@ -167,17 +201,23 @@ pageEncoding="UTF-8"  %>
 							adminDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./admin/adminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정하기</a>\n"+
+							"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./admin/adminStats.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>결과</a>\n"+
+							"<a href='./admin/ViewAdminStatistic.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>통계</a>\n"+
 						"</div>\n"+
-				   "</div>";
+						"<div class=\"list-item\">\n"+		
+								"<a href='http://localhost:8080/Survey_project' id='kakao_href'></a>"+		
+						         "<img src='https://ifh.cc/g/BbQVhq.png' onClick=\"kakaoShare("+"\'"+adminDTO[step].getSurveyName()+"\',"+adminDTO[step].getSurveyID() + " );\" width='50' alt='Share' class='btnImg'>"+
+						"</div>\n"+
+						"</div>";
 		}
 		%>
+		
 		<%= adminList %>
 		</div>
 	</div>
+	
 	
 	<div class="list mb-5">
 		<div class="list-title">
@@ -195,6 +235,9 @@ pageEncoding="UTF-8"  %>
 					수정
 				</div>
 			 	<div class="list-option-item">
+					결과
+				</div>
+			 	<div class="list-option-item">
 			 		삭제 
 				</div> 
 			</div>
@@ -203,7 +246,26 @@ pageEncoding="UTF-8"  %>
 		String historyList ="";
 		
 		for(int step = 0; step<historyListDTO.length; step++) {
-			historyList +="<div class=\"list-rows\" >\n"+ 
+			if(historyListDTO[step].getEditState() == 0){
+				historyList +="<div class=\"list-rows\" >\n"+ 
+						"<div class=\"list-item\">\n"+
+								historyListDTO[step].getSurveyDate()+ "\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+								historyListDTO[step].getSurveyName()+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<label class='btn btn-editNot'>수정하기</a>\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<a href='./user/userSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+						"</div>\n"+			
+						"<div class=\"list-item\">\n"+
+							"<label class='btn btn-deleteNot'>삭제</a>\n"+
+						"</div>\n"+
+				   "</div>";	
+			}else{
+				historyList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
 								historyListDTO[step].getSurveyDate()+ "\n"+
 						"</div>\n"+
@@ -214,9 +276,14 @@ pageEncoding="UTF-8"  %>
 							"<a href='./user/userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
+							"<a href='./user/userSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+						"</div>\n"+			
+						"<div class=\"list-item\">\n"+
 							"<a href='./user/deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
 						"</div>\n"+
-				   "</div>";
+				   "</div>";				
+			}
+			
 		}
 		%>
 		<%= historyList %>

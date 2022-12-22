@@ -55,7 +55,7 @@ input[type="password"]{
 }
 .list-option{
 	display:grid !important;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-end: span 4;
 	border-bottom: 3px solid #ADADAD;
 	margin-bottom: 20px;
@@ -63,13 +63,13 @@ input[type="password"]{
 }
 
 .list-option-item{
-	font-size: min(3vw,40px);
+	font-size: min(3vw,30px);
 }
 
 
 .list-rows{
 	display:grid !important;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-end: span 4;
 }
 
@@ -172,6 +172,21 @@ input[type="password"]{
 	
 }
 
+.btn-editNot{
+	color: #fff;
+    background-color: #dcdcdc;
+    border-color: #dcdcdc;
+}
+
+.btn-deleteNot{
+	color: #fff;
+    background-color: #F0B6B6;
+    border-color: #F0B6B6;
+}
+
+
+
+
 .form-survey-delete{
 	text-align: center;
 }
@@ -196,11 +211,89 @@ input[type="password"]{
     height: 100%;
     padding: 5px;
 }
-
-
-
 .result-content{
 	padding:5px;
 	width:100%;
 	height:auto;
+}
+
+
+.wrapper {
+   width: 50px;
+    height: 50px;
+    text-align: center;
+    margin: auto;
+}
+
+.switch_label {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  width: 58px;
+  height: 28px;
+  background: #fff;
+  border: 2px solid #daa;
+  border-radius: 20px;
+  transition: 0.2s;
+ }
+.switch_label:hover {
+    background: #efefef;
+  }
+
+.onf_btn {
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #daa;
+    transition: 0.2s;
+}
+
+     /* checking style */
+#switch_limit {
+    position: absolute;
+    /* hidden */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+#switch_limit:checked+.switch_label {
+    background: #c44;
+    border: 2px solid #c44;
+}
+
+#switch_limit:checked+.switch_label:hover {
+    background: #e55;
+}
+
+#switch_limit:checked+.switch_label .onf_btn {
+   left: 34px;
+   background: #fff;
+   box-shadow: 1px 2px 3px #00000020;
+}
+
+
+#switch_edit {
+    position: absolute;
+    /* hidden */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+#switch_edit:checked+.switch_label {
+    background: #c44;
+    border: 2px solid #c44;
+}
+
+#switch_edit:checked+.switch_label:hover {
+    background: #e55;
+}
+
+#switch_edit:checked+.switch_label .onf_btn {
+   left: 34px;
+   background: #fff;
+   box-shadow: 1px 2px 3px #00000020;
 }

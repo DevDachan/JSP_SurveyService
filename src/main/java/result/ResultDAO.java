@@ -170,13 +170,38 @@ public class ResultDAO extends DatabaseUtil {
 		}
 		return 0;
 	}
+	
+	public String getDateTime(int surveyID,String userID, int historyID) {
+		String query = "SELECT date FROM survey_history WHERE survey_id=? AND user_id=? AND history_index =?";
+		System.out.print(surveyID);
+		System.out.print(userID);
+		System.out.print(historyID);
+		
+		try {
+			
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1,surveyID);
+			psmt.setString(2,userID);
+			psmt.setInt(3,historyID);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+		
+	}
 	public String userResultContent(int surveyID,String userID, String date) {
 		int resultOption = 0;
 		int selectComponent = 0;
 		String resultOptionQuery = "SELECT result_option FROM survey WHERE id=?";
 		String historyQuery = "SELECT option_num, component_num FROM survey_history WHERE survey_id= ? AND user_id=? AND date =?";
 		String contentQuery = "SELECT content FROM survey_result WHERE survey_id= ? AND option_num =? AND component_num =?";
-
+		
 		try {
 			
 			psmt = con.prepareStatement(resultOptionQuery);

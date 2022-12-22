@@ -33,7 +33,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/addSurveyComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionAddSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -52,7 +52,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/deleteSurveyComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionDeleteSurveyComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -75,7 +75,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/addSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionAddSurveyOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -93,7 +93,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/deleteSurveyOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionDeleteSurveyOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -120,7 +120,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/editOption.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionEditOption.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -145,7 +145,7 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/editComponent.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionEditComponent.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID, 
@@ -170,12 +170,44 @@ pageEncoding="UTF-8"  %>
 			$.ajax({
         	 	type:'post',
           	 	async:false, //false가 기본값임 - 비동기
-           		url:'http://localhost:8080/Survey_project/admin/editSurvey.jsp',
+           		url:'http://localhost:8080/Survey_project/admin/ActionEditSurvey.jsp',
             	dataType:'text',
             	data:{
             		surveyID:surveyID,
             		type:optionType,
             		content:content
+            		},
+            	success: function(res) {
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
+		function change_limit_state(sid){
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/admin/ActionChangeLimitState.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:sid
+            		},
+            	success: function(res) {
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
+		function change_edit_state(sid){
+			$.ajax({
+        	 	type:'post',
+          	 	async:false, //false가 기본값임 - 비동기
+           		url:'http://localhost:8080/Survey_project/admin/ActionChangeEditState.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:sid
             		},
             	success: function(res) {
             	},
@@ -210,8 +242,10 @@ pageEncoding="UTF-8"  %>
 	}else{
 		String userID = (String) session.getAttribute("userID");
 		int sid = Integer.parseInt(request.getParameter("sid"));	
-	
+		System.out.print(sid);
 %>
+
+	
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
@@ -251,7 +285,8 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 	
-	<section class="container mt-3" style="max-width: 500px;">
+	<section class="container mt-3" style="max-width: 500px;">				  
+
 
 <%
 	SurveyDTO survey = surveyDAO.getSurvey(sid);
@@ -269,6 +304,47 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</div>
 </div>
+
+<%
+	String check_limit_state = "<input type='checkbox' id='switch_limit' onChange='change_limit_state("+sid+")' />";
+	if(survey.getLimitState() == 1){
+		check_limit_state = "<input type='checkbox' checked='checked' id='switch_limit' onChange='change_limit_state("+sid+")' />";
+	}
+	
+	String check_edit_state = "<input type='checkbox' id='switch_edit' onChange='change_edit_state("+sid+")' />";
+	if(survey.getEditState() == 1){
+		check_edit_state = "<input type='checkbox' checked='checked' id='switch_edit' onChange='change_edit_state("+sid+")' />";
+	}
+%>
+
+
+	<div class="row">
+		<div class="col-sm-7">
+		 </div>
+		<div class="form-group col-sm-3">
+			<p style="text-align:right;">중복 가능</p>
+		</div>
+		<div class="form-group col-sm-2 wrapper" style="text-align:left;">
+			<%= check_limit_state%> 
+			  <label for="switch_limit" class="switch_label">
+			       <span class="onf_btn"></span>
+			  </label>
+		 </div>
+		 
+		 
+		<div class="col-sm-7">
+		 </div>
+		<div class="form-group col-sm-3">
+			<p style="text-align:right;">수정 가능</p>
+		</div>
+		<div class="form-group col-sm-2 wrapper" style="text-align:left;">
+			<%= check_edit_state%> 
+			  <label for="switch_edit" class="switch_label">
+			       <span class="onf_btn"></span>
+			  </label>
+		 </div>
+	</div>
+
 
 
 <%
@@ -351,7 +427,7 @@ pageEncoding="UTF-8"  %>
 
 
 
-	<form action="./addSurveyOption.jsp" style="text-align:center;">
+	<form action="./ActionAddSurveyOption.jsp" style="text-align:center;">
 		<div class="form-row">
 			<div class="form-group col-sm-6" style="text-align:right;">
 				<select name="optionType" class="select-option" id="optionType">
@@ -373,12 +449,12 @@ pageEncoding="UTF-8"  %>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="../admin/adminSurveyResult.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">결과 페이지 구성하기</a>
+			<a href="../admin/ViewAdminSurveyResult.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">결과 페이지 구성하기</a>
 		</div>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-sm-12 mt-4 form-survey-delete">
-			<a href="./deleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-delete" style="width:100%;">설문조사 삭제하기</a>
+			<a href="./ActionDeleteSurvey.jsp?surveyID=<%=sid %>" class="btn btn-delete" style="width:100%;">설문조사 삭제하기</a>
 		</div>
 	</div>
 	

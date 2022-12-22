@@ -91,9 +91,24 @@ pageEncoding="UTF-8"  %>
 	}
 
 %>
+
 <script>
-		location.href = "./userSurveyResult.jsp?sid=<%=sid%>";
+		var form = document.createElement('form');
+		var time;
+		
+		time = document.createElement('input');
+		time.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+		time.setAttribute('name', 'submitTime'); // 객체이름
+		time.setAttribute('value', '<%=date%>' ); //객체값
+		form.appendChild(time);
+		
+		form.setAttribute('method', 'post'); //get,post 가능
+		form.setAttribute('action', "./userSurveyResult.jsp?sid=<%=sid%>"); //보내는 url
+		document.body.appendChild(form);
+		form.submit();
+
 </script>
+
 	<!-- JQuery Java Script Add -->
 	<script src="../js/jquery.min.js" ></script>
 	<!-- Popper Java Script Add -->

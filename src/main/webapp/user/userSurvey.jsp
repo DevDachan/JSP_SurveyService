@@ -3,6 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
+<%@ page import='user.UserDAO' %>
 <%@ page import='survey.OptionDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='survey.SurveyDTO' %>
@@ -31,6 +32,7 @@ pageEncoding="UTF-8"  %>
 <% 
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
+	UserDAO userDAO = new UserDAO(application);
 	if(request.getParameter("sid") == null){
 		%>
 		<jsp:include page='../alert.jsp'> 
@@ -88,6 +90,17 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 
 	<%
+		if(userID != "Guest"){
+			int checkLimit = userDAO.checkLimit(sid,userID);
+			if(checkLimit == 0){
+				PrintWriter script = response.getWriter();
+				script.println("<script>");
+				script.println("location.href = './userSurveyResult.jsp?sid="+sid+"&&prvsv=1"+"';");
+				script.println("</script>");
+				script.close();
+			}
+		}
+		
 		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
 	%>
 	<div class="survey">

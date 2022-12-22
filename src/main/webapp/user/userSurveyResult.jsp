@@ -7,7 +7,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='result.ResultDTO' %>
 <%@ page import='result.ResultDAO' %>
-
+<%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
 <html>
@@ -30,19 +30,47 @@ pageEncoding="UTF-8"  %>
 </head>
 <body>
 <% 
-	int sid = Integer.parseInt(request.getParameter("sid"));
+	ResultDAO resultDAO = new ResultDAO(application);
+
+	int sid = 0;
+	int hid = 0;
+	int prvsv = 0;
 	String userID = null;
+	String date = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}else{
 		userID = "unknown";
 	}
 	
-	String date = null;
-	if(request.getParameter("submitTime") != null){
-		date = request.getParameter("submitTime");
+	if(request.getParameter("sid") != null){
+		sid = Integer.parseInt(request.getParameter("sid"));
 	}
-	int pageNumber = 1;
+	if(request.getParameter("hid") != null){
+		hid = Integer.parseInt(request.getParameter("hid"));
+	}
+	if(request.getParameter("prvsv") != null){
+		prvsv = 1;
+	}else{
+		if(request.getParameter("submitTime") != null){
+			date = request.getParameter("submitTime");
+		}else if(hid != 0){
+			date = resultDAO.getDateTime(sid,userID,hid);
+		}	
+	}
+	
+	
+	
+	if(prvsv==0 && sid == 0 || prvsv==0 && date == null){
+%>
+		<jsp:include page='../alert.jsp'> 
+				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
+		</jsp:include>	
+<% 					
+		
+	}
 %>
 
 
@@ -84,16 +112,17 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-	<h3>제출 완료!!</h3>	
 	<%
-		ResultDAO resultDAO = new ResultDAO(application);
 		String content = resultDAO.userResultContent(sid, userID,date);
 		if(content == ""){
 			content = "제출이 완료 되었습니다!";
 		}
+		if(prvsv == 1){
+			content = "이미 제출이 완료된 설문입니다";
+		}
 	%>
 	
-	
+	<h3>제출 완료</h3>	
 	<%= content %>
 	
 	
