@@ -122,7 +122,6 @@ pageEncoding="UTF-8"  %>
 		}
 	%>
 	
-	<h3>제출 완료</h3>	
 	<%= content %>
 	
 	

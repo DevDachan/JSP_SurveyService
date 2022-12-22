@@ -46,7 +46,6 @@
 	
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	int result = surveyDAO.deleteSurvey(userID, surveyID);
-	System.out.print(result);
 	if(result == 1){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");

@@ -556,7 +556,6 @@ public class SurveyDAO extends DatabaseUtil {
 	public int changeLimitState(int surveyID) {
 		String query = "SELECT limit_state FROM survey WHERE id=?";
 		
-		System.out.print("hi");
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, surveyID);

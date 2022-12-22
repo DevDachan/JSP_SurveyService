@@ -61,6 +61,17 @@ pageEncoding="UTF-8"  %>
                  		});
                  	document.getElementById("kakao_href").click(); // 새로고침
             	 }
+            function copy_to_clipboard(sid) {    
+            	  var copyText = "http://localhost:8080/Survey_project/user/userSurvey.jsp?sid="+sid;
+            	  
+            	  const t = document.createElement("textarea");
+            	  document.body.appendChild(t);
+            	  t.value = copyText;
+            	  t.select();
+            	  document.execCommand('copy');
+            	  document.body.removeChild(t);
+            	}
+
          </script>
 	
 </head>
@@ -172,7 +183,7 @@ pageEncoding="UTF-8"  %>
 		<div class="list-content">
 			<div class="list-option">
 				<div class="list-option-item">
-					설문번호
+					설문링크
 			 	</div>
 				<div class="list-option-item">
 					이름 
@@ -191,11 +202,16 @@ pageEncoding="UTF-8"  %>
 		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
 		String adminList ="";
 		
+	
 
 		for(int step = 0; step<adminDTO.length; step++) {
 			adminList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
-							adminDTO[step].getSurveyID()+ "\n"+
+							 "<p class='box" + adminDTO[step].getSurveyID()+"'>\n"+
+						        "<button style='border:0px; background:white;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
+						        	"<img src='https://blog.kakaocdn.net/dn/N1wUc/btqIl7XZtKM/b44qX9Six1vczz2ISWj4LK/img.png' alt='복사하기'>\n"+
+						        "</button>\n"+
+						    "</p>\n"+  	
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
 							adminDTO[step].getSurveyName()+
