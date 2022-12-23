@@ -38,7 +38,7 @@
 		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"입력이 안 된 사항이 있습니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = './Login.jsp';" />
+				<jsp:param name="url" value="location.href = './ViewLogin.jsp';" />
 		</jsp:include>	
 <% 		
 	}

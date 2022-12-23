@@ -3,12 +3,15 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
-<%@ page import='user.UserDAO' %>
+<%@ page import='survey.SurveyDTO' %>
 <%@ page import='survey.OptionDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
-<%@ page import='survey.SurveyDTO' %>
+<%@ page import='history.HistoryDTO' %>
+<%@ page import='user.UserDAO' %>
 
+<%@ page import='history.HistoryDAO' %>
 <%@ page import='java.net.URLEncoder' %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +36,12 @@ pageEncoding="UTF-8"  %>
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	UserDAO userDAO = new UserDAO(application);
-	if(request.getParameter("sid") == null){
+	HistoryDAO historyDAO = new HistoryDAO(application);
+	
+	int sid = 0;
+	if(request.getParameter("sid") != null){
+		sid = Integer.parseInt(request.getParameter("sid"));	
+	}else{
 		%>
 		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
@@ -41,13 +49,16 @@ pageEncoding="UTF-8"  %>
 				<jsp:param name="url" value="location.href = '../index.jsp';"/>
 		</jsp:include>	
 		<% 	
-	}else{
-		if(session.getAttribute("userID") != null){
-			userID = (String) session.getAttribute("userID");
-		}else{
-			userID = "Guest";
-		}
-		int sid = Integer.parseInt(request.getParameter("sid"));
+	}
+	int hid = 0;
+	if(request.getParameter("hid") != null){
+		hid = Integer.parseInt(request.getParameter("hid"));	
+	}
+	
+	if(session.getAttribute("userID") != null){
+		userID = (String) session.getAttribute("userID");
+	}
+	
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
@@ -67,17 +78,17 @@ pageEncoding="UTF-8"  %>
 					<div class="dropdown-menu" aria-labelledby="dropdown">
 					
 <%
-	if(userID == null || userID.equals("Guest")){
+	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
-						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -88,19 +99,9 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-
+	
 	<%
-		if(userID != "Guest"){
-			int checkLimit = userDAO.checkLimit(sid,userID);
-			if(checkLimit == 0){
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("location.href = './userSurveyResult.jsp?sid="+sid+"&&prvsv=1"+"';");
-				script.println("</script>");
-				script.close();
-			}
-		}
-		
+		HistoryDTO[] history = historyDAO.getHistory(userID, sid,hid); 
 		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
 	%>
 	<div class="survey">
@@ -114,20 +115,21 @@ pageEncoding="UTF-8"  %>
 			</div>
 		</div>
 	</div>
-
-
 	
-	<form action="./userSurveySubmit.jsp" method="post" id="survey-submit">
+	<form action="./ActionUserEditSubmit.jsp" method="post" id="survey-submit">
 	<input type="hidden" name="sid" value="<%=sid %>">
+	
 	<%
 	
 	int count = 0;
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] survey = surveyDAO.getComponent(sid);
+	OptionDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
-
+	
+	int hstep = 0;
+	
 	for(int option_num = 0; option_num< option.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 						"<div class='option-title'>\n" + 
@@ -140,26 +142,39 @@ pageEncoding="UTF-8"  %>
 						"</div>\n"+
 						"</div>\n";
 		buf = "";
-		temp_id = survey[count].getOptionNum();
-
-		while(count < survey.length && survey[count].getOptionNum() == temp_id){
-			if(survey[count].getOptionType().equals("radio")){
+		temp_id = component[count].getOptionNum();
+		while(count < component.length && component[count].getOptionNum() == temp_id){
+			if(component[count].getOptionType().equals("radio")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='radio' name='radio"+survey[count].getOptionNum()+"' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
-				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+survey[count].getContent()+"</label></div>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
+					hstep++;
+				}else{
+					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+				}
+				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("checkbox")){
+			}else if(component[count].getOptionType().equals("checkbox")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='checkbox' name='checkbox"+survey[count].getOptionNum()+"[]' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
-				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+survey[count].getContent() +"</label></div>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";
+					hstep++;
+				}else{
+					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";					
+				}
+				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("text")){
+			}else if(component[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text" + survey[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'>"+history[hstep].getContent()+"</textarea>";
+					hstep++;
+				}else{
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				}
 				buf +="</div>";
 			}
-			count++;			
+			count++;
 		}
 		buf +="<div class='option-rows-text'> <label class='warning' style='display:none;'>* 필수로 하나는 선택해주세요</label> </div>";
 		buf += "</div>";
@@ -173,11 +188,10 @@ pageEncoding="UTF-8"  %>
 	</form>
 	
 	</section>
-	
 	<br/>
+	
 
-<%} %>
-
+	
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
 		Copyright &copy; 2022 서다찬 All Rights Reserved
 	</footer>	
@@ -193,3 +207,5 @@ pageEncoding="UTF-8"  %>
 </html>
 
 <%surveyDAO.endclose();%>
+<%userDAO.endclose();%>
+<%historyDAO.endclose();%>

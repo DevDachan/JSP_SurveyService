@@ -27,8 +27,7 @@ public class DatabaseUtil {
 			
 			
 			con = DriverManager.getConnection(dbURL,dbID, dbPassword);
-			System.out.println("Connection!");
-			
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

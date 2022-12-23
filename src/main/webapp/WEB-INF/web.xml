@@ -17,7 +17,7 @@
   </context-param>
   <context-param>
   	<param-name>MysqlURL</param-name>
-  	<param-value>jdbc:mysql://localhost:3306/dbtest?useSSL=false</param-value>
+  	<param-value>jdbc:mysql://localhost:3306/survey_service?useSSL=false</param-value>
   </context-param>
   <context-param>
   	<param-name>MysqlID</param-name>

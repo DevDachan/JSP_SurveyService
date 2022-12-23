@@ -173,9 +173,6 @@ public class ResultDAO extends DatabaseUtil {
 	
 	public String getDateTime(int surveyID,String userID, int historyID) {
 		String query = "SELECT date FROM survey_history WHERE survey_id=? AND user_id=? AND history_index =?";
-		System.out.print(surveyID);
-		System.out.print(userID);
-		System.out.print(historyID);
 		
 		try {
 			

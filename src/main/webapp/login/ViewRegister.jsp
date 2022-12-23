@@ -26,12 +26,12 @@ pageEncoding="UTF-8"  %>
 		if(userEmail == null || userEmail == ""){
 			document.getElementById("sendCodeBtn").innerText = "이메일을 입력해주세요";	
 		}
-		check = 0;
+		
 		document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
 		$.ajax({
     	 	type:'post',
-      	 	async:false, //false가 기본값임 - 비동기
-       		url:'http://localhost:8080/Survey_project/login/codeSendAction.jsp',
+      	 	async:true, //false가 기본값임 - 비동기
+       		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
         	dataType:'text',
         	data:{
         		userEmail:userEmail
@@ -39,8 +39,9 @@ pageEncoding="UTF-8"  %>
         	success: function(res) {
         		result = res.split('{')[1].split("}")[0];  		
         		if(result.includes("Success")){
-        			check = 1;
-        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";	
+        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";
+        			document.getElementById('code-title').style.display = "block";
+          			document.getElementById('code-input').style.display = "block";	
         		}else{
         			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
         		}
@@ -49,10 +50,7 @@ pageEncoding="UTF-8"  %>
             	console.log('error');
       	  	}
   	  	})
-  	  	if(check == 1){
-  			document.getElementById('code-title').style.display = "block";
-  			document.getElementById('code-input').style.display = "block";	
-  	  	}	
+
 		
 	}
 	
@@ -69,7 +67,7 @@ pageEncoding="UTF-8"  %>
 		$.ajax({
     	 	type:'post',
       	 	async:false, //false가 기본값임 - 비동기
-       		url:'http://localhost:8080/Survey_project/login/codeCheckAction.jsp',
+       		url:'http://localhost:8080/Survey_project/login/ActionCodeCheck.jsp',
         	dataType:'text',
         	data:{
         		inputCode:inputCode,
@@ -123,15 +121,15 @@ pageEncoding="UTF-8"  %>
 %>
 
 	
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
-		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
+	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+		<a class="navbar-brand" href="./ViewLogin.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="./Login.jsp" style="color:white;">로그인</a>
+					<a class="nav-link" href="https://github.com/DevDachan/Survey-service-JSP" style="color:white;">Github</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
@@ -143,13 +141,13 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="./Login.jsp">로그인</a>
-						<a class="dropdown-item" href="./Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="./ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="./ViewRegister.jsp">회원가입</a>
 <% 
 	}else{
 		
 %>
-						<a class="dropdown-item" href="./LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="./ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -160,7 +158,7 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-		<form method="post" action="./RegisterAction.jsp">
+		<form method="post" action="./ActionRegister.jsp">
 		<div class="form-row">
 			<div class="col-sm-12">
 				<div class="form-row" >

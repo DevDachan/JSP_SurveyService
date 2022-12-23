@@ -62,7 +62,7 @@ pageEncoding="UTF-8"  %>
                  	document.getElementById("kakao_href").click(); // 새로고침
             	 }
             function copy_to_clipboard(sid) {    
-            	  var copyText = "http://localhost:8080/Survey_project/user/userSurvey.jsp?sid="+sid;
+            	  var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
             	  
             	  const t = document.createElement("textarea");
             	  document.body.appendChild(t);
@@ -85,7 +85,7 @@ pageEncoding="UTF-8"  %>
 		<jsp:include page='alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 				<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = './login/Login.jsp';" />
+				<jsp:param name="url" value="location.href = './login/ViewLogin.jsp';" />
 		</jsp:include>
 	<%
 	
@@ -94,7 +94,7 @@ pageEncoding="UTF-8"  %>
 %>
 
 
-		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -114,14 +114,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="./login/Login.jsp">로그인</a>
-						<a class="dropdown-item" href="./login/Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="./login/ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="./login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="./login/LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="./login/ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -207,9 +207,9 @@ pageEncoding="UTF-8"  %>
 		for(int step = 0; step<adminDTO.length; step++) {
 			adminList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
-							 "<p class='box" + adminDTO[step].getSurveyID()+"'>\n"+
+							 "<p class='clip'>\n"+
 						        "<button style='border:0px; background:white;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
-						        	"<img src='https://blog.kakaocdn.net/dn/N1wUc/btqIl7XZtKM/b44qX9Six1vczz2ISWj4LK/img.png' alt='복사하기'>\n"+
+						        	"<img src='https://blog.kakaocdn.net/dn/N1wUc/btqIl7XZtKM/b44qX9Six1vczz2ISWj4LK/img.png' style='height:25px;' alt='복사하기'>\n"+
 						        "</button>\n"+
 						    "</p>\n"+  	
 						"</div>\n"+
@@ -274,7 +274,7 @@ pageEncoding="UTF-8"  %>
 							"<label class='btn btn-editNot'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./user/userSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
 						"</div>\n"+			
 						"<div class=\"list-item\">\n"+
 							"<label class='btn btn-deleteNot'>삭제</a>\n"+
@@ -289,13 +289,13 @@ pageEncoding="UTF-8"  %>
 								historyListDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./user/userSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
+							"<a href='./user/ViewUserSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./user/userSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
 						"</div>\n"+			
 						"<div class=\"list-item\">\n"+
-							"<a href='./user/deleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
+							"<a href='./user/ActionDeleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
 						"</div>\n"+
 				   "</div>";				
 			}

@@ -31,6 +31,16 @@ pageEncoding="UTF-8"  %>
 	<jsp:include page="./ScriptAjax.jsp">
 		<jsp:param name="default" value="" />
 	</jsp:include>
+	<script>
+		function resize(obj) {
+		  obj.style.height = "auto";
+		  obj.style.height = (obj.scrollHeight)+"px";
+		  obj.style.width = "100%";
+		  
+		}
+	</script>
+	
+	
 </head>
 <body>
 <% 
@@ -40,7 +50,7 @@ pageEncoding="UTF-8"  %>
 		<jsp:include page='../alert.jsp'> 
 			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-			<jsp:param name="url" value="location.href = '../login/Login.jsp';" />
+			<jsp:param name="url" value="location.href = '../login/ViewLogin.jsp';" />
 		</jsp:include>
 <% 				
 	}
@@ -61,7 +71,7 @@ pageEncoding="UTF-8"  %>
 
 	
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -82,14 +92,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
-						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -98,7 +108,6 @@ pageEncoding="UTF-8"  %>
 			</ul>
 		</div>
 	</nav>
-	
 	<section class="container mt-3" style="max-width: 500px;">				  
 
 
@@ -109,11 +118,11 @@ pageEncoding="UTF-8"  %>
 	<div class = "form-row">
 		<div class="survey-title form-group col-sm-12">
 			<textarea maxlength='50' class='form-control option-title-text' 
-				id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%></textarea>
+				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%></textarea>
 		</div>
 		<div class="survey-content form-group col-sm-12">
 			<textarea maxlength='2048' class='form-control option-title-text' 
-				id='surveyContent' style='font-size: 15px;'
+				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyContent' style='font-size: 15px;'
 				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%></textarea>
 		</div>
 	</div>
@@ -172,11 +181,11 @@ pageEncoding="UTF-8"  %>
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 							"<div class='option-title'>\n" + 
-								"<textarea maxlength='50' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
+								"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
 							"</div>\n"+
 							"<div class='option-content'>\n"+
 								"<div class='option-content-item'>\n"+
-									"<textarea maxlength='2048' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+									"<textarea maxlength='2048' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
 								"</div>\n"+
 							"</div>\n";
 	
@@ -207,7 +216,7 @@ pageEncoding="UTF-8"  %>
 				buf +="</div>";
 			}else if(option[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' style='height:100px;' placeholder='이곳은 사용자가 작성하는 공간입니다\n 저장되지 않습니다'></textarea>";
+				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' onkeydown='resize(this)' onkeyup='resize(this)' style='height:100px;' placeholder='이곳은 사용자가 작성하는 공간입니다\n 저장되지 않습니다'></textarea>";
 				buf +="</div>";
 				buf += "<div class='option-rows'>"+
 						"<div class='option-item'></div>"+	
@@ -258,7 +267,7 @@ pageEncoding="UTF-8"  %>
 	</form>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="../user/userSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
+			<a href="../user/ViewUserSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
 		</div>
 	</div>
 	<div class="form-row">

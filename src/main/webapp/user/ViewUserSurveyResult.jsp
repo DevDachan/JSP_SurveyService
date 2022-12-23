@@ -2,7 +2,11 @@
 pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
-<%@ page import='user.UserDAO' %>
+<%@ page import='survey.SurveyDAO' %>
+<%@ page import='survey.OptionDTO' %>
+
+<%@ page import='result.ResultDTO' %>
+<%@ page import='result.ResultDAO' %>
 <%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
@@ -17,27 +21,60 @@ pageEncoding="UTF-8"  %>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
 	<link rel="stylesheet" href="../css/custom.css?ver=1">
-	
-	
+	<style type="text/css">
+		a, a:hover{
+			color: #000000;
+			text-decoration: none;
+		}
+	</style>
 </head>
 <body>
 <% 
+	ResultDAO resultDAO = new ResultDAO(application);
+
+	int sid = 0;
+	int hid = 0;
+	int prvsv = 0;
 	String userID = null;
+	String date = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
+	}else{
+		userID = "unknown";
+	}
 	
+	if(request.getParameter("sid") != null){
+		sid = Integer.parseInt(request.getParameter("sid"));
+	}
+	if(request.getParameter("hid") != null){
+		hid = Integer.parseInt(request.getParameter("hid"));
+	}
+	if(request.getParameter("prvsv") != null){
+		prvsv = 1;
+	}else{
+		if(request.getParameter("submitTime") != null){
+			date = request.getParameter("submitTime");
+		}else if(hid != 0){
+			date = resultDAO.getDateTime(sid,userID,hid);
+		}	
+	}
+	
+	
+	
+	if(prvsv==0 && sid == 0 || prvsv==0 && date == null){
 %>
 		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
-				<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 정보가 존재합니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="location.href = '../index.jsp';" />
+				<jsp:param name="content" value="<%=URLEncoder.encode(\"설문조사 정보가 존재하지 않습니다.\", \"UTF-8\") %>" />
+				<jsp:param name="url" value="history.back();" />
 		</jsp:include>	
-<% 		
+<% 					
+		
 	}
-
 %>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+
+	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -45,27 +82,26 @@ pageEncoding="UTF-8"  %>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="https://github.com/DevDachan/Survey-service-JSP" style="color:white;">Github</a>
+					<a class="nav-link" href="../index.jsp" style="color:white;">메인 화면</a>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
 						회원 관리	
 					</a>
-					
 					<div class="dropdown-menu" aria-labelledby="dropdown">
 					
 <%
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="Login.jsp">로그인</a>
-						<a class="dropdown-item" href="Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -74,37 +110,30 @@ pageEncoding="UTF-8"  %>
 			</ul>
 		</div>
 	</nav>
-
+	
 	<section class="container mt-3" style="max-width: 500px;">
-		<form method="post" action="./LoginAction.jsp">
-		<div class="form-row">
-			<div class="col-sm-6">
-				<div class="form-row" >
-					<div class="form-group col-sm-12">
-						<input type="text" name="userID" class="form-control" required placeholder="ID">
-					</div>
-					<div class="form-group col-sm-12">
-						<input type="password" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6 row-sm-2 mb-3">
-				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
-			</div>
-			<div class="col-sm-12 mb-3">
-				<a href="http://localhost:8080/Survey_project/GoogleLoginAction.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#724A4A;color:white; ">Login with Google</a>
-			</div>
-			<div class="col-sm-12">
-				<a href="http://localhost:8080/Survey_project/login/Register.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>
-			</div>
-		</div>
-		</form>
+	<%
+		String content = resultDAO.userResultContent(sid, userID,date);
+		String title = "";
+		if(content.equals("") ){
+			title = "제출 완료";
+			content = "제출이 완료 되었습니다!";
+		}
+		if(prvsv == 1){
+			content = "이미 제출이 완료된 설문입니다";
+		}
+	%>
+	
+	<h3><%= title %></h3>
+	<%= content %>
+	
+	
 	</section>
-
+	
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
-		Copyright &copy; 2022 서다찬 All Rights Reserved
+		Copyright &copy; 2018 서다찬 All Rights Reserved
 	</footer>	
 	<!-- JQuery Java Script Add -->
 	<script src="../js/jquery.min.js" ></script>

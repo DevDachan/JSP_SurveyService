@@ -101,7 +101,7 @@ pageEncoding="UTF-8"  %>
 		<jsp:include page='../alert.jsp'> 
 			<jsp:param name="title" value="<%=URLEncoder.encode(\"로그인\", \"UTF-8\") %>" />
 			<jsp:param name="content" value="<%=URLEncoder.encode(\"세션 정보가 존재하지 않습니다\", \"UTF-8\") %>" />
-			<jsp:param name="url" value="location.href = '../login/Login.jsp';" />
+			<jsp:param name="url" value="location.href = '../login/ViewLogin.jsp';" />
 		</jsp:include>
 <% 				
 	}
@@ -120,7 +120,7 @@ pageEncoding="UTF-8"  %>
 	
 %>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -141,14 +141,14 @@ pageEncoding="UTF-8"  %>
 	if(userID == null){
 		
 %>
-						<a class="dropdown-item" href="../login/Login.jsp">로그인</a>
-						<a class="dropdown-item" href="../login/Register.jsp">회원가입</a>
+						<a class="dropdown-item" href="../login/ViewLogin.jsp">로그인</a>
+						<a class="dropdown-item" href="../login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
 		
 %>
-						<a class="dropdown-item" href="../login/LogoutAction.jsp">로그아웃</a>
+						<a class="dropdown-item" href="../login/ActionLogout.jsp">로그아웃</a>
 <%
 	}
 %>
@@ -246,7 +246,7 @@ pageEncoding="UTF-8"  %>
 
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="../user/userSurvey.jsp?sid=<%=sid%>" class="btn btn-primary" style="width:100%;">미리보기</a>
+			<a href="../user/ViewUserSurvey.jsp?sid=<%=sid%>" class="btn btn-primary" style="width:100%;">미리보기</a>
 		</div>
 	</div>
 	<div class="form-row">
