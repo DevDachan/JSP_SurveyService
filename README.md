@@ -13,7 +13,7 @@
 <br/>
 
 ## Preview
-<이미지 넣기>
+<img src="https://user-images.githubusercontent.com/111109411/209267328-02ba436f-7ca4-4ca2-873b-030cb559c9c4.png" style="height:300px"/>
 
 
 <br/>
