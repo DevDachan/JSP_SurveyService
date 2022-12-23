@@ -1,40 +1,60 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Survey-service-JSP&fontSize=70" width=100% />
 
-- 해당 서비스는 기존에 존재하는 Google Forms과 Microsoft Forms에서 사용자가 결과 페이지에 대한 프로그래밍적 요소를 추가할 수 있는 서비스입니다.
+- 기존에 존재하는 Google Forms과 Microsoft Forms에서 라디오 버튼의 선택지로 결과 페이지를 분기시키는 기능과 프로그래밍적 요소를 추가할 수 있는 기능을 추가한 서비스입니다.
+
+
+<br/>
 <br/>
 
 ## Getting Started
 서비스는 기본적으로 JSP언어로 작성이 되었으며 tomcat container를 사용해 구동이 됩니다. 
 
+<br/>
+<br/>
+
 ## Preview
 <이미지 넣기>
 
 
+<br/>
+<br/>
+
 ### 개발 환경
 
-[Eclipse version 4.25.0](https://www.eclipse.org/downloads/) - JAVA 개발 환경
+[Eclipse v4.25.0](https://www.eclipse.org/downloads/) - JAVA 개발 환경
 
-[tomcat version 9.0](https://tomcat.apache.org/download-80.cgi)  - Web container
+[tomcat v9.0](https://tomcat.apache.org/download-80.cgi)  - Web container
 
-[mysql version 8.0.28](https://dev.mysql.com/downloads/installer/) - DB
+[mysql v8.0.28](https://dev.mysql.com/downloads/installer/) - DB
 
+[Bootstrap v4.0.0](https://getbootstrap.com/) - Web framework
+
+
+<br/>
+<br/>
 
 ### Installation
 - Clone the repo: ```git clone https://github.com/DevDachan/Survey-service-JSP.git```
 
+<br/>
+<br/>
+
 -------------
-### page 흐름
+### Page 흐름
 - 전체적인 페이지는 총 3가지 부분으로 구성이 된다.
  
-> #### 1. page view
-> * page view의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
+> #### 1. View page
+> * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
 >
-> #### 2. page action
-> * page action의 경우에는 page를 이동하면서 필요한 특정 action들을 담고 있는 jap 파일입니다. 예를들어 Login이나 Logout을 하거나 이메일 인증 코드등을 통해서 값을 비교할 때 중간 단계에서 DB값과 비교하는 페이지라고 생각하시면 됩니다.
+> #### 2. Action page
+> * Action apge의 경우에는 page를 이동하면서 필요한 특정 action들을 담고 있는 jap 파일입니다. 예를 들어 Login이나 Logout을 하거나 이메일 인증 코드등을 통해서 값을 비교할 때 중간 단계에서 DB값과 비교하는 페이지라고 생각하시면 됩니다.
 > * 추가적으로 설문조사를 만들면서 질문 내용이나 옵션등을 추가하거나 삭제하는 기능에서도 action page가 사용이되며 해당 page는 ajax를 통해 비동기식으로 처리가 됩니다.
 >
 > #### 3. DAO and DTO 
 > * DAO와 DTO는 Data Access Object ,Data Transfer Object를 말하며 DB에 있는 data에 접근시 사용되는 java class를 말합니다. 보통 DTO는 DB에 있는 table의 attribute와 동일하게 구성이되는 object를 말하고 DAO의 경우에는 DB에서 CRUD를 담당하는 Query문을 실행시켜주는 Method를 가지고 있는 class를 말합니다.
+
+<br/>
+<br/>
 
 -------------
 ### 주요 기능
@@ -130,37 +150,21 @@
 
 Add additional notes about how to deploy this on a live system
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
 
 ## Versioning
 
 We use [Git](https://git-scm.com/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
 
 ## Authors
 
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
 
 
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
-
 * Hat tip to anyone whose code was used
 * Inspiration
 * etc
-
-* 전체 디자인은 bootstrap framework를 사용해 디자인되었으며 몇몇 CSS는 local css를 사용합니다.
-
-
-
 
 
 
