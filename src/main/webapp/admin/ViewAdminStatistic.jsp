@@ -5,11 +5,15 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='history.HistoryDAO' %>
 <%@ page import='history.HistoryCountDTO' %>
+<%@ page import='history.HistoryListDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
-
 
 <%@ page import='java.net.URLEncoder' %>
 
+
+
+
+<%	int viewType = 0; %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,11 +32,31 @@ pageEncoding="UTF-8"  %>
 			text-decoration: none;
 		}
 	</style>
+	<script>
+		function changeView(type){
+			
+			if(type == "changeResponse"){
+				document.getElementById("viewStatistic").style.display = "none";
+				document.getElementById("viewEach").style.display = "block";
+				
+				document.getElementById("changeResponse").style.borderBottom = "2px solid blue";
+				document.getElementById("changeStatistic").style.borderBottom = "0px";
+					
+			}else{
+				document.getElementById("viewEach").style.display = "none";
+				document.getElementById("viewStatistic").style.display = "block";
+
+				document.getElementById("changeStatistic").style.borderBottom = "2px solid blue";
+				document.getElementById("changeResponse").style.borderBottom = "0px";
+			}
+			
+		}
+	</script>
 </head>
 <body>
 <% 
 	request.setCharacterEncoding("UTF-8");
-	String userID = null;
+	String userID = null;	
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}else{
@@ -58,7 +82,6 @@ pageEncoding="UTF-8"  %>
 <% 				
 		
 	}
-	
 %>
 
 		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
@@ -99,104 +122,162 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
+
+<div style="display:grid; width:50%; margin:auto; margin-bottom:20px;	grid-template-columns: 1fr 1fr;">
+	<button class="bt-change-history" type="button" id="changeStatistic" onClick="changeView('changeStatistic')" style="border-bottom:2px solid blue;">통계 보기</button>
+	<button class="bt-change-history" type="button" id="changeResponse" onClick="changeView('changeResponse')">개인 응답</button>
+</div>
+
 <%
+	
 	HistoryDAO historyDAO = new HistoryDAO(application);
 	SurveyDAO surveyDAO = new SurveyDAO(application);
-	OptionDetailDTO[] option = surveyDAO.getOption(sid);	
-	
-	for(int i = 0; i<option.length; i++ ){
+	OptionDetailDTO[] option = surveyDAO.getOption(sid);
+%>
 
-		if(option[i].getType().equals("text")){
-			String temp = "";
-			String[] history = historyDAO.getHistoryText(sid, option[i].getOptionNum());
-			if(history != null){
-				temp += "<div class='option'>";
-					temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
-					temp += "<div class='form-row'>";
-				for(int k = 0; k<history.length; k++){
-					temp += "<div class='form-group col-sm-1' style='border-right:2px solid black;'>"+(k+1) +"</div>";
-					temp += "<div class='form-group col-sm-11'>"+history[k]+"</div>";
+
+
+
+<div id="viewStatistic">
+	<%
+		for(int i = 0; i<option.length; i++ ){
+	
+			if(option[i].getType().equals("text")){
+				String temp = "";
+				String[] history = historyDAO.getHistoryText(sid, option[i].getOptionNum());
+				if(history != null){
+					temp += "<div class='option' >";
+						temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
+						temp += "<div class='form-row'>";
+					for(int k = 0; k<history.length; k++){
+						temp += "<div class='form-group col-sm-1' style='border-right:2px solid black;'>"+(k+1) +"</div>";
+						temp += "<div class='form-group col-sm-11'>"+history[k]+"</div>";
+					}
+						temp += "</div>";
+					temp += "</div>";	
 				}
-					temp += "</div>";
-				temp += "</div>";	
-			}
-			else{
-				temp += "<div class='option'>";
-					temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
-					temp += "<div class='form-row'>";
-					temp += "<div class='form-group col-sm-12' style='border-right:2px solid black;'> 아직 설문 내용이 없습니다 </div>";
-					temp += "</div>";
-				temp += "</div>";	
-			}
-			%>
-			<%= temp %>
-			<% 		
-		}else{
-			HistoryCountDTO[] history= historyDAO.getHistoryCount(sid, option[i].getOptionNum());		
-			String optionLabels = "";
-			String optionData = "";
-			String color = "";
-			int totalCount = 0;
-			for(int step = 0; step < history.length; step++){
-				totalCount += history[step].getCount();
-			}
-			
-			if(history != null && totalCount > 0){
-				for(int k = 0; k<history.length; k++){
-					optionData += history[k].getCount();
-					optionLabels += "'"+history[k].getComponentContent()+"'";
+				else{
+					temp += "<div class='option'>";
+						temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
+						temp += "<div class='form-row'>";
+						temp += "<div class='form-group col-sm-12' style='border-right:2px solid black;'> 아직 설문 내용이 없습니다 </div>";
+						temp += "</div>";
+					temp += "</div>";	
+				}
+				%>
+				<%= temp %>
+				<% 		
+			}else{
+				HistoryCountDTO[] history= historyDAO.getHistoryCount(sid, option[i].getOptionNum());		
+				String optionLabels = "";
+				String optionData = "";
+				String color = "";
+				int totalCount = 0;
+				for(int step = 0; step < history.length; step++){
+					totalCount += history[step].getCount();
+				}
+				
+				if(history != null && totalCount > 0){
+					for(int k = 0; k<history.length; k++){
+						optionData += history[k].getCount();
+						optionLabels += "'"+history[k].getComponentContent()+"'";
+						int RGB_1 = (int) Math.floor(Math.random() * (255 + 1));
+						int RGB_2 = (int)Math.floor(Math.random() * (255 + 1));
+						int RGB_3 = (int)Math.floor(Math.random() * (255 + 1));
+						color += "'rgba(' + "+RGB_1+" + ',' + "+RGB_2+" + ',' + "+RGB_3+" + ',0.3)'";
+						
+						if(k != history.length-1){
+							optionData +=",";
+							optionLabels += ",";
+							color += ",";
+						}
+						
+					}
+					optionData = "["+optionData+"]";
+					optionLabels = "["+optionLabels+"]";
+					color = "["+color+"]";		
+				}else{
 					int RGB_1 = (int) Math.floor(Math.random() * (255 + 1));
 					int RGB_2 = (int)Math.floor(Math.random() * (255 + 1));
 					int RGB_3 = (int)Math.floor(Math.random() * (255 + 1));
-					color += "'rgba(' + "+RGB_1+" + ',' + "+RGB_2+" + ',' + "+RGB_3+" + ',0.3)'";
-					
-					if(k != history.length-1){
-						optionData +=",";
-						optionLabels += ",";
-						color += ",";
-					}
-					
+					optionLabels = "['Empty']";
+					optionData = "[1]";
+					color = "['rgba(' + "+RGB_1+" + ',' + "+RGB_2+" + ',' + "+RGB_3+" + ',0.3)']";
+						
 				}
-				optionData = "["+optionData+"]";
-				optionLabels = "["+optionLabels+"]";
-				color = "["+color+"]";		
-			}else{
-				int RGB_1 = (int) Math.floor(Math.random() * (255 + 1));
-				int RGB_2 = (int)Math.floor(Math.random() * (255 + 1));
-				int RGB_3 = (int)Math.floor(Math.random() * (255 + 1));
-				optionLabels = "['Empty']";
-				optionData = "[1]";
-				color = "['rgba(' + "+RGB_1+" + ',' + "+RGB_2+" + ',' + "+RGB_3+" + ',0.3)']";
-					
-			}
-		
-			%>
-			<canvas id="<%=option[i].getOptionNum()%>chart" width="200" height="200"></canvas>
-			<script>
-				new Chart(document.getElementById("<%=option[i].getOptionNum()%>chart"), {
-				    type: 'pie',
-				    data: {
-				      labels: <%= optionLabels%>,
-				      datasets: [{
-				        label: "명",
-				        backgroundColor: <%=color%>,
-				        data: <%=optionData%>
-				      }]
-				    },
-				    options: {
-				      title: {
-				        display: true,
-				        text: "<%= option[i].getOptionTitle()%>"
-				      }
-				    }
-				});
-			</script>
 			
-			<%
+				%>
+				<canvas id="<%=option[i].getOptionNum()%>chart" width="200" height="200"></canvas>
+				<script>
+					new Chart(document.getElementById("<%=option[i].getOptionNum()%>chart"), {
+					    type: 'pie',
+					    data: {
+					      labels: <%= optionLabels%>,
+					      datasets: [{
+					        label: "명",
+					        backgroundColor: <%=color%>,
+					        data: <%=optionData%>
+					      }]
+					    },
+					    options: {
+					      title: {
+					        display: true,
+					        text: "<%= option[i].getOptionTitle()%>"
+					      }
+					    }
+					});
+				</script>
+				
+				<%
+			}
 		}
-	}
+	%>
+	</div>
+	<div id="viewEach" style="display:none;">	
+	<div class="list mb-5">
+		<div class="list-content">
+			<div class="list-option">
+				<div class="list-option-item">
+					날짜
+			 	</div>
+				<div class="list-option-item">
+					ID
+			 	</div>	
+				<div class="list-option-item" style="grid-column-end: span 2;">
+					수정
+				</div>
+			 	<div class="list-option-item">
+			 		삭제 
+				</div> 
+			</div>
+		<%
+		HistoryListDTO[] historyListDTO = historyDAO.getAllHistoryList(sid);
+		String historyList ="";
+		
+		for(int step = 0; step<historyListDTO.length; step++) {
+				historyList +="<div class=\"list-rows\" >\n"+
+						"<div class=\"list-item\">\n"+
+								historyListDTO[step].getSurveyDate()+ "\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							historyListDTO[step].getUserID()+ "\n"+
+						"</div>\n"+		
+						"<div class=\"list-item\" style=\"grid-column-end: span 2\">\n"+
+							"<a href='./ViewUserResponse.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>응답 보기</a>\n"+
+						"</div>\n"+
+						"<div class=\"list-item\">\n"+
+							"<a href='./ViewUserResponse.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
+						"</div>\n"+
+				   "</div>";				
+			
+		}
+		%>
+		<%= historyList %>
+		</div>
+	</div>
 	
-%>	
+		
+	</div>
 
 
 

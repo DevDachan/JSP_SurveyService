@@ -300,3 +300,9 @@ input[type="password"]{
 .clip{
 	margin:0px  !important;
 }
+
+.bt-change-history{
+	background:white;
+	border: 0px;
+}
+

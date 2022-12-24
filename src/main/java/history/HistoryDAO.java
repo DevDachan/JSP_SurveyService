@@ -8,7 +8,42 @@ public class HistoryDAO extends DatabaseUtil{
 	public HistoryDAO(ServletContext application) {
 		super(application);
 	}
+	public HistoryListDTO[] getAllHistoryList(int sid) {
+		HistoryListDTO[] historyDTO = null;
+		int history_len = 0;
+		try {
+			
+			String query = "SELECT COUNT(distinct survey_id, history_index) FROM survey_history WHERE survey_id=? ";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				history_len = rs.getInt(1);
+			}
+			              
+			historyDTO = new HistoryListDTO[history_len];
+			query = "SELECT DISTINCT survey_id, name ,date,user_id, history_index,  edit_state FROM survey_history JOIN survey ON(survey_id = id) WHERE survey_id =? ORDER BY date,option_num,component_num ";
+			
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+				
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next() && i<history_len) {
+				historyDTO[i++] = new HistoryListDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(5));
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 
+		
+		
+		return historyDTO;
+	}
 	public int getPrvhistory(int sid, String uid) {
 		String query = "SELECT * FROM survey_history WHERE survey_id=? AND user_id=?";
 		int result = 0;
@@ -142,7 +177,7 @@ public class HistoryDAO extends DatabaseUtil{
 			}
 			              
 			historyDTO = new HistoryListDTO[history_len];
-			query = "SELECT DISTINCT history_index, survey_id, name , date, edit_state FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY date,option_num,component_num ";
+			query = "SELECT DISTINCT survey_id, name ,date,user_id, history_index,  edit_state FROM survey_history JOIN survey ON(survey_id = id) WHERE user_id =? ORDER BY date,option_num,component_num ";
 			
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, userID);
@@ -150,7 +185,7 @@ public class HistoryDAO extends DatabaseUtil{
 			rs = psmt.executeQuery();
 			int i = 0;
 			while(rs.next() && i<history_len) {
-				historyDTO[i++] = new HistoryListDTO(rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(1),rs.getInt(5));
+				historyDTO[i++] = new HistoryListDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(5));
 			}
 			
 		}catch(Exception e){
