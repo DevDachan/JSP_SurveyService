@@ -3,7 +3,7 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
-<%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.ComponentDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='survey.SurveyDTO' %>
 <%@ page import='java.net.URLEncoder' %>
@@ -38,6 +38,7 @@ pageEncoding="UTF-8"  %>
 		  obj.style.width = "100%";
 		  
 		}
+		
 	</script>
 	
 	
@@ -66,7 +67,6 @@ pageEncoding="UTF-8"  %>
 	}else{
 		String userID = (String) session.getAttribute("userID");
 		int sid = Integer.parseInt(request.getParameter("sid"));	
-		System.out.print(sid);
 %>
 
 	
@@ -108,7 +108,7 @@ pageEncoding="UTF-8"  %>
 			</ul>
 		</div>
 	</nav>
-	<section class="container mt-3" style="max-width: 500px;">				  
+	<section class="container mt-3" style="max-width: 700px;">				  
 
 
 <%
@@ -119,11 +119,17 @@ pageEncoding="UTF-8"  %>
 		<div class="survey-title form-group col-sm-12">
 			<textarea maxlength='50' class='form-control option-title-text' 
 				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%></textarea>
+			<script>
+				resize(surveyTitle);
+			</script>	
 		</div>
 		<div class="survey-content form-group col-sm-12">
 			<textarea maxlength='2048' class='form-control option-title-text' 
 				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyContent' style='font-size: 15px;'
 				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%></textarea>
+			<script>
+				resize(surveyContent);
+			</script>	
 		</div>
 	</div>
 </div>
@@ -175,7 +181,7 @@ pageEncoding="UTF-8"  %>
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] option = surveyDAO.getComponent(sid);
+	ComponentDTO[] option = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option_detail = surveyDAO.getOption(sid);
 
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
@@ -185,7 +191,10 @@ pageEncoding="UTF-8"  %>
 							"</div>\n"+
 							"<div class='option-content'>\n"+
 								"<div class='option-content-item'>\n"+
-									"<textarea maxlength='2048' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+									"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+									"<script>"+
+										"resize(optionContent"+option[count].getOptionNum()+");"+
+									"</script>"+			
 								"</div>\n"+
 							"</div>\n";
 	

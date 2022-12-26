@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 
 import util.DatabaseUtil;
 
+
 public class ResultDAO extends DatabaseUtil {
 	
 	public ResultDAO(ServletContext application) {
@@ -239,6 +240,63 @@ public class ResultDAO extends DatabaseUtil {
 		
 		return "";
 	}
+	
+	public String getSelectComponent(int surveyID,String userID,String date,int optionNum) {
+		
+		String historyQuery = "SELECT content FROM survey_history WHERE survey_id= ? AND user_id=? AND date =? AND option_num=?";
+		try {
+			psmt = con.prepareStatement(historyQuery);
+			psmt.setInt(1, surveyID);
+			psmt.setString(2, userID);
+			psmt.setString(3, date);
+			psmt.setInt(4, optionNum);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+			
+			
+		}catch(Exception e ) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	public String[] getSelectComponentCheckbox(int surveyID,String userID,String date,int optionNum) {
+		String[] content = null;
+		String historyQuery = "SELECT content FROM survey_history WHERE survey_id= ? AND user_id=? AND date =? AND option_num=?";
+		String countQuery = "SELECT COUNT(*) FROM survey_history WHERE survey_id= ? AND user_id=? AND date =? AND option_num=?";
+		
+		try {
+			int count = 0;
+			psmt = con.prepareStatement(countQuery);
+			psmt.setInt(1, surveyID);
+			psmt.setString(2, userID);
+			psmt.setString(3, date);
+			psmt.setInt(4, optionNum);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			psmt = con.prepareStatement(historyQuery);
+			psmt.setInt(1, surveyID);
+			psmt.setString(2, userID);
+			psmt.setString(3, date);
+			psmt.setInt(4, optionNum);
+			rs = psmt.executeQuery();
+			content = new String[count];
+			int i = 0;
+			
+			while(rs.next()) {
+				content[i++] = rs.getString(1);
+			}
+			return content;
+		}catch(Exception e ) {
+			e.printStackTrace();
+		}
+		return content;
+	}
+
 }
 
 

@@ -306,3 +306,19 @@ input[type="password"]{
 	border: 0px;
 }
 
+
+.btl-blue{
+	border : 0px;
+	border-bottom: 2px solid blue;
+}
+
+.btl-black{
+	border : 0px;
+	border-bottom: 2px solid black;
+}
+
+.viewtag-item{
+	text-align:center;
+	width: 100px;
+	padding-bottom:1rem;
+}

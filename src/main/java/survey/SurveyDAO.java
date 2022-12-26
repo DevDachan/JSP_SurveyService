@@ -452,8 +452,8 @@ public class SurveyDAO extends DatabaseUtil {
 	}
 	
 	
-	public OptionDTO[] getComponent(int sid) {
-		OptionDTO[] survey = null;
+	public ComponentDTO[] getComponent(int sid) {
+		ComponentDTO[] survey = null;
 		int survey_len = 0;
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=?;";
 		try {
@@ -472,10 +472,10 @@ public class SurveyDAO extends DatabaseUtil {
 			psmt.setInt(1, sid);
 			rs = psmt.executeQuery();
 
-			survey = new OptionDTO[survey_len];
+			survey = new ComponentDTO[survey_len];
 			int i = 0;
 			while(rs.next() && i <survey_len){ // get survey content
-				survey[i] = new OptionDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				survey[i] = new ComponentDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
 			}
 		}catch(Exception e){
@@ -485,8 +485,8 @@ public class SurveyDAO extends DatabaseUtil {
 		return survey;
 	}
 	
-	public OptionDTO[] getSelectComponent(int sid, int option_num) {
-		OptionDTO[] survey = null;
+	public ComponentDTO[] getSelectComponent(int sid, int option_num) {
+		ComponentDTO[] survey = null;
 		int survey_len = 0;
 		String count_survey = "SELECT COUNT(*) FROM survey_option WHERE survey_id=? AND option_num=?;";
 		try {
@@ -507,10 +507,10 @@ public class SurveyDAO extends DatabaseUtil {
 			psmt.setInt(2, option_num);
 			rs = psmt.executeQuery();
 
-			survey = new OptionDTO[survey_len];
+			survey = new ComponentDTO[survey_len];
 			int i = 0;
 			while(rs.next() && i <survey_len){ // get survey content
-				survey[i] = new OptionDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
+				survey[i] = new ComponentDTO(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5),rs.getString(7));
 				i++;
 			}
 		}catch(Exception e){
@@ -583,6 +583,41 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		return 0;
 	}
+	public int getEditState(int surveyID) {
+		String query = "SELECT edit_state FROM survey WHERE id=?";
+		
+		try {
+			
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public int getLimitState(int surveyID) {
+		String query = "SELECT limit_state FROM survey WHERE id=?";
+		
+		try {
+			
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public int changeEditState(int surveyID) {
 		String query = "SELECT edit_state FROM survey WHERE id=?";
 		try {
@@ -611,6 +646,26 @@ public class SurveyDAO extends DatabaseUtil {
 		
 		
 		return 0;
+	}
+	
+	public String getComponentContent(int surveyID, int optionNum, int componentNum) {
+		
+		String query = "SELECT content FROM survey_option WHERE survey_id=? AND option_num =? AND component_num=?";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			psmt.setInt(2, optionNum);
+			psmt.setInt(3, componentNum);
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }
 

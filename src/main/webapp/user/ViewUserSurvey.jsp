@@ -4,9 +4,11 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='user.UserDAO' %>
-<%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.ComponentDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='survey.SurveyDTO' %>
+<%@ page import='history.HistoryDAO' %>
+
 
 <%@ page import='java.net.URLEncoder' %>
 <!DOCTYPE html>
@@ -33,6 +35,9 @@ pageEncoding="UTF-8"  %>
 	String userID = null;
 	SurveyDAO surveyDAO = new SurveyDAO(application);
 	UserDAO userDAO = new UserDAO(application);
+	HistoryDAO historyDAO = new HistoryDAO(application);
+	
+	
 	if(request.getParameter("sid") == null){
 		%>
 		<jsp:include page='../alert.jsp'> 
@@ -47,7 +52,27 @@ pageEncoding="UTF-8"  %>
 		}else{
 			userID = "Guest";
 		}
+		
 		int sid = Integer.parseInt(request.getParameter("sid"));
+		
+		int limitState = surveyDAO.getLimitState(sid);
+		if(limitState == 0){
+			if(userID == "Guest"){
+				%>
+				<jsp:include page='../alert.jsp'> 
+						<jsp:param name="title" value="<%=URLEncoder.encode(\"접근 불가\", \"UTF-8\") %>" />
+						<jsp:param name="content" value="<%=URLEncoder.encode(\"로그인 후 이용해주시기 바라겠습니다.\", \"UTF-8\") %>" />
+						<jsp:param name="url" value="location.href = '../login/ViewLogin.jsp';"/>
+				</jsp:include>	
+				<% 	
+			}else{
+				int check_dup = historyDAO.getPrvhistoryIndex(sid,userID);
+				if(check_dup != 0){
+					response.sendRedirect("http://localhost:8080/Survey_project/user/ViewUserSurveyResult.jsp?sid=" + sid + "&&hid=" + check_dup);
+				}
+			}
+		}
+		
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
@@ -87,30 +112,27 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 	
-	<section class="container mt-3" style="max-width: 500px;">
+	<section class="container mt-3" style="max-width: 700px;">
 
 	<%
-		if(userID != "Guest"){
-			int checkLimit = userDAO.checkLimit(sid,userID);
-			if(checkLimit == 0){
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("location.href = './userSurveyResult.jsp?sid="+sid+"&&prvsv=1"+"';");
-				script.println("</script>");
-				script.close();
-			}
-		}
 		
 		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
+		
+		String temp_survey_title= surveyDetail.getSurveyName().replace("\n","<br/>");
+		String temp_survey_content= surveyDetail.getSurveyContent().replace("\n","<br/>");
+		
 	%>
+	
+	
+	
 	<div class="survey">
 		<div class = "form-row">
 			<div class="survey-title form-group col-sm-12">
-				<label class='option-title-text' id='surveyTitle'><%=surveyDetail.getSurveyName()%></label>
+				<label class='option-title-text' id='surveyTitle'><%=temp_survey_title%></label>
 			</div>
 			<div class="survey-content form-group col-sm-12" style="height:auto;">
 				<label class='option-title-text form-control' style="padding:10px; font-size:15px;height:auto;" 
-				id='surveyTitle'><%=surveyDetail.getSurveyContent()%></label>
+				id='surveyTitle'><%=temp_survey_content%></label>
 			</div>
 		</div>
 	</div>
@@ -125,18 +147,22 @@ pageEncoding="UTF-8"  %>
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] survey = surveyDAO.getComponent(sid);
+	ComponentDTO[] survey = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
 
 	for(int option_num = 0; option_num< option.length; option_num++){
+		
+		String temp_content = option[option_num].getOptionContent().replace("\n","<br/>");
+		String temp_title = option[option_num].getOptionTitle().replace("\n","<br/>");
+		
 		String start = "<div class='option mb-5'>\n"+
 						"<div class='option-title'>\n" + 
-						"<p class='option-title-text'>"+ option[option_num].getOptionTitle()+
+						"<p class='option-title-text'>"+ temp_title+
 						"</p>\n" + 
 						"</div>\n"+
 						"<div class='option-content'>\n"+
 						"<div class='option-content-item'>\n"+
-							option[option_num].getOptionContent()+
+								temp_content+
 						"</div>\n"+
 						"</div>\n";
 		buf = "";

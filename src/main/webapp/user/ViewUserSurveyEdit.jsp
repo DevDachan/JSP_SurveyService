@@ -4,7 +4,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.SurveyDTO' %>
-<%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.ComponentDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='history.HistoryDTO' %>
 <%@ page import='user.UserDAO' %>
@@ -59,6 +59,12 @@ pageEncoding="UTF-8"  %>
 		userID = (String) session.getAttribute("userID");
 	}
 	
+	
+	int editState = surveyDAO.getEditState(sid);
+	
+	if(editState == 0){
+		response.sendRedirect("http://localhost:8080/Survey_project/index.jsp");
+	}
 %>
 
 	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
@@ -116,7 +122,7 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</div>
 	
-	<form action="./ActionUserEditSubmit.jsp" method="post" id="survey-submit">
+	<form action="./ActionUserEditSubmit.jsp?hid=<%=hid %>" method="post" id="survey-submit">
 	<input type="hidden" name="sid" value="<%=sid %>">
 	
 	<%
@@ -125,7 +131,7 @@ pageEncoding="UTF-8"  %>
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] component = surveyDAO.getComponent(sid);
+	ComponentDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
 	
 	int hstep = 0;

@@ -182,37 +182,7 @@ public class UserDAO extends DatabaseUtil {
 		return adminDTO;
 		
 	}
-	public int checkLimit(int surveyID, String userID) {
-		String selectQuery = "SELECT limit_state FROM survey WHERE id=?";
-		String usercheckQuery = "SELECT COUNT(*) FROM survey_history WHERE survey_id=? AND user_id=?";
-		try {
-			psmt = con.prepareStatement(selectQuery);
-			psmt.setInt(1, surveyID);
-			rs = psmt.executeQuery();
-			
-			if(rs.next()) {
-				if(rs.getInt(1) == 0){
-					psmt = con.prepareStatement(usercheckQuery);
-					psmt.setInt(1, surveyID);
-					psmt.setString(2, userID);
 
-					rs = psmt.executeQuery();
-					if(rs.next()) {
-						if(rs.getInt(1) != 0) {
-							return 0;
-						}else {
-							return 1;
-						}
-					}
-				}else {
-					return 1;
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return 0;
-	}
 }
 	
 

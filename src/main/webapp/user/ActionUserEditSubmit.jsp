@@ -25,6 +25,8 @@ pageEncoding="UTF-8"  %>
 <% 
 	request.setCharacterEncoding("UTF-8");
 	int sid = Integer.parseInt(request.getParameter("sid"));
+	
+	int hid = Integer.parseInt(request.getParameter("hid"));
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
@@ -34,19 +36,20 @@ pageEncoding="UTF-8"  %>
 	HistoryDAO historyDAO = new HistoryDAO(application);
 	OptionDetailDTO[] list = surveyDAO.getOption(sid); // [i][0] = option_num  [i][1] = option type
 
-	int history_index = historyDAO.getHistoryNum(sid)-1;
+	
 	
 	int result = 0;	
 	
 	LocalDateTime  now = LocalDateTime .now();
 	String date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-	historyDAO.deletePrvHistory(userID, sid,history_index);
+	historyDAO.deletePrvHistory(userID, sid,hid);
 	
 	for(int i = 0; i<list.length; i++){
 		if(list[i].getType().equals("checkbox") && request.getParameterValues("checkbox"+list[i].getOptionNum()+"[]") != null){
 			for(int k = 0; k < request.getParameterValues("checkbox"+list[i].getOptionNum()+"[]").length; k++){
 				int component_num = Integer.parseInt(request.getParameterValues("checkbox"+list[i].getOptionNum()+"[]")[k]);
-				result = historyDAO.addHistory(sid,userID,history_index,list[i].getOptionNum(),component_num,"checkbox",date);	
+				String componentContent = surveyDAO.getComponentContent(sid,list[i].getOptionNum(),component_num);
+				result = historyDAO.addHistory(sid,userID,hid,list[i].getOptionNum(),component_num,componentContent,date);	
 				if(result == 0){
 					%>
 					<jsp:include page='../alert.jsp'> 
@@ -62,7 +65,8 @@ pageEncoding="UTF-8"  %>
 		else if(list[i].getType().equals("radio") && request.getParameter("radio"+list[i].getOptionNum()) != null){
 			
 			int component_num = Integer.parseInt(request.getParameter("radio"+list[i].getOptionNum()));
-			result = historyDAO.addHistory(sid,userID,history_index,list[i].getOptionNum(),component_num,"radio",date);	
+			String componentContent = surveyDAO.getComponentContent(sid,list[i].getOptionNum(),component_num);
+			result = historyDAO.addHistory(sid,userID,hid,list[i].getOptionNum(),component_num,componentContent,date);	
 			if(result == 0){
 				%>
 				<jsp:include page='../alert.jsp'> 
@@ -76,7 +80,7 @@ pageEncoding="UTF-8"  %>
 		else if (list[i].getType().equals("text") && request.getParameter("text"+list[i].getOptionNum()) != null){
 			System.out.print("hello");
 			String content = request.getParameter("text"+list[i].getOptionNum());
-			result = historyDAO.addHistory(sid,userID,history_index,list[i].getOptionNum(),1,content,date);	
+			result = historyDAO.addHistory(sid,userID,hid,list[i].getOptionNum(),1,content,date);	
 			if(result == 0){
 				%>
 				<jsp:include page='../alert.jsp'> 
@@ -103,7 +107,7 @@ pageEncoding="UTF-8"  %>
 		form.appendChild(time);
 		
 		form.setAttribute('method', 'post'); //get,post 가능
-		form.setAttribute('action', "./userSurveyResult.jsp?sid=<%=sid%>"); //보내는 url
+		form.setAttribute('action', "./ViewUserSurveyResult.jsp?sid=<%=sid%>"); //보내는 url
 		document.body.appendChild(form);
 		form.submit();
 

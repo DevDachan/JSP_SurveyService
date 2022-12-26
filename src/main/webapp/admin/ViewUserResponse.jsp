@@ -4,7 +4,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='survey.SurveyDTO' %>
-<%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.ComponentDTO' %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='history.HistoryDTO' %>
 <%@ page import='user.UserDAO' %>
@@ -124,7 +124,7 @@ pageEncoding="UTF-8"  %>
 	int temp_id;
 	String buf ="";
 	String result = "";
-	OptionDTO[] component = surveyDAO.getComponent(sid);
+	ComponentDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
 	
 	int hstep = 0;

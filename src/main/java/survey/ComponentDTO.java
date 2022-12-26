@@ -1,6 +1,6 @@
 package survey;
 
-public class OptionDTO {
+public class ComponentDTO {
 	private int surveyID;
 	private String optionType;
 	private int optionNum;
@@ -9,7 +9,7 @@ public class OptionDTO {
 	private String surveyName;
 	
 	
-	public OptionDTO(int surveyID, String optionType, int optionNum, int componentNum, String content,
+	public ComponentDTO(int surveyID, String optionType, int optionNum, int componentNum, String content,
 			String surveyName) {
 		super();
 		this.surveyID = surveyID;
@@ -19,7 +19,7 @@ public class OptionDTO {
 		this.content = content;
 		this.surveyName = surveyName;
 	}
-	public OptionDTO() {
+	public ComponentDTO() {
 		
 	}
 	public int getSurveyID() {

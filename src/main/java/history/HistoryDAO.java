@@ -61,6 +61,56 @@ public class HistoryDAO extends DatabaseUtil{
 		}
 		return 0;
 	}
+	
+	public int checkLimit(int surveyID, String userID) {
+		String selectQuery = "SELECT limit_state FROM survey WHERE id=?";
+		String usercheckQuery = "SELECT COUNT(*) FROM survey_history WHERE survey_id=? AND user_id=?";
+		try {
+			psmt = con.prepareStatement(selectQuery);
+			psmt.setInt(1, surveyID);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getInt(1) == 0){
+					psmt = con.prepareStatement(usercheckQuery);
+					psmt.setInt(1, surveyID);
+					psmt.setString(2, userID);
+
+					rs = psmt.executeQuery();
+					if(rs.next()) {
+						if(rs.getInt(1) != 0) {
+							return 0;
+						}else {
+							return 1;
+						}
+					}
+				}else {
+					return 1;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	public int getPrvhistoryIndex(int sid, String uid) {
+		String query = "SELECT history_index FROM survey_history WHERE survey_id=? AND user_id=?";
+		try{
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+			psmt.setString(2, uid);	
+
+			
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	public int getHistoryNum(int sid) {
 		String query = "SELECT MAX(history_index) FROM survey_history WHERE survey_id=?";
 		
@@ -185,7 +235,7 @@ public class HistoryDAO extends DatabaseUtil{
 			rs = psmt.executeQuery();
 			int i = 0;
 			while(rs.next() && i<history_len) {
-				historyDTO[i++] = new HistoryListDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(5));
+				historyDTO[i++] = new HistoryListDTO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6));
 			}
 			
 		}catch(Exception e){

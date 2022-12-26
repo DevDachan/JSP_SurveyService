@@ -2,9 +2,10 @@
 pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
-<%@ page import='survey.SurveyDAO' %>
-<%@ page import='survey.OptionDTO' %>
+<%@ page import='survey.ComponentDTO' %>
+<%@ page import='survey.OptionDetailDTO' %>
 
+<%@ page import='survey.SurveyDAO' %>
 <%@ page import='result.ResultDTO' %>
 <%@ page import='result.ResultDAO' %>
 <%@ page import='java.net.URLEncoder' %>
@@ -31,7 +32,7 @@ pageEncoding="UTF-8"  %>
 <body>
 <% 
 	ResultDAO resultDAO = new ResultDAO(application);
-
+	SurveyDAO surveyDAO = new SurveyDAO(application);
 	int sid = 0;
 	int hid = 0;
 	int prvsv = 0;
@@ -40,7 +41,7 @@ pageEncoding="UTF-8"  %>
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
 	}else{
-		userID = "unknown";
+		userID = "Guest";
 	}
 	
 	if(request.getParameter("sid") != null){
@@ -55,6 +56,8 @@ pageEncoding="UTF-8"  %>
 		if(request.getParameter("submitTime") != null){
 			date = request.getParameter("submitTime");
 		}else if(hid != 0){
+
+			
 			date = resultDAO.getDateTime(sid,userID,hid);
 		}	
 	}
@@ -114,6 +117,30 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 	<%
 		String content = resultDAO.userResultContent(sid, userID,date);
+		OptionDetailDTO[] option = surveyDAO.getOption(sid);
+		for(int i = 0; i< option.length; i++){
+			if(option[i].getType().equals("checkbox")){
+				String temp = "["+option[i].getType() + option[i].getOptionNum()+"]";
+				String[] userSelectComponent = resultDAO.getSelectComponentCheckbox(sid,userID,date,option[i].getOptionNum());
+				String userSelect = "";
+				for(int k = 0; k< userSelectComponent.length; k++){
+					userSelect += userSelectComponent[k];
+					if(k != userSelectComponent.length-1){
+						userSelect += ",";
+					}
+				}
+				
+				content = content.replace(temp,userSelect);	
+			}else{
+				String temp = "["+option[i].getType() + option[i].getOptionNum()+"]";
+				String userSelect = resultDAO.getSelectComponent(sid,userID,date,option[i].getOptionNum());
+				
+				content = content.replace(temp,userSelect);	
+			}
+		}
+		content = content.replace("\n","<br/>");
+		
+	
 		String title = "";
 		if(content.equals("") ){
 			title = "제출 완료";
@@ -123,7 +150,6 @@ pageEncoding="UTF-8"  %>
 			content = "이미 제출이 완료된 설문입니다";
 		}
 	%>
-	
 	<h3><%= title %></h3>
 	<%= content %>
 	

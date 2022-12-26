@@ -262,6 +262,7 @@ pageEncoding="UTF-8"  %>
 		String historyList ="";
 		
 		for(int step = 0; step<historyListDTO.length; step++) {
+			System.out.println(historyListDTO[step].getEditState());
 			if(historyListDTO[step].getEditState() == 0){
 				historyList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
