@@ -1,16 +1,22 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Survey-service-JSP&fontSize=70" width=100% />
 
+<div align='center'>
+	<img src="https://img.shields.io/badge/JavaScript-007396?style=flat&logo=JavaScript&logoColor=white"/>
+	<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white"/>
+	<img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=flat&logo=Apache Tomcat&logoColor=white"/>
+	<img src="https://img.shields.io/badge/JQuery-0769AD?style=flat&logo=JQuery&logoColor=white"/>
+	<img src="https://img.shields.io/badge/HTML-007396?style=flat&logo=HTML5&logoColor=white"/>
+	<img src="https://img.shields.io/badge/CSS-F43059?style=flat&logo=CSS Wizardry&logoColor=white"/>
+</div>
+<br/>
+
+
 - 기존에 존재하는 Google Forms과 Microsoft Forms에서 라디오 버튼의 선택지로 결과 페이지를 분기시키는 기능과 프로그래밍적 요소를 추가할 수 있는 기능을 추가한 서비스입니다.
 
 
 <br/>
 <br/>
 
-## Getting Started
-서비스는 기본적으로 JSP언어로 작성이 되었으며 tomcat container를 사용해 구동이 됩니다. 
-
-<br/>
-<br/>
 
 ## Preview
 <img src="https://user-images.githubusercontent.com/111109411/209267328-02ba436f-7ca4-4ca2-873b-030cb559c9c4.png" style="height:300px"/>
@@ -19,7 +25,7 @@
 <br/>
 <br/>
 
-### 개발 환경
+## 개발 환경 
 
 [Eclipse v4.25.0](https://www.eclipse.org/downloads/) - JAVA 개발 환경
 
@@ -33,14 +39,14 @@
 <br/>
 <br/>
 
-### Installation
+## Installation
 - Clone the repo: ```git clone https://github.com/DevDachan/Survey-service-JSP.git```
 
 <br/>
 <br/>
 
--------------
-### Page 흐름
+
+## Page 흐름
  
 > #### 1. View page
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
@@ -55,8 +61,8 @@
 <br/>
 <br/>
 
--------------
-### 주요 기능
+
+## 주요 기능
 
 > #### alert.jsp
 > - alert를 위한 기능을 사용하면서 자바에서 제공하는 기본적인 alert의 경우에는 각각의 브라우져 환경마다 다른 형태로 출력이 되기 때문에 해당 alert를 위해서 modal을 사용하여 경고 문구를 출력하도록 했습니다.
@@ -167,9 +173,6 @@ We use [Git](https://git-scm.com/) for versioning. For the versions available, s
 
 
 
-
-## Language
-#### JSP, JQuery, HTML, JS, CSS, MySQL
 
 
 <br/>
