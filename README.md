@@ -19,25 +19,25 @@
 <br/>
 <br/>
 
-## 목차
-[1. 미리보기](#미리보기)
+## :yellow_heart:목차
+[1. 미리보기](#green_heart미리보기)
 
-[2. 개발 환경](#개발-환경)
+[2. 개발 환경](#blue_heart개발-환경)
 
-[3. 설치](#설치)
+[3. 설치](#purple_heart설치)
 
-[4. 페이지 흐름](#페이지-흐름)
+[4. 페이지 흐름](#heartpulse페이지-흐름)
 
-[5. 주요 기능](#주요-기능)
+[5. 주요 기능](#heartbeat주요-기능)
 
-[6. JSP Study](#jsp-study)
+[6. JSP Study](#notebookjsp-study)
 
 
 
 <br/>
 <br/>
 
-## 미리보기
+## :green_heart:미리보기
 <div>
 	<img src="https://user-images.githubusercontent.com/111109411/209615941-ad2a34c1-33c1-48a4-b4fb-69f55c2854b3.png" style="height:300px"/>
 	<img src="https://user-images.githubusercontent.com/111109411/209616400-94392b5f-a7e4-4efa-a980-528e9b5ab417.png" style="height:300px"/>
@@ -46,7 +46,7 @@
 <br/>
 <br/>
 
-## 개발 환경 
+## :blue_heart:개발 환경 
 
 [Eclipse v4.25.0](https://www.eclipse.org/downloads/) - JAVA 개발 환경
 
@@ -60,14 +60,14 @@
 <br/>
 <br/>
 
-## 설치
+## :purple_heart:설치
 - Clone the repo: ```git clone https://github.com/DevDachan/Survey-service-JSP.git```
 
 <br/>
 <br/>
 
 
-## 페이지 흐름
+## :heartpulse:페이지 흐름
  
 > #### 1. View page
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
@@ -83,7 +83,7 @@
 <br/>
 
 
-## 주요 기능
+## :heartbeat:주요 기능
 
 > #### 1. 결과 페이지 구성
 > - 결과페이지에서는 먼저 이전 사용자가 설문에 응답한 내용를 토대로 내용을 출력해줘야 합니다. 때문에 각각의 결과 페이지에서 어떤 질문을 토대로 분기를 할지 결정을 합니다. 기본적으로 하나만 선택할 수 있는 라디오버튼이 선택 사항이 됩니다. 
@@ -218,7 +218,7 @@
 ```  
   
   
-## Authors
+## :man:Authors
 
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
 
@@ -240,6 +240,6 @@
 https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md 
 
 
-### JSP Study
+### :notebook:JSP Study
 -------------
 [Notion - JSP Study](https://circular-otter-276.notion.site/JSP-2022-11-7a8fdc51009b402ab2bf778612774916)
