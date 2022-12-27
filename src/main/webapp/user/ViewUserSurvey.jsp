@@ -147,15 +147,15 @@ pageEncoding="UTF-8"  %>
 	int temp_id;
 	String buf ="";
 	String result = "";
-	ComponentDTO[] survey = surveyDAO.getComponent(sid);
+
+	ComponentDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
 
 	for(int option_num = 0; option_num< option.length; option_num++){
 		
 		String temp_content = option[option_num].getOptionContent().replace("\n","<br/>");
 		String temp_title = option[option_num].getOptionTitle().replace("\n","<br/>");
-		
-		String start = "<div class='option mb-5'>\n"+
+		String start = "<div class='option mt-5 '>\n"+
 						"<div class='option-title'>\n" + 
 						"<p class='option-title-text'>"+ temp_title+
 						"</p>\n" + 
@@ -166,37 +166,90 @@ pageEncoding="UTF-8"  %>
 						"</div>\n"+
 						"</div>\n";
 		buf = "";
-		temp_id = survey[count].getOptionNum();
-
-		while(count < survey.length && survey[count].getOptionNum() == temp_id){
-			if(survey[count].getOptionType().equals("radio")){
+		temp_id = component[count].getOptionNum();
+		String alert_text = "<label class='ml-3 mt-3' style='display:none; color:red; font-size:25px;' id='lb_alert"+component[count].getOptionNum()+"'>* 값을 입력해주세요.</label>";
+		
+		while(count < component.length && component[count].getOptionNum() == temp_id){
+			if(component[count].getOptionType().equals("radio")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='radio' name='radio"+survey[count].getOptionNum()+"' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
+				buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
 				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+survey[count].getContent()+"</label></div>";
+				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("checkbox")){
+			}else if(component[count].getOptionType().equals("checkbox")){
 				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='checkbox' name='checkbox"+survey[count].getOptionNum()+"[]' value='"+survey[count].getComponentNum()+"' placeholder='helo'></div>";
-				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+survey[count].getContent() +"</label></div>";
+				buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
 				buf +="</div>";
-			}else if(survey[count].getOptionType().equals("text")){
+			}else if(component[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text" + survey[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
 				buf +="</div>";
 			}
 			count++;			
 		}
 		buf +="<div class='option-rows-text'> <label class='warning' style='display:none;'>* 필수로 하나는 선택해주세요</label> </div>";
 		buf += "</div>";
-		result = result + start + buf;
+		
+		result = result + start + buf + alert_text;
 	}	
 	%>
 	<%=	result %>
 	
 	
-	<button type="submit" class="btn btn-primary" style="width:100%;"> 제출하기 </button>
+	<button type="button" id="submit_btn" class="btn btn-primary mt-5" style="width:100%;" onClick="checkUncheckedOption()"> 제출하기 </button>
 	</form>
+	
+	<script>
+	function checkUncheckedOption(){
+		var sucess = 0;
+		<%
+		for(int i =0; i< option.length; i++){
+			if(option[i].getType().equals("checkbox")){%>
+				document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'none';
+				var list = document.getElementsByName("<%=option[i].getType()%><%=option[i].getOptionNum()%>[]");
+				var checkbox_sucess = 0;
+				for(var k = 0; k< list.length; k++){
+					if(list[k].checked == true)	{
+						checkbox_sucess += 1;
+					}
+				}
+				if(checkbox_sucess == 0){
+					document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'block';
+					sucess += 1;
+				}
+			<%}else if(option[i].getType().equals("radio")){%>
+				document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'none';
+				var list = document.getElementsByName("<%=option[i].getType()%><%=option[i].getOptionNum()%>");
+				var radio_sucess = 0;
+				for(var k = 0; k< list.length; k++){
+					if(list[k].checked == true)	{
+						radio_sucess += 1;
+					}
+				}
+				if(radio_sucess == 0){
+					document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'block';
+					sucess += 1;
+				}
+			<%}else{%>
+				document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'none';
+				var check = document.getElementsByName("<%=option[i].getType()%><%=option[i].getOptionNum()%>")[0].value;
+				if(check == null || check ==""){
+					document.getElementById("lb_alert<%=option[i].getOptionNum()%>").style.display = 'block';
+					sucess += 1;
+				}
+			<%}
+			}%>
+		if(sucess == 0){
+			document.getElementById("survey-submit").submit();
+		}else{
+			document.getElementById("submit_btn").innerText = "제출하기 (미입력 값이 존재합니다)";
+			document.getElementById("submit_btn").style.background = "red";
+			
+		}
+	}
+	</script>
+	
 	
 	</section>
 	

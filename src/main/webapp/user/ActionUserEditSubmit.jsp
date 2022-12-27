@@ -78,7 +78,6 @@ pageEncoding="UTF-8"  %>
 			}
 		}
 		else if (list[i].getType().equals("text") && request.getParameter("text"+list[i].getOptionNum()) != null){
-			System.out.print("hello");
 			String content = request.getParameter("text"+list[i].getOptionNum());
 			result = historyDAO.addHistory(sid,userID,hid,list[i].getOptionNum(),1,content,date);	
 			if(result == 0){
