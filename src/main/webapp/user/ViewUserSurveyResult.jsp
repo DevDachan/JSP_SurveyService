@@ -8,6 +8,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.SurveyDAO' %>
 <%@ page import='result.ResultDTO' %>
 <%@ page import='result.ResultDAO' %>
+<%@ page import='user.UserDAO' %>
 <%@ page import='java.net.URLEncoder' %>
 
 <!DOCTYPE html>
@@ -71,6 +72,7 @@ pageEncoding="UTF-8"  %>
 <% 
 	ResultDAO resultDAO = new ResultDAO(application);
 	SurveyDAO surveyDAO = new SurveyDAO(application);
+	UserDAO userDAO = new UserDAO(application);
 	int sid = 0;
 	int hid = 0;
 	int prvsv = 0;
@@ -199,12 +201,14 @@ pageEncoding="UTF-8"  %>
 		<input type="email" id="ip_email" placeholder="email" style="white-space : nowrap ">
 		<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
 	</div>
-	<label id="alert_message" style="color:red; margin-left:5px;"></label>
-	<%}else{%>
-	
-	<button type="submit" class="btn btn-primary mt-5" onClick="location.href='../index.jsp';" style="width:100%;"> 메일로 응답 받기 </button>
+	<%}else{
+		String userEmail = userDAO.getUserEmail(userID);
+	%>
+	<input type="hidden" id="ip_email" placeholder="email" style="white-space : nowrap" value="<%=userEmail%>">
+	<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
 	
 	<%} %>
+	<label id="alert_message" style="color:red; margin-left:5px;"></label>
 	<button type="submit" class="btn btn-primary mt-2" onClick="location.href='../index.jsp';" style="width:100%;"> 메인 </button>
 	
 

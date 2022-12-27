@@ -182,6 +182,21 @@ public class UserDAO extends DatabaseUtil {
 		return adminDTO;
 		
 	}
+	public String getUserEmail(String userID) {
+	String query = "SELECT user_email FROM user WHERE id=?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "" ;   //  DE error
+	}
 
 }
 	
