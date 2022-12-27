@@ -26,31 +26,31 @@ pageEncoding="UTF-8"  %>
 		if(userEmail == null || userEmail == ""){
 			document.getElementById("sendCodeBtn").innerText = "이메일을 입력해주세요";	
 		}
-		
-		document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
-		$.ajax({
-    	 	type:'post',
-      	 	async:true, //false가 기본값임 - 비동기
-       		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
-        	dataType:'text',
-        	data:{
-        		userEmail:userEmail
-        		},
-        	success: function(res) {
-        		result = res.split('{')[1].split("}")[0];  		
-        		if(result.includes("Success")){
-        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";
-        			document.getElementById('code-title').style.display = "block";
-          			document.getElementById('code-input').style.display = "block";	
-        		}else{
-        			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
-        		}
-        	},
-       		error:function (data, textStatus) {
-            	console.log('error');
-      	  	}
-  	  	})
-
+		else{
+			document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
+			$.ajax({
+	    	 	type:'post',
+	      	 	async:true, //false가 기본값임 - 비동기
+	       		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
+	        	dataType:'text',
+	        	data:{
+	        		userEmail:userEmail
+	        		},
+	        	success: function(res) {
+	        		result = res.split('{')[1].split("}")[0];  		
+	        		if(result.includes("Success")){
+	        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";
+	        			document.getElementById('code-title').style.display = "block";
+	          			document.getElementById('code-input').style.display = "block";	
+	        		}else{
+	        			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
+	        		}
+	        	},
+	       		error:function (data, textStatus) {
+	            	console.log('error');
+	      	  	}
+	  	  	})	
+		}
 		
 	}
 	

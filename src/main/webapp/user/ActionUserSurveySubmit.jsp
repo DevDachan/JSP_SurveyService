@@ -30,6 +30,8 @@ pageEncoding="UTF-8"  %>
 	String userID = null;
 	if(session.getAttribute("userID") != null){
 		userID = (String) session.getAttribute("userID");
+	}else{
+		userID= "Guest";
 	}
 	
 	SurveyDAO surveyDAO = new SurveyDAO(application);
@@ -107,7 +109,7 @@ pageEncoding="UTF-8"  %>
 		form.appendChild(time);
 		
 		form.setAttribute('method', 'post'); //get,post 가능
-		form.setAttribute('action', "./ViewUserSurveyResult.jsp?sid=<%=sid%>"); //보내는 url
+		form.setAttribute('action', "./ViewUserSurveyResult.jsp?sid=<%=sid%>&&hid=<%=history_index%>"); //보내는 url
 		document.body.appendChild(form);
 		form.submit();
 

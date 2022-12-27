@@ -28,6 +28,44 @@ pageEncoding="UTF-8"  %>
 			text-decoration: none;
 		}
 	</style>
+	
+	<script>
+	function sendEmail(){
+		document.getElementById("alert_message").innerText = "";	
+		userEmail = document.getElementById("ip_email").value;
+		content = document.getElementById("content").innerHTML;
+		if(userEmail == null || userEmail == ""){
+			document.getElementById("alert_message").innerText = "* 이메일을 입력해주세요";	
+		}else{
+			document.getElementById("sendMailBtn").innerText = "재전송";
+			document.getElementById("alert_message").innerText = "전송 완료";	
+			$.ajax({
+	    	 	type:'post',
+	      	 	async:true, 
+	       		url:'http://localhost:8080/Survey_project/user/ActionMailSend.jsp',
+	        	dataType:'text',
+	        	data:{
+	        		userEmail:userEmail,
+	        		content:content
+	        		},
+	        	success: function(res) {
+	        		result = res.split('{')[1].split("}")[0];  		
+	        		if(result.includes("Success")){
+	  	
+	        		}else{
+	        			document.getElementById("sendMailBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
+	        		}
+	        	},
+	       		error:function (data, textStatus) {
+	            	console.log('error');
+	      	  	}
+	  	  	})
+		}
+	
+	}
+	
+	</script>
+	
 </head>
 <body>
 <% 
@@ -61,8 +99,6 @@ pageEncoding="UTF-8"  %>
 			date = resultDAO.getDateTime(sid,userID,hid);
 		}	
 	}
-	
-	
 	
 	if(prvsv==0 && sid == 0 || prvsv==0 && date == null){
 %>
@@ -117,6 +153,7 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 500px;">
 	<%
 		String content = resultDAO.userResultContent(sid, userID,date);
+		
 		OptionDetailDTO[] option = surveyDAO.getOption(sid);
 		for(int i = 0; i< option.length; i++){
 			if(option[i].getType().equals("checkbox")){
@@ -151,8 +188,26 @@ pageEncoding="UTF-8"  %>
 		}
 	%>
 	<h3><%= title %></h3>
+	<div id="content">
 	<%= content %>
+	</div>
 	
+	<% 
+		if(userID == "Guest"){
+	%>
+	<div class="mt-5">
+		<input type="email" id="ip_email" placeholder="email" style="white-space : nowrap ">
+		<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
+	</div>
+	<label id="alert_message" style="color:red; margin-left:5px;"></label>
+	<%}else{%>
+	
+	<button type="submit" class="btn btn-primary mt-5" onClick="location.href='../index.jsp';" style="width:100%;"> 메일로 응답 받기 </button>
+	
+	<%} %>
+	<button type="submit" class="btn btn-primary mt-2" onClick="location.href='../index.jsp';" style="width:100%;"> 메인 </button>
+	
+
 	
 	</section>
 	

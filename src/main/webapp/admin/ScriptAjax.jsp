@@ -6,7 +6,7 @@
 		function addComponent(surveyID, optionNum){
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false, 
            		url:'http://localhost:8080/Survey_project/admin/ActionAddSurveyComponent.jsp',
             	dataType:'text',
             	data:{
@@ -25,7 +25,7 @@
 
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionDeleteSurveyComponent.jsp',
             	dataType:'text',
             	data:{
@@ -48,7 +48,7 @@
 			
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionAddSurveyOption.jsp',
             	dataType:'text',
             	data:{
@@ -66,7 +66,7 @@
 		function deleteOption(surveyID, optionNum){			
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionDeleteSurveyOption.jsp',
             	dataType:'text',
             	data:{
@@ -93,7 +93,7 @@
 
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionEditOption.jsp',
             	dataType:'text',
             	data:{
@@ -118,7 +118,7 @@
 			content = document.getElementById(optionType+optionNum+componentNum).value;	
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionEditComponent.jsp',
             	dataType:'text',
             	data:{
@@ -143,7 +143,7 @@
 			content = document.getElementById(optionType).value;	
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionEditSurvey.jsp',
             	dataType:'text',
             	data:{
@@ -161,7 +161,7 @@
 		function change_limit_state(sid){
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionChangeLimitState.jsp',
             	dataType:'text',
             	data:{
@@ -177,7 +177,7 @@
 		function change_edit_state(sid){
 			$.ajax({
         	 	type:'post',
-          	 	async:false, //false가 기본값임 - 비동기
+          	 	async:false,  
            		url:'http://localhost:8080/Survey_project/admin/ActionChangeEditState.jsp',
             	dataType:'text',
             	data:{
