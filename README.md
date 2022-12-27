@@ -14,18 +14,39 @@
 - 기존에 존재하는 Google Forms과 Microsoft Forms에서 라디오 버튼의 선택지로 결과 페이지를 분기시키는 기능과 프로그래밍적 요소를 추가할 수 있는 기능을 추가한 서비스입니다.
 
 
-<br/>
-<br/>
-
-
-## Preview
-<img src="https://user-images.githubusercontent.com/111109411/209267328-02ba436f-7ca4-4ca2-873b-030cb559c9c4.png" style="height:300px"/>
 
 
 <br/>
 <br/>
 
-## 개발 환경 
+## :yellow_heart:목차
+[1. 미리보기](#green_heart미리보기)
+
+[2. 개발 환경](#blue_heart개발-환경)
+
+[3. 설치](#purple_heart설치)
+
+[4. 페이지 흐름](#heartpulse페이지-흐름)
+
+[5. 주요 기능](#heartbeat주요-기능)
+
+[6. JSP Study](#notebookjsp-study)
+
+
+
+<br/>
+<br/>
+
+## :green_heart:미리보기
+<div>
+	<img src="https://user-images.githubusercontent.com/111109411/209615941-ad2a34c1-33c1-48a4-b4fb-69f55c2854b3.png" style="height:300px"/>
+	<img src="https://user-images.githubusercontent.com/111109411/209616400-94392b5f-a7e4-4efa-a980-528e9b5ab417.png" style="height:300px"/>
+</div>
+
+<br/>
+<br/>
+
+## :blue_heart:개발 환경 
 
 [Eclipse v4.25.0](https://www.eclipse.org/downloads/) - JAVA 개발 환경
 
@@ -39,14 +60,14 @@
 <br/>
 <br/>
 
-## Installation
+## :purple_heart:설치
 - Clone the repo: ```git clone https://github.com/DevDachan/Survey-service-JSP.git```
 
 <br/>
 <br/>
 
 
-## Page 흐름
+## :heartpulse:페이지 흐름
  
 > #### 1. View page
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
@@ -62,9 +83,55 @@
 <br/>
 
 
-## 주요 기능
+## :heartbeat:주요 기능
 
-> #### alert.jsp
+> #### 1. 결과 페이지 구성
+> - 결과페이지에서는 먼저 이전 사용자가 설문에 응답한 내용를 토대로 내용을 출력해줘야 합니다. 때문에 각각의 결과 페이지에서 어떤 질문을 토대로 분기를 할지 결정을 합니다. 기본적으로 하나만 선택할 수 있는 라디오버튼이 선택 사항이 됩니다. 
+
+
+> ##### Admin Result
+> - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 '\n'을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
+```
+<textarea maxlength='2048' wrap="hard" cols="20" onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content" onChange="editContent(0)"></textarea>
+```
+
+
+> ##### User Result
+> - DB에 저장된 text를 불러오면서는 이전에 사용자에게 제공해줬던 tag값을 통해 DB에 저장된 설문 정보와 matching시켜 값을 대입시켜줍니다. 이때 값은 replace()를 사용해 넣어주며 출력하는 부분에서 HTML로 출력이 되기 때문에 줄바꿈 문자를 </br>로 바꿔주는 작업이 필요 합니다.
+```
+<%
+	String content = resultDAO.userResultContent(sid, userID,date);
+		
+	OptionDetailDTO[] option = surveyDAO.getOption(sid);
+	for(int i = 0; i< option.length; i++){
+		if(option[i].getType().equals("checkbox")){
+			String temp = "["+option[i].getType() + option[i].getOptionNum()+"]";
+			String[] userSelectComponent = resultDAO.getSelectComponentCheckbox(sid,userID,date,option[i].getOptionNum());
+			String userSelect = "";
+			for(int k = 0; k< userSelectComponent.length; k++){
+				userSelect += userSelectComponent[k];
+				if(k != userSelectComponent.length-1){
+					userSelect += ",";
+				}
+			}
+				
+			content = content.replace(temp,userSelect);	
+		}else{
+			String temp = "["+option[i].getType() + option[i].getOptionNum()+"]";
+			String userSelect = resultDAO.getSelectComponent(sid,userID,date,option[i].getOptionNum());
+				
+			content = content.replace(temp,userSelect);	
+		}
+	}
+	content = content.replace("\n","<br/>");
+%>
+<%=content%>
+```
+
+</br>
+
+
+> #### 2. Alert.jsp
 > - alert를 위한 기능을 사용하면서 자바에서 제공하는 기본적인 alert의 경우에는 각각의 브라우져 환경마다 다른 형태로 출력이 되기 때문에 해당 alert를 위해서 modal을 사용하여 경고 문구를 출력하도록 했습니다.
 > 
 > ※   alert의 경우 사용자의 USE CASE의 흐름을 방해하기 때문에 사용을 지양하고 정말 필요한 부분에서만 사용해야 합니다.
@@ -125,7 +192,7 @@
 <image src="https://user-images.githubusercontent.com/111109411/208437090-e0b2f93a-e10d-424b-afe0-56145735d899.png" width=50%>
 
 
-> #### ajax
+> #### 3. Ajax
 > - ajax는 기본적으로 페이지 내부에서 비동기적인 흐름을 담게 해주는 기법 중 하나로써 해당 서비스에서는 설문지를 만들고 해당 설문지 내부에서 수정 및 삭제하는 작업시 바로바로 DB와 연동해서 update가 되도록 만들어주는 기능을 하고 있습니다.
 > - 해당 ajax기법을 사용함으로써 사용자는 설문지를 수정하면서 특정 submit 버튼 없이 내용 수정이 가능합니다.
 > - ajax는 특정 page에 request를 보내고 response를 받아와 결과에 대한 작업 수행이 가능합니다. 이때 Data를 request에 함께 실어서 보낼 수 있으며 앞서 말한 action페이지에서는 이렇게 ajax로 들어온 request에 대해서 DB값을 update하는 작업을 하게 됩니다.   
@@ -151,17 +218,7 @@
 ```  
   
   
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-
-## Versioning
-
-We use [Git](https://git-scm.com/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-
-## Authors
+## :man:Authors
 
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
 
@@ -183,6 +240,6 @@ We use [Git](https://git-scm.com/) for versioning. For the versions available, s
 https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md 
 
 
-### JSP Study
+### :notebook:JSP Study
 -------------
 [Notion - JSP Study](https://circular-otter-276.notion.site/JSP-2022-11-7a8fdc51009b402ab2bf778612774916)
