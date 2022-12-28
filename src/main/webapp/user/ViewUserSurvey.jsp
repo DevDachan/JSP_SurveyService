@@ -115,15 +115,11 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 700px;">
 
 	<%
-		
 		SurveyDTO surveyDetail = surveyDAO.getSurvey(sid);
-		
 		String temp_survey_title= surveyDetail.getSurveyName().replace("\n","<br/>");
 		String temp_survey_content= surveyDetail.getSurveyContent().replace("\n","<br/>");
 		
 	%>
-	
-	
 	
 	<div class="survey">
 		<div class = "form-row">
@@ -137,12 +133,10 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</div>
 
-
-	
 	<form action="./ActionUserSurveySubmit.jsp" method="post" id="survey-submit">
 	<input type="hidden" name="sid" value="<%=sid %>">
-	<%
 	
+	<%
 	int count = 0;
 	int temp_id;
 	String buf ="";

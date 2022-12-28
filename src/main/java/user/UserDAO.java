@@ -38,7 +38,6 @@ public class UserDAO extends DatabaseUtil {
 		try {
 			psmt = con.prepareStatement(query_select);
 			psmt.setString(1, email);
-			
 			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
@@ -46,13 +45,11 @@ public class UserDAO extends DatabaseUtil {
 			}else {
 				dup_check = 0;
 			}
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		if(dup_check == 1) {
 			String query = "UPDATE emailCode SET code =? WHERE email=?";
-			
 			try {
 				psmt = con.prepareStatement(query);
 				psmt.setString(1, code);
@@ -60,7 +57,6 @@ public class UserDAO extends DatabaseUtil {
 				
 				int result = psmt.executeUpdate();
 				return result;	// ID error
-				
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -74,12 +70,10 @@ public class UserDAO extends DatabaseUtil {
 				
 				int result = psmt.executeUpdate();
 				return result;	// ID error
-				
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
-		
 		return 0; 
 	}
 	
@@ -197,7 +191,39 @@ public class UserDAO extends DatabaseUtil {
 		}
 		return "" ;   //  DE error
 	}
-
+	
+	public int checkUserEmail(String email) {
+		String query = "SELECT COUNT(*) FROM user WHERE user_email=?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, email);
+			rs = psmt.executeQuery();
+			if(rs.next()){
+				return rs.getInt(1);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return 1;
+	}
+	public int checkUserID(String userID) {
+		String query = "SELECT COUNT(*) FROM user WHERE id=?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, userID);
+			rs = psmt.executeQuery();
+			if(rs.next()){
+				return rs.getInt(1);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return 1;
+	}
 }
 	
 

@@ -7,6 +7,8 @@ pageEncoding="UTF-8"  %>
 
 
 <%UserDAO userDAO = new UserDAO(application); %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,41 +25,40 @@ pageEncoding="UTF-8"  %>
 	function sendCode(){
 		userEmail = document.getElementById('useremail').value;// input data
 		document.getElementById("codeError").style.display = "none";
-		if(userEmail == null || userEmail == ""){
-			document.getElementById("sendCodeBtn").innerText = "이메일을 입력해주세요";	
-		}
-		else{
-			document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
-			$.ajax({
-	    	 	type:'post',
-	      	 	async:true, //false가 기본값임 - 비동기
-	       		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
-	        	dataType:'text',
-	        	data:{
-	        		userEmail:userEmail
-	        		},
-	        	success: function(res) {
-	        		result = res.split('{')[1].split("}")[0];  		
-	        		if(result.includes("Success")){
-	        			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";
-	        			document.getElementById('code-title').style.display = "block";
-	          			document.getElementById('code-input').style.display = "block";	
-	        		}else{
-	        			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
-	        		}
-	        	},
-	       		error:function (data, textStatus) {
-	            	console.log('error');
-	      	  	}
-	  	  	})	
-		}
 		
+		document.getElementById("sendCodeBtn").innerText = "전송 중입니다. 잠시만 기다려주세요";
+		document.getElementById("sendCodeBtn").style.background = "#0069d9";
+		document.getElementById("sendCodeBtn").disabled = true;
+ 
+		$.ajax({
+	   	 	type:'post',
+	   	 	async:true, //false가 기본값임 - 비동기
+	   		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
+	      	dataType:'text',
+	       	data:{
+	       		userEmail:userEmail
+	       		},
+	       	success: function(res) {
+	       		result = res.split('{')[1].split("}")[0];  		
+	       		if(result.includes("Success")){
+	       			document.getElementById("sendCodeBtn").innerText = "전송 완료(재전송을 원하시면 눌러주세요)";
+	       			document.getElementById('code-title').style.display = "block";
+	       			document.getElementById('code-input').style.display = "block";	
+	      			document.getElementById("sendCodeBtn").disabled = false;
+	       		}else{
+	       			document.getElementById("sendCodeBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
+	       		}
+	       	},
+	   		error:function (data, textStatus) {
+	       	console.log('error');
+	   	  	}
+	  	})	
 	}
-	
-	
 	function init_modal(){
 		document.getElementById('code-title').style.display = "none";
 		document.getElementById('code-input').style.display = "none";
+		document.getElementById('code_input_value').value = "";
+		document.getElementById('useremail').value = "";
 	}
 	
 	function codeCheck(){	
@@ -76,6 +77,7 @@ pageEncoding="UTF-8"  %>
         	success: function(res) {
         		result = res.split('{')[1].split("}")[0];  		
         		if(result.includes("Success")){
+        			
         			check = 1;
         		}else{
         			document.getElementById("codeError").style.display = "block";
@@ -85,7 +87,6 @@ pageEncoding="UTF-8"  %>
             console.log('error');
         }
   	  })
-  	  
   	  	if(check == 1){
   			document.getElementById('code-title').style.display = "block";
   			document.getElementById('code-input').style.display = "block";
@@ -93,9 +94,77 @@ pageEncoding="UTF-8"  %>
   			document.getElementById('userEmail').value = userEmail;
   			document.getElementById('email_auth_label').innerText = userEmail;
   			document.getElementById('close_modal').click();
+  			document.getElementById('code_input_value').innerText = "";
+  			document.getElementById('useremail').innerText = "";	
+			document.getElementById("submit_btn").innerText = "가입하기";
+			document.getElementById("submit_btn").style.background = "#FF8484";
   	  	}	
-		
-		
+	}
+	function submitCheck(){
+		if(document.getElementById("dup_ip").style.display == "none"){
+			if(document.getElementById("userEmail").value == "Not"){
+				document.getElementById("submit_btn").innerText = "가입하기 (이메일 인증을 완료해주세요)";
+				document.getElementById("submit_btn").style.background = "red";
+			}else{
+				document.getElementById("form_register").submit();
+			}	
+		}else{
+			document.getElementById("submit_btn").innerText = "가입하기 (올바른 아이디를 입력해주세요)";
+			document.getElementById("submit_btn").style.background = "red";
+		}
+	}
+	function checkDupID(){
+		userID = document.getElementById("userID").value;
+		$.ajax({
+    	 	type:'post',
+      	 	async:false, //false가 기본값임 - 비동기
+       		url:'http://localhost:8080/Survey_project/login/ActionIDCheck.jsp',
+        	dataType:'text',
+        	data:{
+        		userID:userID
+        		},
+        	success: function(res) {
+        		result = res.split('{')[1].split("}")[0];  		
+        		if(result.includes("Success")){
+        			document.getElementById("dup_ip").style.display = "none";
+        		}else{
+        			document.getElementById("dup_ip").style.display = "block";
+        		}
+        	},
+        error:function (data, textStatus) {
+            console.log('error');
+        }
+  	  })	
+	}
+	function checkDupEmail(){
+		userEmail = document.getElementById('useremail').value;// input data
+
+		if(userEmail == null || userEmail == ""){
+			document.getElementById("sendCodeBtn").innerText = "이메일을 입력해주세요";
+			document.getElementById("sendCodeBtn").style.background = "red";
+		}else{
+			$.ajax({
+	    	 	type:'post',
+	      	 	async:true, //false가 기본값임 - 비동기
+	       		url:'http://localhost:8080/Survey_project/login/ActionEmailCheck.jsp',
+	        	dataType:'text',
+	        	data:{
+	        		userEmail:userEmail
+	        		},
+	        	success: function(res) {
+	        		result = res.split('{')[1].split("}")[0];  		
+	        		if(result.includes("Success")){
+						sendCode();
+	        		}else{
+	        			document.getElementById("sendCodeBtn").innerText = "이미 존재하는 이메일입니다";
+	    				document.getElementById("sendCodeBtn").style.background = "red";
+	        		}
+	        	},
+	        error:function (data, textStatus) {
+	            console.log('error');
+	        }
+	  	  })	
+		}
 	}
 	</script>
 	
@@ -158,7 +227,7 @@ pageEncoding="UTF-8"  %>
 	</nav>
 	
 	<section class="container mt-3" style="max-width: 500px;">
-		<form method="post" action="./ActionRegister.jsp">
+		<form method="post" action="./ActionRegister.jsp" id="form_register">
 		<div class="form-row">
 			<div class="col-sm-12">
 				<div class="form-row" >
@@ -166,8 +235,15 @@ pageEncoding="UTF-8"  %>
 						ID
 					</div>
 					<div class="form-group col-sm-10">
-						<input type="text" name="userID" class="form-control" required placeholder="ID">
+						<input type="text" onChange="checkDupID()" id="userID" name="userID" class="form-control" required placeholder="ID">
 					</div>
+					<div class="col-sm-2">
+					</div>
+					
+					<div class="col-sm-10">
+						<label id="dup_ip" style="display:none;">이미 존재하는 ID입니다.</label>
+					</div>
+					
 				</div>
 				<div class="form-row" >
 					<div class="form-group col-sm-2 ">
@@ -176,6 +252,7 @@ pageEncoding="UTF-8"  %>
 					<div class="form-group col-sm-10">
 						<input type="password" name="userPWD" class="form-control" required placeholder="Password">
 					</div>
+					
 				</div>
 				<div class="form-row" >	
 					<div class="form-group col-sm-6">
@@ -188,7 +265,7 @@ pageEncoding="UTF-8"  %>
 				</div>
 			</div>	
 			<div class="col-sm-12">
-				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">가입하기</button>
+				<button type="button" id="submit_btn" onclick="submitCheck()" class="btn" style="background:#FF8484; width:100%; height:90%; color:white;">가입하기</button>
 			</div>
 		</div>
 		</form>
@@ -216,7 +293,7 @@ pageEncoding="UTF-8"  %>
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"placeholder="example@gmail.com" maxlength="30">	
 								</div>
 								<div class="form-group col-sm-12 mb-5">
-									<button type="button" id="sendCodeBtn" class="btn btn-primary" style="width:100%;" onClick='sendCode()'>인증 코드 보내기</button>
+									<button type="button" id="sendCodeBtn" class="btn btn-primary" style="width:100%;" onClick='checkDupEmail()'>인증 코드 보내기</button>
 								</div>
 								<div class="form-group col-sm-4">
 									<div id="code-title" style="display:none;"><label >코드</label></div>
