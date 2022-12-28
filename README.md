@@ -19,6 +19,10 @@
 <br/>
 <br/>
 
+### DB 구성 [DB.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/DB.md)
+### 페이지 구성 [PAGE.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/PAGE.md)
+
+
 ## :yellow_heart:목차
 [1. 미리보기](#green_heart미리보기)
 
@@ -39,8 +43,8 @@
 
 ## :green_heart:미리보기
 <div>
-	<img src="https://user-images.githubusercontent.com/111109411/209615941-ad2a34c1-33c1-48a4-b4fb-69f55c2854b3.png" style="height:300px"/>
-	<img src="https://user-images.githubusercontent.com/111109411/209616400-94392b5f-a7e4-4efa-a980-528e9b5ab417.png" style="height:300px"/>
+	<img src="https://user-images.githubusercontent.com/111109411/209615941-ad2a34c1-33c1-48a4-b4fb-69f55c2854b3.png" style="height:300px; width:400px"/>
+	<img src="https://user-images.githubusercontent.com/111109411/209616400-94392b5f-a7e4-4efa-a980-528e9b5ab417.png" style="height:300px; width:400px"/>
 </div>
 
 <br/>
