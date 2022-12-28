@@ -204,11 +204,12 @@ pageEncoding="UTF-8"  %>
 	<%}else{
 		String userEmail = userDAO.getUserEmail(userID);
 	%>
-	<input type="hidden" id="ip_email" placeholder="email" style="white-space : nowrap" value="<%=userEmail%>">
-	<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
-	
+	<div class="mt-5">
+		<input type="hidden" id="ip_email" placeholder="email" style="white-space : nowrap" value="<%=userEmail%>">
+		<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
+	</div>
 	<%} %>
-	<label id="alert_message" style="color:red; margin-left:5px;"></label>
+	<label id="alert_message" style="color:blue; margin-top:2px; margin-left:5px;"></label>
 	<button type="submit" class="btn btn-primary mt-2" onClick="location.href='../index.jsp';" style="width:100%;"> 메인 </button>
 	
 

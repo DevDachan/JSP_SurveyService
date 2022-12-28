@@ -17,8 +17,8 @@ pageEncoding="UTF-8"  %>
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
 	<!-- custom CSS insert -->
 	<link rel="stylesheet" href="../css/custom.css?ver=1">
-	
-	
+
+
 </head>
 <body>
 <% 
@@ -91,15 +91,13 @@ pageEncoding="UTF-8"  %>
 			<div class="col-sm-6 row-sm-2 mb-3">
 				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
 			</div>
-			<div class="col-sm-12 mb-3">
-				<a href="http://localhost:8080/Survey_project/GoogleLoginAction.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#724A4A;color:white; ">Login with Google</a>
-			</div>
 			<div class="col-sm-12">
 				<a href="http://localhost:8080/Survey_project/login/ViewRegister.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>
 			</div>
 		</div>
 		</form>
 	</section>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
 
 	<br/>
 

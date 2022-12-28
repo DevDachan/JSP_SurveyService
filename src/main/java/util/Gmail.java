@@ -9,6 +9,5 @@ public class Gmail extends Authenticator{
 	// 보안에 문제가 되기 때문에 protected method type으로 보호해준다.
 	protected PasswordAuthentication getPasswordAuthentication() {
 		return new PasswordAuthentication("dachan9524@gmail.com","mjdppawewxspdnag");	
-	}
-	
+	}	
 }

@@ -14,6 +14,9 @@ body{
 input[type="password"]{
 	font-family:'Nanum Gothic' !important;
 }
+textarea{
+	overflow:hidden;
+}
 
 .alert-box{
 	background-color: skyblue;

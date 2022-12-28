@@ -276,7 +276,7 @@ pageEncoding="UTF-8"  %>
 	</form>
 	<div class="form-row">
 		<div class="form-group col-sm-12 form-survey-delete">
-			<a href="../user/ViewUserSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">미리보기</a>
+			<a href="../user/ViewUserSurvey.jsp?sid=<%=sid %>" class="btn btn-primary" style="width:100%;">설문 페이지</a>
 		</div>
 	</div>
 	<div class="form-row">
