@@ -7,6 +7,8 @@
 	<img src="https://img.shields.io/badge/JQuery-0769AD?style=flat&logo=JQuery&logoColor=white"/>
 	<img src="https://img.shields.io/badge/HTML-007396?style=flat&logo=HTML5&logoColor=white"/>
 	<img src="https://img.shields.io/badge/CSS-F43059?style=flat&logo=CSS Wizardry&logoColor=white"/>
+	<img src="https://img.shields.io/badge/Bootstrap-F43059?style=flat&logo=Bootstrap&logoColor=white"/>
+	
 </div>
 <br/>
 
@@ -19,8 +21,8 @@
 <br/>
 <br/>
 
-### DB 구성 [DB.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/DB.md)
-### 페이지 구성 [PAGE.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/PAGE.md)
+#### DB 구성 [DB.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/DB.md)
+#### 페이지 구성 [PAGE.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/PAGE.md)
 
 
 ## :yellow_heart:목차
@@ -32,7 +34,17 @@
 
 [4. 페이지 흐름](#heartpulse페이지-흐름)
 
+> [4-1 View Page](#1-view-page)   
+> [4-2 Action Page](#2-action-page)   
+> [4-1 DAO and DTO](#3-dao-and-dto)   
+
+
+
 [5. 주요 기능](#heartbeat주요-기능)
+
+> [5-1 결과 페이지 구성](#1-결과-페이지-구성)   
+> [5-2 Alert.jsp](#2-alertjsp)   
+> [5-3 Ajax](#3-ajax)   
 
 [6. JSP Study](#notebookjsp-study)
 
@@ -227,22 +239,10 @@
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
 
 
-## Acknowledgments
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
-
-
 
 
 <br/>
 <br/>
-
-### README-template
--------------------
-https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md 
-
 
 ### :notebook:JSP Study
 -------------
