@@ -81,6 +81,16 @@ textarea{
 	margin-bottom: 10px;
 }
 
+.datatable-option-item{
+	font-size: min(3vw,30px);
+}
+
+.datatable-item{
+	text-align: center;
+	margin-bottom: 10px;
+	font-weight: normal;
+}
+
 
 #email:valid{
 	border-color: blue;
@@ -128,7 +138,7 @@ textarea{
 
 
 .option-content-item{
-	
+	padding: 5px 10px 5px 10px;
 	font-size: 15px;
 }
 
@@ -324,4 +334,8 @@ textarea{
 	text-align:center;
 	width: 100px;
 	padding-bottom:1rem;
+}
+
+.page-link{
+	color:#5F9EA0 !important;
 }

@@ -146,8 +146,8 @@ pageEncoding="UTF-8"  %>
 				String temp = "";
 				String[] history = historyDAO.getHistoryText(sid, option[i].getOptionNum());
 				if(history != null){
-					temp += "<div class='option' >";
-						temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
+					temp += "<div class='option mt-4' >";
+						temp += "<div class='option-content' style='font-size:20px; border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
 						temp += "<div class='form-row'>";
 					for(int k = 0; k<history.length; k++){
 						temp += "<div class='form-group col-sm-1' style='border-right:2px solid black;'>"+(k+1) +"</div>";
@@ -157,8 +157,8 @@ pageEncoding="UTF-8"  %>
 					temp += "</div>";	
 				}
 				else{
-					temp += "<div class='option'>";
-						temp += "<div class='option-content' style='border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
+					temp += "<div class='option mt-4'>";
+						temp += "<div class='option-content' style='font-size:20px; border-bottom: 2px solid black;'>"+ option[i].getOptionTitle() +"</div>";
 						temp += "<div class='form-row'>";
 						temp += "<div class='form-group col-sm-12' style='border-right:2px solid black;'> 아직 설문 내용이 없습니다 </div>";
 						temp += "</div>";

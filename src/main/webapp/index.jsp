@@ -11,8 +11,12 @@ pageEncoding="UTF-8"  %>
 <%@ page import='java.net.URLEncoder' %>
 
 <% 
-   UserDAO userDAO = new UserDAO(application); 
-   HistoryDAO historyDAO = new HistoryDAO(application);
+	UserDAO userDAO = new UserDAO(application); 
+	HistoryDAO historyDAO = new HistoryDAO(application);
+
+	int tabLimit = 5;
+	int maxHistoryIndex = 0;
+	int historyCount = 0;
 %>
 <!DOCTYPE html>
 <html>
@@ -33,47 +37,114 @@ pageEncoding="UTF-8"  %>
 		}
 	</style>
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-     	<script type="text/javascript">
-            function kakaoShare(surveyTitle,sid) {
-				Kakao.cleanup();
-				Kakao.init("ff87a0a2d649bcb736dbcbebed8135e9");      // 사용할 앱의 JavaScript 키
+    <script type="text/javascript">
+        function kakaoShare(surveyTitle,sid) {
+			Kakao.cleanup();
+			Kakao.init("ff87a0a2d649bcb736dbcbebed8135e9");      // 사용할 앱의 JavaScript 키
 		 
-				Kakao.Link.createDefaultButton({
-                	objectType:"feed",
-		    		container: document.querySelector("#kakao_href")
-            		,content : {
-            			title:surveyTitle
-            			,description:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // 콘텐츠 설명
-            			,imageUrl:"https://ifh.cc/g/1Drn85.jpg" // 썸네일 같은거
-            			,link : {
-            				mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid    // 모바일 카카오톡에서 사용하는 웹 링크 URL
-            				,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // PC버전 카카오톡에서 사용하는 웹 링크 URL
-            			}
-               		}, 
-               		buttons : [
-                    		 { title:"설문 참여하기"    // 공유했을 때 뜨는 버튼 제목
-                      		 , link : {
-                         		mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid // 모바일 카카오톡에서 사용하는 웹 링크 URL
-                       			,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid   
-                    			}	
-                    		}
-                    		]
-                 		});
-                 	document.getElementById("kakao_href").click(); // 새로고침
-            	 }
-            function copy_to_clipboard(sid) {    
-            	  var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
+			Kakao.Link.createDefaultButton({
+               	objectType:"feed",
+	    		container: document.querySelector("#kakao_href")
+           		,content : {
+           			title:surveyTitle
+           			,description:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // 콘텐츠 설명
+           			,imageUrl:"https://ifh.cc/g/1Drn85.jpg" // 썸네일 같은거
+           			,link : {
+           				mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid    // 모바일 카카오톡에서 사용하는 웹 링크 URL
+           				,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid  // PC버전 카카오톡에서 사용하는 웹 링크 URL
+           			}
+           		}, 
+           		buttons : [
+                  		 { title:"설문 참여하기"    // 공유했을 때 뜨는 버튼 제목
+                   		 , link : {
+                       		mobileWebUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid // 모바일 카카오톡에서 사용하는 웹 링크 URL
+                   			,webUrl:"http://localhost:8080/Survey_project/admin/ViewAdminSurvey.jsp?sid=" + sid   
+                 			}	
+                   		}
+                		]
+       		});
+           	document.getElementById("kakao_href").click(); // 새로고침
+          	 }
+		function copy_to_clipboard(sid) {    
+          	  var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
             	  
-            	  const t = document.createElement("textarea");
-            	  document.body.appendChild(t);
-            	  t.value = copyText;
-            	  t.select();
-            	  document.execCommand('copy');
-            	  document.body.removeChild(t);
-            	}
+          	  const t = document.createElement("textarea");
+           	  document.body.appendChild(t);
+           	  t.value = copyText;
+           	  t.select();
+           	  document.execCommand('copy');
+           	  document.body.removeChild(t);
+           	}
+		function changeHTable(newtbnum ,limit,maxindex,tbcount){
+			var curtbnum = document.getElementById("currentTabindex").value;
+			
+			indexnewtbnum = (Number(newtbnum)-1)*Number(limit);
+			indexcurtbnum = (Number(curtbnum)-1)*Number(limit);
 
-         </script>
-	
+			if(newtbnum != curtbnum){
+				if(newtbnum > maxindex){ // next를 통한 table 변경
+					if(indexnewtbnum != Number(indexcurtbnum)+Number(limit)){ //만약 현재 index가 최대값이라면 변경사항 X
+						document.getElementById("currentTabindex").value = Number(curtbnum)+1; 
+						for(var i = 1; i<= limit; i++){
+							if(Number(indexcurtbnum)+Number(limit)+Number(i) <= tbcount){ //list의 개수가 limit보다 작을 경우를 위한 예외처리
+								document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(limit)+Number(i))).style.display = '';
+							}
+							if(Number(indexcurtbnum)+Number(i) <= tbcount){
+								document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+							}
+						}
+						if(Number(indexcurtbnum)+Number(limit)+Number(i) > tbcount){
+							document.getElementById("datatable_info").innerText = "Showing "+(Number(curtbnum)*5+1)+" to "+(tbcount)+ " of "+tbcount+"entries";
+						}else{
+							document.getElementById("datatable_info").innerText = "Showing "+(Number(curtbnum)*5+1)+" to "+((Number(curtbnum))*5+limit)+ " of "+tbcount+"entries";	
+						}
+						
+						document.getElementById("selecttb_"+curtbnum).style.background = "white";
+						document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+						document.getElementById("selecttb_"+(Number(curtbnum)+1)).style.background = "#87F5F5";
+						document.getElementById("selecttb_"+(Number(curtbnum)+1)).style.color = "#fff";
+					}	
+				}else if(newtbnum == 0){ // prev를 통한 table 변경
+					if(curtbnum != 1){   // 만약 첫번째 index에서 prev를 눌렀을 경우 변경사항 X 
+						document.getElementById("currentTabindex").value = Number(curtbnum)-1;
+						
+						for(var i = 1; i<= limit; i++){
+							if(Number(indexcurtbnum)-Number(limit)+Number(i) <= tbcount){
+								document.getElementById("datatable_"+(Number(indexcurtbnum)-Number(limit)+Number(i))).style.display = '';
+							}
+							if(Number(indexcurtbnum)+Number(i) <= tbcount){
+								document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+							}
+						}
+						if(Number(indexcurtbnum)-Number(limit)+Number(i) > tbcount){
+							document.getElementById("datatable_info").innerText = "Showing "+((Number(curtbnum)-2)*5+1)+" to "+(tbcount)+ " of "+tbcount+"entries";
+						}else{
+							document.getElementById("datatable_info").innerText = "Showing "+((Number(curtbnum)-2)*5+1)+" to "+((Number(curtbnum)-2)*5+limit)+ " of "+tbcount+"entries";	
+						}
+						
+						document.getElementById("selecttb_"+curtbnum).style.background = "white";
+						document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+						document.getElementById("selecttb_"+(Number(curtbnum)-1)).style.background = "#87F5F5";
+						document.getElementById("selecttb_"+(Number(curtbnum)-1)).style.color = "#fff";
+					}	
+				}else{ //일반적으로 숫자를 눌렀을 경우 table 변경
+					document.getElementById("currentTabindex").value = newtbnum;
+					for(var i = 1; i<= limit; i++){
+						if(Number(indexnewtbnum)+Number(i) <= Number(tbcount)){
+							document.getElementById("datatable_"+(Number(indexnewtbnum)+Number(i))).style.display = '';
+						}				
+						if(Number(indexcurtbnum)+Number(i) <= Number(tbcount)){
+							document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+						}
+					}
+					document.getElementById("selecttb_"+curtbnum).style.background = "white";
+					document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+					document.getElementById("selecttb_"+newtbnum).style.background = "#87F5F5";
+					document.getElementById("selecttb_"+newtbnum).style.color = "#fff";
+				}
+			}
+		}
+	</script>
 </head>
 <body>
 
@@ -135,45 +206,6 @@ pageEncoding="UTF-8"  %>
 	
 	
 	<section class="container mt-3" style="max-width: 900px;">
-<%-- 
-	<div class = "row">
-		<div class="col-xl-3 col-md-6 mb-3">
-			<div class="card bg-primary">
-				<div class="card-body">
-					<h3>hello </h3>
-				</div>
-				<div class="card-footer">
-					<a class="stretched-link" href="http://www.naver.com">hi</a>
-				</div>
-			</div>
-		</div>
-		
-		<%
-		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
-		String adminList ="<div class='row'>";
-		
-		for(int step = 0; step<adminDTO.length; step++) {
-			adminList +="<div class='col-xl-3 col-md-6 mb-3'>\n"+ 
-						"<div class='card bg-primary'>\n"+
-							"<div class='card-body' style='color:white'>"+
-								"<h3>"+ adminDTO[step].getSurveyName() + "</h3>\n"+
-							"</div>\n"+
-							"<div>\n"+
-								adminDTO[step].getSurveyID()+
-							"</div>\n"+
-							"<div class='card-footer'>\n"+
-								"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"' style='width:100%'>수정하기</a>\n"+
-							"</div>\n"+
-				   		"</div>\n" + 
-						"</div>";
-		}
-		adminList += "</div>";
-		%>
-		<%= adminList %>
-	</div>
-	
-	--%>
-	
 	
 	<div class="list mb-5">
 		<div class="list-title">
@@ -235,76 +267,165 @@ pageEncoding="UTF-8"  %>
 	</div>
 	
 	
-	<div class="list mb-5">
-		<div class="list-title">
+	<div class="card" style="border:0px;">
+		<div class="card-header" style="border-radius:20px; border:0px;">
 			<h4 class="ml-4" style="margin:auto;">과거 설문 내역</h4>
 		</div>
-		<div class="list-content">
-			<div class="list-option">
-				<div class="list-option-item">
+		<div class="card-body">
+			<table class="table " style="text-align:center;">
+			<thead>
+			<tr role="row">
+				<th class="datatable-option-item">
 					날짜
-			 	</div>
-				<div class="list-option-item">
+			 	</th>
+				<th class="datatable-option-item">
 					이름 
-				</div> 
-				<div class="list-option-item">
+				</th> 
+				<th class="datatable-option-item">
 					수정
-				</div>
-			 	<div class="list-option-item">
+				</th>
+			 	<th class="datatable-option-item">
 					결과
-				</div>
-			 	<div class="list-option-item">
+				</th>
+			 	<th class="datatable-option-item">
 			 		삭제 
-				</div> 
-			</div>
+				</th> 
+			</tr>
+			</thead>
+			<tbody>
 		<%
 		HistoryListDTO[] historyListDTO = historyDAO.getHistoryList(userID);
 		String historyList ="";
 		
+		
+		//---  history table values ------------------------
+		historyCount = historyListDTO.length;
+		maxHistoryIndex = historyListDTO.length / tabLimit ;		
+		if(historyListDTO.length % tabLimit != 0){
+			maxHistoryIndex ++; 
+		}
+		//--------------------------------------------------
+		
+		
+		int historyLimitcheck = 0;
 		for(int step = 0; step<historyListDTO.length; step++) {
-			System.out.println(historyListDTO[step].getEditState());
-			if(historyListDTO[step].getEditState() == 0){
-				historyList +="<div class=\"list-rows\" >\n"+ 
-						"<div class=\"list-item\">\n"+
-								historyListDTO[step].getSurveyDate()+ "\n"+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-								historyListDTO[step].getSurveyName()+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-							"<label class='btn btn-editNot'>수정하기</a>\n"+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-							"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
-						"</div>\n"+			
-						"<div class=\"list-item\">\n"+
-							"<label class='btn btn-deleteNot'>삭제</a>\n"+
-						"</div>\n"+
-				   "</div>";	
+			if(historyLimitcheck++ < tabLimit){
+				
+				if(historyListDTO[step].getEditState() == 0){
+					historyList +="<tr id='datatable_"+(step+1)+"'>\n"+ 
+							"<th class=\"datatable-item\" >\n"+
+									historyListDTO[step].getSurveyDate()+ "\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyName()+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<label class='btn btn-editNot'>수정하기</a>\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"</th>\n"+			
+							"<th class=\"datatable-item\">\n"+
+								"<label class='btn btn-deleteNot'>삭제</a>\n"+
+							"</th>\n"+
+					   "</tr>";	
+				}else{
+					historyList +="<tr id='datatable_"+(step+1)+"'>\n"+ 
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyDate()+ "\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyName()+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"</th>\n"+			
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ActionDeleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
+							"</th>\n"+
+					   "</tr>";				
+				}
 			}else{
-				historyList +="<div class=\"list-rows\" >\n"+ 
-						"<div class=\"list-item\">\n"+
-								historyListDTO[step].getSurveyDate()+ "\n"+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-								historyListDTO[step].getSurveyName()+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-							"<a href='./user/ViewUserSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
-							"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
-						"</div>\n"+			
-						"<div class=\"list-item\">\n"+
-							"<a href='./user/ActionDeleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
-						"</div>\n"+
-				   "</div>";				
+				if(historyListDTO[step].getEditState() == 0){
+					historyList +="<tr id='datatable_"+(step+1)+"' style=\"display:none;\">\n"+ 
+							"<th class=\"datatable-item\" >\n"+
+									historyListDTO[step].getSurveyDate()+ "\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyName()+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<label class='btn btn-editNot'>수정하기</a>\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"</th>\n"+			
+							"<th class=\"datatable-item\">\n"+
+								"<label class='btn btn-deleteNot'>삭제</a>\n"+
+							"</th>\n"+
+					   "</tr>";	
+				}else{
+					historyList +="<tr id='datatable_"+(step+1)+"'  style=\"display:none;\">\n"+ 
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyDate()+ "\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+									historyListDTO[step].getSurveyName()+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyEdit.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" ' class='btn btn-primary'>수정하기</a>\n"+
+							"</th>\n"+
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ViewUserSurveyResult.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+" 'class='btn btn-primary'>결과보기</a>\n"+
+							"</th>\n"+			
+							"<th class=\"datatable-item\">\n"+
+								"<a href='./user/ActionDeleteHistory.jsp?sid="+historyListDTO[step].getSurveyID()+"&&hid="+historyListDTO[step].getHistoryID()+"' class='btn btn-delete' >삭제</a>\n"+
+							"</th>\n"+
+					   "</tr>";				
+				}
+				
 			}
-			
 		}
 		%>
 		<%= historyList %>
-		</div>
+		
+			</table>
+		
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="datatable_info" id="datatable_info">
+						Showing 1 to <%=tabLimit %> of <%=historyCount %>entries
+					</div>
+				</div>
+				<div class="col-sm-6"">
+					<div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+						<input type="hidden" id="currentTabindex" value="1" />
+						<ul class="pagination mr-2" style="justify-content: flex-end;">
+						<li class="paginate_button page-item ">
+							<button id="selecttb_0" onClick="changeHTable(0,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link">Previous</button>
+						</li>
+						<li class="paginate_button page-item ">
+							<button id="selecttb_1" onClick="changeHTable(1,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link" style="background:#87F5F5; color:white;">1</button>
+						</li>
+						<%
+							for(int i = 2; i<=maxHistoryIndex; i++){
+							%>
+							<li class="paginate_button page-item ">
+							<button id="selecttb_<%=i%>" onClick="changeHTable(<%=i%>,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link"><%=i %></button>
+							</li>
+							<%}%>
+	
+						<li class="paginate_button page-item">
+							<button id="selecttb_4" onClick="changeHTable(<%=maxHistoryIndex+1 %>,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)" aria-controls="dataTable"  tabindex="0" class="page-link">Next</button>
+						</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div><%--card-body --%>
 	</div>
 
 	
