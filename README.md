@@ -32,7 +32,17 @@
 
 [4. 페이지 흐름](#heartpulse페이지-흐름)
 
+> [4-1 View Page](#1-view-page)   
+> [4-2 Action Page](#2-action-page)   
+> [4-1 DAO and DTO](#3-dao-and-dto)   
+
+
+
 [5. 주요 기능](#heartbeat주요-기능)
+
+> [5-1 결과 페이지 구성](#1-결과-페이지-구성)   
+> [5-2 Alert.jsp](#2-alertjsp)   
+> [5-3 Ajax](#3-ajax)   
 
 [6. JSP Study](#notebookjsp-study)
 
@@ -225,13 +235,6 @@
 ## :man:Authors
 
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
-
-
-## Acknowledgments
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
 
 
 
