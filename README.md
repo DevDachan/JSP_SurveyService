@@ -242,11 +242,6 @@
 <br/>
 <br/>
 
-### README-template
--------------------
-https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md 
-
-
 ### :notebook:JSP Study
 -------------
 [Notion - JSP Study](https://circular-otter-276.notion.site/JSP-2022-11-7a8fdc51009b402ab2bf778612774916)
