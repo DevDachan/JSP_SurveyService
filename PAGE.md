@@ -28,25 +28,56 @@
 ## [2 Admin](#1-login)   
 [2-1 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
 [2-2 ActionAddSurveyComponent.jsp (Ajax)](#2-2-actionaddsurveycomponentjsp-ajax)   
-[2-3 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-4 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-5 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-6 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-7 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-8 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-9 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-10 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-11 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-12 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-13 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-14 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-15 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-16 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
-[2-17 ActionAddSurvey.jsp](#2-1-actionaddsurveyjsp-ajax)   
+[2-3 ActionAddSurveyOption.jsp (Ajax)](#2-3-actionaddsurveyoptionjsp-ajax)   
+[2-4 ActionChangeEditState.jsp (Ajax)](#2-4-actionchangeeditstatejsp-ajax)
+[2-5 ActionChangeLimitState.jsp (Ajax)](#2-5-actionchangelimitstatejsp-ajax)
+[2-6 ActionChangeResultOption.jsp (Ajax)](#2-6-actionchangeresultoptionjsp-ajax)
+[2-7 ActionDeleteSurvey.jsp (Ajax)](#2-7-actiondeletesurveyjsp-ajax)
+[2-8 ActionDeleteSurveyComponent.jsp (Ajax)](#2-8-actiondeletesurveycomponentjsp-ajax)
+[2-9 ActionDeleteSurveyOption.jsp (Ajax)](#2-9-actiondeletesurveyoptionjsp-ajax)
+[2-20 ActionEditComponent.jsp (Ajax)](#2-10-actioneditcomponentjsp-ajax)
+[2-11 ActionEditOption.jsp (Ajax)](#2-11-actioneditoptionjsp-ajax)
+[2-12 ActionEditResult.jsp (Ajax)](#2-12-actioneditresultjsp-ajax)
+[2-13 ActionEditSurvey.jsp (Ajax)](#2-13-actioneditsurveyjsp-ajax)
+[2-14 ScriptAjax.jsp](#2-14-scriptajaxjsp)
+[2-15 ViewAdminStatistic.jsp](#2-15-viewadminstatisticjsp)
+[2-16 ViewAdminSurvey.jsp](#2-16-viewadminsurveyjsp)
+[2-17 ViewAdminSurveyResult.jsp](#2-17-viewadminsurveyresultjsp)
+[2-18 ViewUserResponse.jsp](#2-18-viewuserresponsejsp)
 
-## [3 User](#3-user)   
+## [3 User](#3-user-1)   
+[3-1 ActionDeleteHistory.jsp (Ajax)](#3-1-actiondeletehistoryjsp-ajax)
+[3-2 ActionMailSend.jsp (Ajax)](#3-2-actionmailsendjsp-ajax)
+[3-3 ActionUserEditSubmit.jsp](#3-3-actionusereditsubmitjsp)
+[3-4 ActionUserSurveySubmit.jsp](#3-4-actionusersurveysubmitjsp)
+[3-5 ViewUserSurvey.jsp](#3-5-viewusersurveyjsp)
+[3-6 ViewUserSurveyEdit.jsp](#3-6-viewusersurveyeditjsp)
+[3-7 ViewUserSurveyResult.jsp](#3-7-viewusersurveyresultjsp)
 
-## [DAO and DTO](#dao-and-dto)   
+# [DAO and DTO](#dao-and-dto-1)   
+
+## [1. history](#1-history)
+[1-1 HistoryDAO.java](#1-1-historydaojava)
+[1-2 HistoryCountDTO.java](#1-2-historycountdtojava)
+[1-3 HistoryDTO.java](#1-3-historydtojava)
+[1-4 HistoryListDTO.java](#1-4-historylistdtojava)
+
+
+## [2. result](#2-result)
+[2-1 ResultDAO.java](#2-1-resultdaojava)
+[2-2 ResultDTO.java](#2-2-resultdtojava)
+
+## [3. survey](#3-survey)
+[3-1 SurveyDAO.java](#3-1-surveydaojava)
+[3-2 AdminDTO.java](#3-2-admindtojava)
+[3-3 ComponentDTO.java](#3-3-componentdtojava)
+[3-4 OptionDetailDTO.java](#3-4-optiondetaildtojava)
+[3-5 SurveyDTO.java](#3-5-surveydtojava)
+
+
+## [4. user](#4-user)
+[4-1 UserDAO.java](#4-1-userdaojava)
+[4-2 UserDTO.java](#4-2-userdtojava)
 
 </br>
 </br>
@@ -140,57 +171,57 @@
 > - **Parameter**: 사용자 ID(userID)
 > - **Async**: false
 
-### 2-6 ActionDeleteSurvey.jsp (Ajax)
+### 2-7 ActionDeleteSurvey.jsp (Ajax)
 > - ActionDeleteSurvey.jsp는 설문지를 삭제하는 페이지로써 해당 설문지 ID와 관련된 모든 정보를 삭제하는 페이지입니다. 다른 사용자가 삭제하는 경우가 있을 수 있어 survey의 admin이 아닐 경우에는 삭제되지 않도록 userID값을 입력 받아 admin을 check하는 과정을 거칩니다.
 > - **Parameter**: 사용자 ID(userID), 설문지 ID(surveyID)
 > - **Async**: false
 
-### 2-7 ActionDeleteSurveyComponent.jsp (Ajax)
+### 2-8 ActionDeleteSurveyComponent.jsp (Ajax)
 > - ActionDeleteSurveyComponent.jsp는 설문지(survey)에서 특정 질문(Option)의 선택지(Component)를 삭제하는 페이지 입니다. 
 > - **Parameter**: 설문지 ID(surveyID), 질문 번호(OptionNum), 선택지 번호(ComponentNum)
 > - **Async**: false
 
-### 2-8 ActionDeleteSurveyOption.jsp (Ajax)
+### 2-9 ActionDeleteSurveyOption.jsp (Ajax)
 > - ActionDeleteSurveyOption.jsp는 설문지(survey)에서 특정 질문(Option)을 삭제하는 페이지 입니다. 
 > - **Parameter**: 설문지 ID(surveyID), 질문 번호(OptionNum)
 > - **Async**: false
 
-### 2-9 ActionEditComponent.jsp (Ajax)
+### 2-10 ActionEditComponent.jsp (Ajax)
 > - ActionDeleteSurveyComponent.jsp는 설문지(survey)에서 특정 질문(Option)의 선택지(Component)내용을 수정하는 페이지로 선택지의 추가 삭제가 아닌 선택지 내용을 수정하는 페이지 입니다.
 > - **Parameter**: 설문지 ID(surveyID), 질문 번호(OptionNum), 선택지 번호(ComponentNum), 내용(content)
 > - **Async**: false
 
-### 2-10 ActionEditOption.jsp (Ajax)
+### 2-11 ActionEditOption.jsp (Ajax)
 > - ActionEditOption.jsp는 설문지(Survey)에서 특정 질문(Option)의 제목(title)과 본문(content)를 수정하는 페이지입니다. 이때 type은 option의 type이 아닌 제목(title), 본문(content)를 나눠주는 역할을 합니다.
 > - **Parameter**: 설문지 ID(surveyID), 질문 번호(OptionNum), 선택지 번호(ComponentNum), 내용(content), 유형(type: title, content)
 > - **Async**: false
 
-### 2-11 ActionEditResult.jsp (Ajax)
+### 2-12 ActionEditResult.jsp (Ajax)
 > - ActionEditResult.jsp는 결과 페이지 구성에 대해 수정을 할 때 사용되는 페이지입니다. 이때 각각의 선택지에 따라 분기되는 결과 페이지 내용을 수정하는 것입니다.
 > - **Parameter**: 설문지 ID(surveyID), 질문 번호(OptionNum), 선택지 번호(ComponentNum), 내용(content)
 > - **Async**: false
 
-### 2-12 ActionEditSurvey.jsp (Ajax)
+### 2-13 ActionEditSurvey.jsp (Ajax)
 > - ActionEditSurvey.jsp는 설문지에 대한 제목과 설명 내용을 수정할 때 사용되는 페이지입니다. 이때 사용되는 type또한 제목(title),본문(content)를 구분하는데 사용되는 값입니다.
 > - **Parameter**: 설문지 ID(surveyID), 내용(content), 유형(type: title, content)
 > - **Async**: false
 
-### 2-13 ScriptAjax.jsp
+### 2-14 ScriptAjax.jsp
 > - 해당 jsp파일은 ViewAdminSurvey.jsp 페이지에서 각각의 Action페이지를 사용하기 위한 ajax script문을 따로 구분해놓은 페이지입니다. ViewAdminSurvey에서 해당 페이지를 Action tag를 사용해 불러와 사용합니다.
 
-### 2-14 ViewAdminStatistic.jsp
+### 2-15 ViewAdminStatistic.jsp
 > - ViewAdminStatistic.jsp는 사용자의 응답에 대한 통계 결과와 사용자마다 응답결과를 확인 할 수 있는 페이지입니다. 해당 페이지에서는 history에서 해당 설문에 해당하는 내역들을 모두 불러와서 Diagram으로 나타내줍니다. 화면 상단에 위치한 navigator를 통해서 통계치를 확인 할지 각각의 사용자 응답 결과를 확인할 지를 선택할 수 있습니다. 만약 사용자 응답 결과를 선택할 경우 ViewUserResponse.jsp페이지로 이동합니다.
 
 
-### 2-15 ViewAdminSurvey.jsp
+### 2-16 ViewAdminSurvey.jsp
 > - ViewAdminSurvey.jsp는 설문지를 생성하고 수정하는 작업인 CRUD가 모두 이루어지는 페이지입니다. 페이지 생성에서 가장 중요한 페이지이며 해당 페이지에서 설문의 내용, 질문 내용, 결과페이지 내용등을 모두 수정, 삭제, 생성이 가능합니다. 기본적인 기능들은 모두 onChange event를 사용해 ajax를 호출함으로써 별도의 submit없이 DB의 값이 수정 가능합니다. 한마디로 관리자 입장에서의 설문지라고 생각하시면 됩니다.
 
 
-### 2-16 ViewAdminSurveyResult.jsp
+### 2-17 ViewAdminSurveyResult.jsp
 > - ViewAdminSurveyResult.jsp는 결과 페이지에 대한 구성을 할 수 있는 페이지로써 default를 선택할 시에는 모든 설문지가 같은 결과 페이지를 가지게 되고 설문의 Radio 질문을 통해서 각각의 선택지에 따라 다른 결과페이지를 사용자에게 보여지게 디자인도 가능합니다.
 
 
-### 2-17 ViewUserResponse.jsp
+### 2-18 ViewUserResponse.jsp
 > - ViewUserResponse.jsp의 경우에는 관리자가 각각의 사용자의 제출 내용을 확인 하는 페이지로써 설문의 내용을 직접적으로 수정하는 것은 불가능하고 단순히 확인만 가능합니다.
 
 </br>
@@ -313,7 +344,7 @@ private int editState;
 ## 4. user
 - user의 경우 사용자가 로그인, 회원 가입을 할 때 사용하는 쿼리문과 DTO를 담고 있는 package입니다.
 ### 4-1 UserDAO.java
-### 4-1 UserDTO.java
+### 4-2 UserDTO.java
 ```
 private String userID;
 private String userPassword;
