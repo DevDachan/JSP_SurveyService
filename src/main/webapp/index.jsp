@@ -3,17 +3,15 @@ pageEncoding="UTF-8"  %>
 
 <%@ page import='java.io.PrintWriter' %>
 <%@ page import='survey.SurveyDAO' %>
-<%@ page import='user.UserDAO' %>
-<%@ page import='user.AdminDTO' %>
+<%@ page import='survey.AdminDTO' %>
 <%@ page import='history.HistoryListDTO' %>
 <%@ page import='history.HistoryDAO' %>
 
 <%@ page import='java.net.URLEncoder' %>
 
 <% 
-	UserDAO userDAO = new UserDAO(application); 
 	HistoryDAO historyDAO = new HistoryDAO(application);
-
+	SurveyDAO surveyDAO = new SurveyDAO(application);
 	int tabLimit = 5;
 	int maxHistoryIndex = 0;
 	int historyCount = 0;
@@ -231,7 +229,7 @@ pageEncoding="UTF-8"  %>
 				</div> 
 			</div>
 		<%
-		AdminDTO[] adminDTO = userDAO.getAdminList(userID);
+		AdminDTO[] adminDTO = surveyDAO.getAdminList(userID);
 		String adminList ="";
 		
 	
@@ -400,7 +398,7 @@ pageEncoding="UTF-8"  %>
 						Showing 1 to <%=tabLimit %> of <%=historyCount %>entries
 					</div>
 				</div>
-				<div class="col-sm-6"">
+				<div class="col-sm-6">
 					<div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
 						<input type="hidden" id="currentTabindex" value="1" />
 						<ul class="pagination mr-2" style="justify-content: flex-end;">

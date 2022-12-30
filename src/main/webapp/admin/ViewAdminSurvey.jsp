@@ -118,7 +118,9 @@ pageEncoding="UTF-8"  %>
 	<div class = "form-row">
 		<div class="survey-title form-group col-sm-12">
 			<textarea maxlength='50' class='form-control option-title-text' 
-				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'><%=survey.getSurveyName()%></textarea>
+				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'
+				placeholder='질문 내용을 적어주세요' 
+				><%=survey.getSurveyName()%></textarea>
 			<script>
 				resize(surveyTitle);
 			</script>	
@@ -187,11 +189,11 @@ pageEncoding="UTF-8"  %>
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
 		String start = "<div class='option mb-5'>\n"+
 							"<div class='option-title'>\n" + 
-								"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'>"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
+								"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'  placeholder='질문 제목을 적어주세요' >"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
 							"</div>\n"+
 							"<div class='option-content'>\n"+
 								"<div class='option-content-item'>\n"+
-									"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+									"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' placeholder='질문 내용을 적어주세요' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
 									"<script>"+
 										"resize(optionContent"+option[count].getOptionNum()+");"+
 									"</script>"+			

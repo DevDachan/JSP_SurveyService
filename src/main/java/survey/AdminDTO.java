@@ -1,4 +1,4 @@
-package user;
+package survey;
 
 public class AdminDTO {
 	private String surveyID;

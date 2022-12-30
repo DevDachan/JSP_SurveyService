@@ -32,7 +32,7 @@ pageEncoding="UTF-8"  %>
  
 		$.ajax({
 	   	 	type:'post',
-	   	 	async:true, //false가 기본값임 - 비동기
+	   	 	async:true, 
 	   		url:'http://localhost:8080/Survey_project/login/ActionCodeSend.jsp',
 	      	dataType:'text',
 	       	data:{
@@ -67,7 +67,7 @@ pageEncoding="UTF-8"  %>
 		check = 0;
 		$.ajax({
     	 	type:'post',
-      	 	async:false, //false가 기본값임 - 비동기
+      	 	async:false,  
        		url:'http://localhost:8080/Survey_project/login/ActionCodeCheck.jsp',
         	dataType:'text',
         	data:{
@@ -117,7 +117,7 @@ pageEncoding="UTF-8"  %>
 		userID = document.getElementById("userID").value;
 		$.ajax({
     	 	type:'post',
-      	 	async:false, //false가 기본값임 - 비동기
+      	 	async:false,  
        		url:'http://localhost:8080/Survey_project/login/ActionIDCheck.jsp',
         	dataType:'text',
         	data:{
@@ -145,7 +145,7 @@ pageEncoding="UTF-8"  %>
 		}else{
 			$.ajax({
 	    	 	type:'post',
-	      	 	async:true, //false가 기본값임 - 비동기
+	      	 	async:true,  
 	       		url:'http://localhost:8080/Survey_project/login/ActionEmailCheck.jsp',
 	        	dataType:'text',
 	        	data:{

@@ -146,36 +146,6 @@ public class UserDAO extends DatabaseUtil {
 	}
 	
 	
-	public AdminDTO[] getAdminList(String userID) {
-		AdminDTO[] adminDTO = null;
-		int admin_len = 0;
-		try {
-			String query = "SELECT COUNT(*) FROM survey WHERE admin_id=? ";
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, userID);
-			rs = psmt.executeQuery();
-			if(rs.next()) {
-				admin_len = rs.getInt(1);
-			}
-			              
-			adminDTO = new AdminDTO[admin_len];
-			query = "SELECT * FROM survey WHERE admin_id=? ";
-			psmt = con.prepareStatement(query);
-			psmt.setString(1, userID);
-				
-			rs = psmt.executeQuery();
-			int i = 0;
-			while(rs.next() && i < admin_len) {
-				adminDTO[i++] = new AdminDTO(rs.getString(1),rs.getString(2),rs.getString(3));
-		
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return adminDTO;
-		
-	}
 	public String getUserEmail(String userID) {
 	String query = "SELECT user_email FROM user WHERE id=?";
 		
