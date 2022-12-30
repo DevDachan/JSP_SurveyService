@@ -39,12 +39,12 @@
 > [4-1 DAO and DTO](#3-dao-and-dto)   
 
 
-
 [5. 주요 기능](#heartbeat주요-기능)
 
 > [5-1 결과 페이지 구성](#1-결과-페이지-구성)   
 > [5-2 Alert.jsp](#2-alertjsp)   
 > [5-3 Ajax](#3-ajax)   
+> [5-4 Datatable Paging](#4-datatable-paging)
 
 [6. JSP Study](#notebookjsp-study)
 
@@ -232,6 +232,98 @@
       	  })  	
 		}  
 ```  
+  
+> #### 4. Datatable paging
+> Main화면(index.jsp)에서 history를 나타내면서 각각의 설문 참여 내역이 길어질 경우를 대비해 Table pagination을 통해 간략하게 나타내도록 해주는 부분입니다. 
+> * 전체적인 알고리즘은 먼저 처음 페이지가 생성되면서 history의 전체 내역을 table에 추가를 시켜주고 현재 페이지에 해당하는 table 값만 display를 block으로 지정해주고 나머지는 none으로 설정해줍니다. 이후 page번호를 통해 해당하는 값들의 display를 block으로 바꾸고 이전 값들은 none으로 바꿔주는 작업을 해주는 method입니다.   
+> * \[ Table tag안에서 display를 block으로 지정해줄 경우에는 깨지는 현상이 발생 하므로 display = 'block' 대신 display=''을 사용해줘야 합니다. \]
+```
+function changeHTable(newtbnum ,limit,maxindex,tbcount){
+	var curtbnum = document.getElementById("currentTabindex").value;
+			
+	indexnewtbnum = (Number(newtbnum)-1)*Number(limit);
+	indexcurtbnum = (Number(curtbnum)-1)*Number(limit);
+	if(newtbnum != curtbnum){
+```
+>	> **newtbnum**: 다음 page의 번호를 의미합니다.
+>	> **limit**: 전체 table에서 페이지마다 표시할 row 개수를 의미합니다.
+>	> **maxindex**: page번호의 끝을 의미합니다. (Next버튼을 구분할 용도로 사용됩니다.)
+>	> **tbcount**: 전체 table의 row 개수를 의미합니다.
+>	> **curtbnum**: 현재 table의 page 번호를 의미하고 table 내부에 input type:hidden으로 존재합니다.
+
+```
+	if(newtbnum > maxindex){ // next를 통한 table 변경
+			if(indexnewtbnum != Number(indexcurtbnum)+Number(limit)){ //만약 현재 index가 최대값이라면 변경사항 X
+				document.getElementById("currentTabindex").value = Number(curtbnum)+1; 
+				for(var i = 1; i<= limit; i++){
+					if(Number(indexcurtbnum)+Number(limit)+Number(i) <= tbcount){ //list의 개수가 limit보다 작을 경우를 위한 예외처리
+						document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(limit)+Number(i))).style.display = '';
+					}
+					if(Number(indexcurtbnum)+Number(i) <= tbcount){
+						document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+					}
+				}
+				if(Number(indexcurtbnum)+Number(limit)+Number(i) > tbcount){
+					document.getElementById("datatable_info").innerText = "Showing "+(Number(curtbnum)*5+1)+" to "+(tbcount)+ " of "+tbcount+"entries";
+				}else{
+					document.getElementById("datatable_info").innerText = "Showing "+(Number(curtbnum)*5+1)+" to "+((Number(curtbnum))*5+limit)+ " of "+tbcount+"entries";	
+				}
+						
+					document.getElementById("selecttb_"+curtbnum).style.background = "white";
+					document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+					document.getElementById("selecttb_"+(Number(curtbnum)+1)).style.background = "#87F5F5";
+					document.getElementById("selecttb_"+(Number(curtbnum)+1)).style.color = "#fff";
+			}	
+```
+> newbtnum이 0일 경우에는 previous를 누른 것이므로 현재 page번호 이전 page번호로 표시를 해줍니다. 만약 현재 page번호가 1일 경우 가장 처음 page이므로 아무런 작업을 하지 않습니다.
+```
+	}else if(newtbnum == 0){ // prev를 통한 table 변경
+			if(curtbnum != 1){   // 만약 첫번째 index에서 prev를 눌렀을 경우 변경사항 X 
+				document.getElementById("currentTabindex").value = Number(curtbnum)-1;
+			
+				for(var i = 1; i<= limit; i++){
+					if(Number(indexcurtbnum)-Number(limit)+Number(i) <= tbcount){
+						document.getElementById("datatable_"+(Number(indexcurtbnum)-Number(limit)+Number(i))).style.display = '';
+					}
+					if(Number(indexcurtbnum)+Number(i) <= tbcount){
+						document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+					}
+				}
+				if(Number(indexcurtbnum)-Number(limit)+Number(i) > tbcount){
+					document.getElementById("datatable_info").innerText = "Showing "+((Number(curtbnum)-2)*5+1)+" to "+(tbcount)+ " of "+tbcount+"entries";
+				}else{
+					document.getElementById("datatable_info").innerText = "Showing "+((Number(curtbnum)-2)*5+1)+" to "+((Number(curtbnum)-2)*5+limit)+ " of "+tbcount+"entries";	
+				}
+					
+				document.getElementById("selecttb_"+curtbnum).style.background = "white";
+				document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+				document.getElementById("selecttb_"+(Number(curtbnum)-1)).style.background = "#87F5F5";
+				document.getElementById("selecttb_"+(Number(curtbnum)-1)).style.color = "#fff";
+			}	
+```
+> page 번호를 직접 눌러서 table을 변경 할 경우에는 현재 page 번호와 다음 page 번호를 통해서 display option을 변경시켜줍니다. 
+```
+	}else{ //일반적으로 숫자를 눌렀을 경우 table 변경
+			document.getElementById("currentTabindex").value = newtbnum;
+			for(var i = 1; i<= limit; i++){
+				if(Number(indexnewtbnum)+Number(i) <= Number(tbcount)){
+					document.getElementById("datatable_"+(Number(indexnewtbnum)+Number(i))).style.display = '';
+				}				
+				if(Number(indexcurtbnum)+Number(i) <= Number(tbcount)){
+					document.getElementById("datatable_"+(Number(indexcurtbnum)+Number(i))).style.display = 'none';
+				}
+			}
+			document.getElementById("selecttb_"+curtbnum).style.background = "white";
+			document.getElementById("selecttb_"+curtbnum).style.color = "#5F9EA0";
+			document.getElementById("selecttb_"+newtbnum).style.background = "#87F5F5";
+			document.getElementById("selecttb_"+newtbnum).style.color = "#fff";
+		}
+	}
+}
+
+```
+
+  
   
   
 ## :man:Authors
