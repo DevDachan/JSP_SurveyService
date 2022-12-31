@@ -75,27 +75,35 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 
-	<section class="container mt-3" style="max-width: 500px;">
-		<form method="post" action="./ActionLogin.jsp">
-		<div class="form-row">
+	<section class="container mt-3" style="max-width: 1000px;">
+		<div class="row">
 			<div class="col-sm-6">
-				<div class="form-row" >
-					<div class="form-group col-sm-12">
-						<input type="text" name="userID" class="form-control" required placeholder="ID">
-					</div>
-					<div class="form-group col-sm-12">
-						<input type="password" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
-					</div>
-				</div>
+				<img src="../public/login_background.jpg" style="width:100%; border-radius: 20px" />
 			</div>
-			<div class="col-sm-6 row-sm-2 mb-3">
-				<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
-			</div>
-			<div class="col-sm-12">
-				<a href="http://localhost:8080/Survey_project/login/ViewRegister.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>
+			<div class="col-sm-6" style="padding-top:100px;">
+				<h3 style="text-align:center;margin-bottom:30px; color:#62B6C9;"> 설문조사 서비스</h3>
+				<form method="post" action="./ActionLogin.jsp">
+					<div class="form-row">
+						<div class="col-sm-6">
+							<div class="form-row" >
+								<div class="form-group col-sm-12">
+									<input type="text" name="userID" class="form-control" required placeholder="ID">
+								</div>
+								<div class="form-group col-sm-12">
+									<input type="password" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 row-sm-2 mb-3">
+							<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
+						</div>
+						<div class="col-sm-12">
+							<a href="http://localhost:8080/Survey_project/login/ViewRegister.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
-		</form>
 	</section>
 	<div class="g-signin2" data-onsuccess="onSignIn"></div>
 
