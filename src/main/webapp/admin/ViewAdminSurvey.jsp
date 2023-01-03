@@ -189,14 +189,14 @@ pageEncoding="UTF-8"  %>
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
 		String start = "";
 		if(option[count].getOptionType().equals("radio") || option[count].getOptionType().equals("checkbox")){
-			String check_history_state = "<input type='checkbox' id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
+			String check_history_state = "<input type='checkbox' class='switch_toggle '  id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
 			if(option_detail[option_num].getHistoryCheck() == 1){
-				check_history_state = "<input type='checkbox' checked='checked' id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
+				check_history_state = "<input type='checkbox' checked class='switch_toggle ' id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
 			}	
 			
 			start = "<div class='option mb-5'>\n"+
 								"<p style='text-align:right;'>중복 선택 불가</p>"+
-								"<div class='form-group' style='text-align:left;'>"+
+								"<div class='form-group' style='text-align:left;margin-left:15px;'>"+
 										check_history_state+
 								  "<label for='switch_history_"+option_detail[option_num].getOptionNum()+"' class='switch_label'>"+
 								       "<span class='onf_btn'></span>"+

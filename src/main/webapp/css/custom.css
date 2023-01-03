@@ -325,6 +325,33 @@ textarea{
    background: #fff;
    box-shadow: 1px 2px 3px #00000020;
 }
+
+
+     /* checking style */
+.switch_toggle {
+    position: absolute;
+    /* hidden */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.switch_toggle:checked+.switch_label {
+    background: #c44;
+    border: 2px solid #c44;
+}
+
+.switch_toggle:checked+.switch_label:hover {
+    background: #e55;
+}
+
+.switch_toggle:checked+.switch_label .onf_btn {
+   left: 34px;
+   background: #fff;
+   box-shadow: 1px 2px 3px #00000020;
+}
+
+
+
 .clip{
 	margin:0px  !important;
 }
