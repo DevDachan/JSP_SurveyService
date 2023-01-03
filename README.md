@@ -211,7 +211,7 @@
 
 > #### 3. Ajax
 > - ajax는 기본적으로 페이지 내부에서 비동기적인 흐름을 담게 해주는 기법 중 하나로써 해당 서비스에서는 설문지를 만들고 해당 설문지 내부에서 수정 및 삭제하는 작업시 바로바로 DB와 연동해서 update가 되도록 만들어주는 기능을 하고 있습니다.
-> - 해당 ajax기법을 사용함으로써 사용자는 설문지를 수정하면서 특정 submit 버튼 없이 내용 수정이 가능합니다.
+> - 해당 ajax기법을 사용함으로써 사용자는 설문지를 수정하면서 특정 submit 버튼 없이 내용 수정이 가능합니다. (input과 textarea의 onchange사용)
 > - ajax는 특정 page에 request를 보내고 response를 받아와 결과에 대한 작업 수행이 가능합니다. 이때 Data를 request에 함께 실어서 보낼 수 있으며 앞서 말한 action페이지에서는 이렇게 ajax로 들어온 request에 대해서 DB값을 update하는 작업을 하게 됩니다.   
 ```
 		function addComponent(surveyID, optionNum){
