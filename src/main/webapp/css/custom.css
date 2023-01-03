@@ -392,3 +392,14 @@ textarea{
 	padding: 20px;
 	background: #6DEDFE;
 }
+
+.card{
+	text-align:center;
+	padding:20px;
+	background:#6dedfe;
+}
+
+.card-title{
+	font-size: 2rem;
+	color: white;
+}

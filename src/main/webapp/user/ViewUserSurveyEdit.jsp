@@ -104,7 +104,7 @@ pageEncoding="UTF-8"  %>
 		</div>
 	</nav>
 	
-	<section class="container mt-3" style="max-width: 500px;">
+	<section class="container mt-3" style="max-width: 700px;">
 	
 	<%
 		HistoryDTO[] history = historyDAO.getHistory(userID, sid,hid); 

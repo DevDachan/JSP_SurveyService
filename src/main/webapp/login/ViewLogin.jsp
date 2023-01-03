@@ -12,6 +12,7 @@ pageEncoding="UTF-8"  %>
 	<!-- meta data add  -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"> 
 	
+	
 	<title>Survey Service</title>
 	<!-- Bootstrap insert -->
 	<link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -21,6 +22,17 @@ pageEncoding="UTF-8"  %>
 
 </head>
 <body>
+	<script>
+	function onSignIn(googleUser) {
+		  var profile = googleUser.getBasicProfile();
+		  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		  console.log('Name: ' + profile.getName());
+		  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+		}
+	
+	</script>
+
+
 <% 
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -104,9 +116,11 @@ pageEncoding="UTF-8"  %>
 				</form>
 			</div>
 		</div>
+		
+		
+		
 	</section>
-	<div class="g-signin2" data-onsuccess="onSignIn"></div>
-
+	
 	<br/>
 
 	<footer class="bg-dark mt-4 p-5 text-center" style="color:#FFFFFF; ">
