@@ -13,7 +13,7 @@
 <br/>
 
 
-- 기존에 존재하는 Google Forms과 Microsoft Forms에서 라디오 버튼의 선택지로 결과 페이지를 분기시키는 기능과 프로그래밍적 요소를 추가할 수 있는 기능을 추가한 서비스입니다.
+- 기존에 존재하는 Google Forms과 Microsoft Forms에서 라디오 버튼의 선택지로 결과 페이지를 분기시키는 기능과 프로그래밍적 요소를 담을 수 있는 기능을 추가한 서비스입니다.
 
 
 
@@ -44,7 +44,8 @@
 > [5-1 결과 페이지 구성](#1-결과-페이지-구성)   
 > [5-2 Alert.jsp](#2-alertjsp)   
 > [5-3 Ajax](#3-ajax)   
-> [5-4 Datatable Paging](#4-datatable-paging)
+> [5-4 Datatable Paging](#4-datatable-paging)   
+> [5-5 클립보드 복사하기](#5-클립보드-복사하기)
 
 [6. JSP Study](#notebookjsp-study)
 
@@ -323,14 +324,30 @@ function changeHTable(newtbnum ,limit,maxindex,tbcount){
 
 ```
 
-  
-  
-  
+> #### 5. 클립보드 복사하기
+> 클립보드로 복사하는 기능의 경우에는 자바스크립트에서 textarea를 생성하고 해당 내용을 select해서 copy command를 실행시켜줌으로써 복사가 가능합니다. 
+```
+function copy_to_clipboard(sid) {    
+          var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
+          const copy_content = document.createElement("textarea");
+          document.body.appendChild(copy_content);
+          copy_content.value = copyText;
+          copy_content.select();
+          document.execCommand('copy');
+          document.body.removeChild(copy_content);
+}
+```
+
+
+
+## 향후 과제
+1. 각 선택지에 따른 질문 분기시키기
+2. 구글 로그인으로 메일 인증 없이 회원 가입
+3. UI 수정
+
 ## :man:Authors
 
 * **Dachan Seo** - [DevDachan](https://github.com/DevDachan)
-
-
 
 
 <br/>
