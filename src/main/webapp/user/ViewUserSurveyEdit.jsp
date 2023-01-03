@@ -133,7 +133,8 @@ pageEncoding="UTF-8"  %>
 	String result = "";
 	ComponentDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
-	
+	HistoryDTO[] historyAllUser = historyDAO.getHistoryALL(sid);
+	int hstep_all = 0;
 	int hstep = 0;
 	
 	for(int option_num = 0; option_num< option.length; option_num++){
@@ -149,39 +150,93 @@ pageEncoding="UTF-8"  %>
 						"</div>\n";
 		buf = "";
 		temp_id = component[count].getOptionNum();
-		while(count < component.length && component[count].getOptionNum() == temp_id){
-			if(component[count].getOptionType().equals("radio")){
-				buf += "<div class='option-rows'>"; 
-				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
-					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
-					hstep++;
-				}else{
-					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+		if(option[option_num].getHistoryCheck() == 1){
+			while(count < component.length && component[count].getOptionNum() == temp_id){
+				if(component[count].getOptionType().equals("radio")){
+					buf += "<div class='option-rows'>"; 
+					if(hstep_all <historyAllUser.length && historyAllUser[hstep_all].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == component[count].getComponentNum()){
+						if(historyAllUser[hstep_all].getOptionNum() == history[hstep].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == history[hstep].getComponentNum()){
+							buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
+							hstep++;
+						}else{
+							buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' disabled></div>";		
+						}
+						hstep_all++;
+					}else{
+						buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					}
+					buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("checkbox")){
+					buf += "<div class='option-rows'>"; 
+					if(hstep_all <historyAllUser.length && historyAllUser[hstep_all].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == component[count].getComponentNum()){
+						if(historyAllUser[hstep_all].getOptionNum() == history[hstep].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == history[hstep].getComponentNum()){
+							buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
+							hstep++;
+						}else{
+							buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' disabled ></div>";							
+						}
+						hstep_all++;
+					}else{
+						buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";							
+					}
+					
+					buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("text")){
+					if(hstep_all<historyAllUser.length && historyAllUser[hstep_all].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == component[count].getComponentNum()){
+						hstep_all++;
+					}
+					buf += "<div class='option-rows-text'>"; 
+					if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'>"+history[hstep].getContent()+"</textarea>";
+						hstep++;
+					}else{
+						buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+					}
+					buf +="</div>";
 				}
-				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
-				buf +="</div>";
-			}else if(component[count].getOptionType().equals("checkbox")){
-				buf += "<div class='option-rows'>"; 
-				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
-					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";
-					hstep++;
-				}else{
-					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";					
+				count++;
+			}	
+		}else{
+			while(count < component.length && component[count].getOptionNum() == temp_id){
+				if(hstep_all<historyAllUser.length && historyAllUser[hstep_all].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep_all].getComponentNum() == component[count].getComponentNum()){
+					hstep_all++;
 				}
-				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
-				buf +="</div>";
-			}else if(component[count].getOptionType().equals("text")){
-				buf += "<div class='option-rows-text'>"; 
-				if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
-					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'>"+history[hstep].getContent()+"</textarea>";
-					hstep++;
-				}else{
-					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+				if(component[count].getOptionType().equals("radio")){
+					buf += "<div class='option-rows'>"; 
+					if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";	
+						hstep++;
+					}else{
+						buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					}
+					buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("checkbox")){
+					buf += "<div class='option-rows'>"; 
+					if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' checked></div>";
+						hstep++;
+					}else{
+						buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";					
+					}
+					buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("text")){
+					buf += "<div class='option-rows-text'>"; 
+					if(hstep<history.length && history[hstep].getOptionNum() == component[count].getOptionNum() && history[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'>"+history[hstep].getContent()+"</textarea>";
+						hstep++;
+					}else{
+						buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+					}
+					buf +="</div>";
 				}
-				buf +="</div>";
+				count++;
 			}
-			count++;
 		}
+		
 		buf +="<div class='option-rows-text'> <label class='warning' style='display:none;'>* 필수로 하나는 선택해주세요</label> </div>";
 		buf += "</div>";
 		result = result + start + buf;

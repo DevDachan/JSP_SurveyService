@@ -65,14 +65,13 @@ pageEncoding="UTF-8"  %>
           	 }
 		function copy_to_clipboard(sid) {    
           	  var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
-            	  
-          	  const t = document.createElement("textarea");
-           	  document.body.appendChild(t);
-           	  t.value = copyText;
-           	  t.select();
+          	  const copy_content = document.createElement("textarea");
+           	  document.body.appendChild(copy_content);
+           	  copy_content.value = copyText;
+           	  copy_content.select();
            	  document.execCommand('copy');
-           	  document.body.removeChild(t);
-           	}
+           	  document.body.removeChild(copy_content);
+         }
 		function changeHTable(newtbnum ,limit,maxindex,tbcount){
 			var curtbnum = document.getElementById("currentTabindex").value;
 			
@@ -239,7 +238,7 @@ pageEncoding="UTF-8"  %>
 						"<div class=\"list-item\">\n"+
 							 "<p class='clip'>\n"+
 						        "<button style='border:0px; background:white;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
-						        	"<img src='https://blog.kakaocdn.net/dn/N1wUc/btqIl7XZtKM/b44qX9Six1vczz2ISWj4LK/img.png' style='height:25px;' alt='복사하기'>\n"+
+						        	"<img src='https://lh3.googleusercontent.com/4c6SFCqLXhwU6w0sj-TRfS3YrFxhLSMrb6J4ec6OvY06ariO8wcs-9kQwCKeujw59RmXzZ-EIXSuhdmulSiri6FrtUDdwX1FM3WXJ_QBZv4m9luPmPK9nzCCeN2EpUuRGvDbEiSX5kewdfiYmR-O88f6q9qr7MGfMcicx2pRvZYeKq62O4NyQ09FETHD3rJx5qrPL0m0sOp5iDaR9C3LZFOMnvoOqFDAYKqfuslbQRKZs0DXQ6L8j6mDSBWWeEXekgnA9EUdiNLISJHupqeVCzBBwEnZyJVuis9UigBetF8LK3s6aN2JrI2JJWRDYE7Y_gCdaG6L1bNmSN62qFzi4e00dl75nUGEZMdIdh-c1qduGRG3NX8M9B24MPWsGHN-xmNFacPWpM6M5E61swxzbU1ZCpqcNK-qF-pHiuE0ep3lsdmxPnNRVdM7OEqDfESiHO_woDuj_u8Inn0ypDRHjhZb6a5248BZjH_KWG11OZFRl1zHdF01pRSPxXJCpxYasAOnHbVcl_JWRiWwcVwLgejPzV4hlx9UOq89gl27LbPebyRqCMkDtf8Td-9T6ZsdXJoO902b6tH78YuixGGqU1fcXWofIAF9Z3byG8b59OjHptFj68azM_dlJOC1qWgecakjhT9RvuvNqJx7blb17XhzvNYUUO-TH3TG9eRIBdpiS2irvEdzyWxoLmOsWombls7P9OTIT9L5TFDhBcP1nqe1D1v017e3MMPsbVfbnsS8il5oTCODuT-Bu6wakd8mXBlibokxS5_4TMXDAImhQNr3I-2FbEEqmxsCcnOnpKbnTiTfWCjLpu9bh2Y6IzcaPxE1i-J-C7e1ndm9T3l0qFpfBaLjs0bu3rCpvqMUAXcrhpND7xbMBOPhVvqVQN196ko6Mlas3yqGi2jVe_zZNRtXmBA96U-PWLdr1boB0IxxxY7sNGMDjStben3W3IXLndCLMIL8vdxQBtAcbtCIL7dUeJa_u7TwrnGT-6XnF_wFtM8o1Xwu=w800-h470-no?authuser=0' style='height:35px;width:70px;border-radius:10px;' alt='복사하기'>\n"+
 						        "</button>\n"+
 						    "</p>\n"+  	
 						"</div>\n"+

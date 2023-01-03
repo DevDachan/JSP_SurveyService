@@ -81,7 +81,7 @@ pageEncoding="UTF-8"  %>
 				<img src="../public/login_background.jpg" style="width:100%; border-radius: 20px" />
 			</div>
 			<div class="col-sm-6" style="padding-top:100px;">
-				<h3 style="text-align:center;margin-bottom:30px; color:#62B6C9;"> 설문조사 서비스</h3>
+				<h3 class="login-title"> 설문 서비스</h3>
 				<form method="post" action="./ActionLogin.jsp">
 					<div class="form-row">
 						<div class="col-sm-6">

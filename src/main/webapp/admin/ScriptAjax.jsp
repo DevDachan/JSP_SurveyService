@@ -190,5 +190,22 @@
             }
       	  })  	
 		}
+		function change_history_state(sid,optionNum){
+			$.ajax({
+        	 	type:'post',
+          	 	async:false,  
+           		url:'http://localhost:8080/Survey_project/admin/ActionChangeHistoryDupState.jsp',
+            	dataType:'text',
+            	data:{
+            		surveyID:sid,
+            		optionNum:optionNum
+            		},
+            	success: function(res) {
+            	},
+            error:function (data, textStatus) {
+                console.log('error');
+            }
+      	  })  	
+		}
 </script>
 

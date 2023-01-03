@@ -119,7 +119,7 @@ pageEncoding="UTF-8"  %>
 		<div class="survey-title form-group col-sm-12">
 			<textarea maxlength='50' class='form-control option-title-text' 
 				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyTitle' onChange='editSurvey(<%=sid%>,1)'
-				placeholder='질문 내용을 적어주세요' 
+				placeholder='설문 제목을 적어주세요' 
 				><%=survey.getSurveyName()%></textarea>
 			<script>
 				resize(surveyTitle);
@@ -128,7 +128,7 @@ pageEncoding="UTF-8"  %>
 		<div class="survey-content form-group col-sm-12">
 			<textarea maxlength='2048' class='form-control option-title-text' 
 				onkeydown='resize(this)' onkeyup='resize(this)' id='surveyContent' style='font-size: 15px;'
-				onChange='editSurvey(<%=sid%>,2)'><%= survey.getSurveyContent()%></textarea>
+				onChange='editSurvey(<%=sid%>,2)' placeholder='설문 설명을 적어주세요' ><%= survey.getSurveyContent()%></textarea>
 			<script>
 				resize(surveyContent);
 			</script>	
@@ -175,8 +175,7 @@ pageEncoding="UTF-8"  %>
 			  </label>
 		 </div>
 	</div>
-
-
+	
 
 <%
 	int count = 0;
@@ -185,26 +184,57 @@ pageEncoding="UTF-8"  %>
 	String result = "";
 	ComponentDTO[] option = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option_detail = surveyDAO.getOption(sid);
-
+						  
+	
 	for(int option_num = 0; option_num< option_detail.length; option_num++){
-		String start = "<div class='option mb-5'>\n"+
-							"<div class='option-title'>\n" + 
-								"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'  placeholder='질문 제목을 적어주세요' >"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
-							"</div>\n"+
-							"<div class='option-content'>\n"+
-								"<div class='option-content-item'>\n"+
-									"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' placeholder='질문 내용을 적어주세요' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
-									"<script>"+
-										"resize(optionContent"+option[count].getOptionNum()+");"+
-									"</script>"+			
+		String start = "";
+		if(option[count].getOptionType().equals("radio") || option[count].getOptionType().equals("checkbox")){
+			String check_history_state = "<input type='checkbox' id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
+			if(option_detail[option_num].getHistoryCheck() == 1){
+				check_history_state = "<input type='checkbox' checked='checked' id='switch_history_"+option_detail[option_num].getOptionNum()+"' onChange=\"change_history_state("+sid+","+option[count].getOptionNum()+")\" />";
+			}	
+			
+			start = "<div class='option mb-5'>\n"+
+								"<p style='text-align:right;'>중복 선택 불가</p>"+
+								"<div class='form-group' style='text-align:left;'>"+
+										check_history_state+
+								  "<label for='switch_history_"+option_detail[option_num].getOptionNum()+"' class='switch_label'>"+
+								       "<span class='onf_btn'></span>"+
+								  "</label>"+
+							 	"</div>"+
+								"<div class='option-title'>\n" + 
+									"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'  placeholder='질문 제목을 적어주세요' >"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
 								"</div>\n"+
-							"</div>\n";
+								"<div class='option-content'>\n"+
+									"<div class='option-content-item'>\n"+
+										"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' placeholder='질문 내용을 적어주세요' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+										"<script>"+
+											"resize(optionContent"+option[count].getOptionNum()+");"+
+										"</script>"+			
+									"</div>\n"+
+								"</div>\n";
+		}
+		else{
+			start = "<div class='option mb-5'>\n"+
+								"<div class='option-title'>\n" + 
+									"<textarea maxlength='50' onkeydown='resize(this)' onkeyup='resize(this)' class='option-title-text form-control' id='optionTitle"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",1)'  placeholder='질문 제목을 적어주세요' >"+ option_detail[option_num].getOptionTitle()+"</textarea>\n" + 
+								"</div>\n"+
+								"<div class='option-content'>\n"+
+									"<div class='option-content-item'>\n"+
+										"<textarea maxlength='2048' wrap='hard' cols='20' onkeydown='resize(this)' onkeyup='resize(this)' class='option-content-text form-control' id='optionContent"+option[count].getOptionNum()+"' onChange='editOption("+sid+","+option[count].getOptionNum()+",2)' placeholder='질문 내용을 적어주세요' >"+option_detail[option_num].getOptionContent()+"</textarea>\n" + 
+										"<script>"+
+											"resize(optionContent"+option[count].getOptionNum()+");"+
+										"</script>"+			
+									"</div>\n"+
+								"</div>\n";
+		}
+		
 	
 		buf = "";
 		temp_id = option[count].getOptionNum();
 	
 		while(count < option.length && option[count].getOptionNum() == temp_id){
-			if(option[count].getOptionType().equals("radio")){
+			if(option[count].getOptionType().equals("radio")){						
 				buf += "<div class='option-rows'>"; 
 				buf += "<div class='option-item'><label><input type='radio' name='radio"+option[count].getComponentNum()+"' value='radio' placeholder='helo'></label></div>";
 				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.

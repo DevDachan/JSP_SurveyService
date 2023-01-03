@@ -57,17 +57,17 @@ public class SurveyDAO extends DatabaseUtil {
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,1,'제목','질문 내용','radio')";
+				query = "INSERT INTO option_detail VALUES(?,1,'제목','질문 내용','radio',0)";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,2,'제목','질문 내용','checkbox')";
+				query = "INSERT INTO option_detail VALUES(?,2,'제목','질문 내용','checkbox',0)";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				
-				query = "INSERT INTO option_detail VALUES(?,3,'제목','질문 내용','text')";
+				query = "INSERT INTO option_detail VALUES(?,3,'제목','질문 내용','text',0)";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
@@ -346,7 +346,7 @@ public class SurveyDAO extends DatabaseUtil {
 			e.printStackTrace();
 		}
 		
-		String query = "INSERT INTO option_detail VALUES(?,?,'제목','질문 내용',?)";
+		String query = "INSERT INTO option_detail VALUES(?,?,'제목','질문 내용',?,0)";
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, surveyID);
@@ -544,7 +544,7 @@ public class SurveyDAO extends DatabaseUtil {
 		
 			int i = 0;
 			while(rs.next() && i < option_len){ // get survey content
-				option[i++] = new OptionDetailDTO(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5));
+				option[i++] = new OptionDetailDTO(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getInt(6));
 				
 			}
 		}catch(Exception e){
@@ -636,6 +636,39 @@ public class SurveyDAO extends DatabaseUtil {
 					String updateQuery = "UPDATE survey SET edit_state = 0 WHERE id=?";
 					psmt = con.prepareStatement(updateQuery);
 					psmt.setInt(1, surveyID);
+					return psmt.executeUpdate();
+										
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
+	}
+	
+	public int changeHistoryDupState(int surveyID, int optionNum) {
+		String query = "SELECT history_check FROM option_detail WHERE survey_id=? AND option_num = ?";
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, surveyID);
+			psmt.setInt(2, optionNum);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getInt(1) == 0) {
+					String updateQuery = "UPDATE option_detail SET history_check = 1 WHERE survey_id=? AND option_num = ?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					psmt.setInt(2, optionNum);
+					return psmt.executeUpdate();
+					
+				}else {
+					String updateQuery = "UPDATE option_detail SET history_check = 0 WHERE survey_id=? AND option_num = ?";
+					psmt = con.prepareStatement(updateQuery);
+					psmt.setInt(1, surveyID);
+					psmt.setInt(2, optionNum);
 					return psmt.executeUpdate();
 										
 				}

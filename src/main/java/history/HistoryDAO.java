@@ -176,7 +176,37 @@ public class HistoryDAO extends DatabaseUtil{
 		
 		return 0;
 	}
+	public HistoryDTO[] getHistoryALL(int sid) {
+		HistoryDTO[] historyDTO = null;
+		int history_len = 0;
+		try {
+			String query = "SELECT COUNT(*) FROM (SELECT * FROM survey_history WHERE survey_id=? GROUP BY option_num, component_num ORDER BY option_num) AS k;";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
 	
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				history_len = rs.getInt(1);
+			}
+	
+			historyDTO = new HistoryDTO[history_len];
+			query = "SELECT option_num, component_num, content FROM survey_history WHERE survey_id=? GROUP BY option_num, component_num ORDER BY option_num;";
+			psmt = con.prepareStatement(query);
+			psmt.setInt(1, sid);
+
+			rs = psmt.executeQuery();
+			int i = 0;
+			while(rs.next() && i<history_len) {
+				historyDTO[i++] = new HistoryDTO(rs.getInt(1),rs.getInt(2),rs.getString(3));
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return historyDTO;
+	}
 	public HistoryDTO[] getHistory(String uid, int sid,int hid) {
 		HistoryDTO[] historyDTO = null;
 		int history_len = 0;

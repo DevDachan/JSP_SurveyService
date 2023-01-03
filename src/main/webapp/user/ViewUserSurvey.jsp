@@ -8,6 +8,7 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='survey.SurveyDTO' %>
 <%@ page import='history.HistoryDAO' %>
+<%@ page import='history.HistoryDTO' %>
 
 
 <%@ page import='java.net.URLEncoder' %>
@@ -138,13 +139,14 @@ pageEncoding="UTF-8"  %>
 	
 	<%
 	int count = 0;
+	int hstep = 0;
 	int temp_id;
 	String buf ="";
 	String result = "";
 
 	ComponentDTO[] component = surveyDAO.getComponent(sid);
 	OptionDetailDTO[] option = surveyDAO.getOption(sid);
-
+	HistoryDTO[] historyAllUser = historyDAO.getHistoryALL(sid);
 	for(int option_num = 0; option_num< option.length; option_num++){
 		
 		String temp_content = option[option_num].getOptionContent().replace("\n","<br/>");
@@ -162,26 +164,66 @@ pageEncoding="UTF-8"  %>
 		buf = "";
 		temp_id = component[count].getOptionNum();
 		String alert_text = "<label class='ml-3 mt-3' style='display:none; color:red; font-size:25px;' id='lb_alert"+component[count].getOptionNum()+"'>* 값을 입력해주세요.</label>";
-		
-		while(count < component.length && component[count].getOptionNum() == temp_id){
-			if(component[count].getOptionType().equals("radio")){
-				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
-				// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
-				buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
-				buf +="</div>";
-			}else if(component[count].getOptionType().equals("checkbox")){
-				buf += "<div class='option-rows'>"; 
-				buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
-				buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
-				buf +="</div>";
-			}else if(component[count].getOptionType().equals("text")){
-				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
-				buf +="</div>";
+		if(option[option_num].getHistoryCheck() == 1){
+			while(count < component.length && component[count].getOptionNum() == temp_id){
+				if(component[count].getOptionType().equals("radio")){
+					buf += "<div class='option-rows'>"; 
+					System.out.println("hstep ="+hstep +"\n");
+					if(hstep<historyAllUser.length && historyAllUser[hstep].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo' disabled></div>";
+						// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
+						hstep ++; 	
+					}else{
+						buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					}
+					buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
+					buf +="</div>";
+					
+				}else if(component[count].getOptionType().equals("checkbox")){
+					buf += "<div class='option-rows'>"; 
+					if(hstep<historyAllUser.length && historyAllUser[hstep].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep].getComponentNum() == component[count].getComponentNum()){
+						buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo' disabled></div>";
+						hstep ++; 	
+					}else{
+						buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					}
+					buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("text")){
+					if(hstep<historyAllUser.length && historyAllUser[hstep].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep].getComponentNum() == component[count].getComponentNum()){
+						hstep++;
+					}
+					buf += "<div class='option-rows-text'>"; 
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+					buf +="</div>";
+				}
+				count++;			
+			}	
+		}else{
+			while(count < component.length && component[count].getOptionNum() == temp_id){
+				if(hstep<historyAllUser.length && historyAllUser[hstep].getOptionNum() == component[count].getOptionNum() && historyAllUser[hstep].getComponentNum() == component[count].getComponentNum()){
+					hstep++;
+				}
+				if(component[count].getOptionType().equals("radio")){
+					buf += "<div class='option-rows'>"; 
+					buf += "<div class='option-item'><input type='radio' name='radio"+component[count].getOptionNum()+"' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					// 라디오 버튼 나눌 때는 이름으로 해서 같은 이름일 경우에는 다중 선택이 안된다.
+					buf += "<div class='option-item'> <label type='text' id='radio' name='radio' >"+component[count].getContent()+"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("checkbox")){
+					buf += "<div class='option-rows'>"; 
+					buf += "<div class='option-item'><input type='checkbox' name='checkbox"+component[count].getOptionNum()+"[]' value='"+component[count].getComponentNum()+"' placeholder='helo'></div>";
+					buf += "<div class='option-item'> <label id='checkbox' name='checkbox' >"+component[count].getContent() +"</label></div>";
+					buf +="</div>";
+				}else if(component[count].getOptionType().equals("text")){
+					buf += "<div class='option-rows-text'>"; 
+					buf += "<textarea name='text" + component[count].getOptionNum()+ "' class='form-control' maxlength='2048' style='height:100px;'></textarea>";
+					buf +="</div>";
+				}
+				count++;			
 			}
-			count++;			
 		}
+	
 		buf +="<div class='option-rows-text'> <label class='warning' style='display:none;'>* 필수로 하나는 선택해주세요</label> </div>";
 		buf += "</div>";
 		
