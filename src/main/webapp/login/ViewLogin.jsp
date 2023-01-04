@@ -23,13 +23,57 @@ pageEncoding="UTF-8"  %>
 </head>
 <body>
 	<script>
-	function onSignIn(googleUser) {
-		  var profile = googleUser.getBasicProfile();
-		  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		  console.log('Name: ' + profile.getName());
-		  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	function checkLogin(){
+		document.getElementById("alert_userID").style.display = "none";
+		document.getElementById("alert_userPwd").style.display = "none";
+		document.getElementById("ip_userID").style.border = "1px solid #ced4da";
+		document.getElementById("ip_userPwd").style.border = "1px solid #ced4da";
+		
+		if(document.getElementById("ip_userID").value == null  || document.getElementById("ip_userID").value == ""){
+			document.getElementById("ip_userID").style.border = "4px solid red";
+			document.getElementById("alert_userID").innerText = "ID를 입력해주세요";	
+   			document.getElementById("alert_userID").style.display = "block";
+   			return;
+		}else{
+			userID = document.getElementById("ip_userID").value;
 		}
-	
+		if(document.getElementById("ip_userPwd").value == null || document.getElementById("ip_userPwd").value == ""){
+			document.getElementById("ip_userPwd").style.border = "4px solid red";
+			document.getElementById("alert_userPwd").innerText = "비밀번호를 입력해주세요";	
+   			document.getElementById("alert_userPwd").style.display = "block";
+   			return;
+		}else{		
+			pwd = document.getElementById("ip_userPwd").value;
+		}
+		
+		$.ajax({
+         	type:'post',
+         	async:false, 
+        	url:'http://localhost:8080/Survey_project/login/ActionLogin.jsp',
+           	dataType:'text',
+           	data:{
+           		userID:userID, 
+           		userPWD:pwd
+           		},
+           	success: function(res) {
+           		result = res.split('{')[1].split("}")[0];
+           		if(result.includes("0")){
+           			location.href = "../index.jsp";
+           		}else if(result.includes("1")){
+           			document.getElementById("ip_userID").style.border = "4px solid red";
+           			document.getElementById("alert_userID").innerText = "올바른 ID를 입력해주세요";	
+           			document.getElementById("alert_userID").style.display = "block";
+           		}else if(result.includes("2")){
+           			document.getElementById("ip_userPwd").style.border = "4px solid red";
+           			document.getElementById("alert_userPwd").innerText = "올바른 비밀번호를 입력해주세요";	
+           			document.getElementById("alert_userPwd").style.display = "block";
+           		}
+           	},
+           error:function (data, textStatus) {
+               console.log('error');
+           }
+      	})  	
+	}
 	</script>
 
 
@@ -90,24 +134,30 @@ pageEncoding="UTF-8"  %>
 	<section class="container mt-3" style="max-width: 1000px;">
 		<div class="row">
 			<div class="col-sm-6">
-				<img src="../public/login_background.jpg" style="width:100%; border-radius: 20px" />
+				<img src="../public/login_background.jpg" style="width:100%;height:100% ;border-radius: 20px" />
 			</div>
 			<div class="col-sm-6" style="padding-top:100px;">
 				<h3 class="login-title"> 설문 서비스</h3>
-				<form method="post" action="./ActionLogin.jsp">
+				<form method="post" id="login_form" action="./ActionLogin.jsp">
 					<div class="form-row">
 						<div class="col-sm-6">
 							<div class="form-row" >
 								<div class="form-group col-sm-12">
-									<input type="text" name="userID" class="form-control" required placeholder="ID">
+									<input type="text" id="ip_userID" name="userID" class="form-control" required placeholder="ID">
+								</div>
+								<div class="col-sm-12">
+									<label id="alert_userID" style="color:red;display:none;">* 올바른 ID를 입력해주세요</label>
 								</div>
 								<div class="form-group col-sm-12">
-									<input type="password" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
+									<input type="password" id="ip_userPwd" name="userPWD" class="form-control" required autocomplete="off"  placeholder="Password">
+								</div>
+								<div class="col-sm-12">
+									<label id="alert_userPwd" style="color:red; display:none;">* 올바른 비밀번호를 입력해주세요</label>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-6 row-sm-2 mb-3">
-							<button type="submit" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;">로그인</button>
+							<button type="button" class="btn" style="background:#FF8484; width:100%; height:100%; color:white;" onClick="checkLogin()" >로그인</button>
 						</div>
 						<div class="col-sm-12">
 							<a href="http://localhost:8080/Survey_project/login/ViewRegister.jsp" class="btn" style="background:#FF8484; width:100%; height:100%; background:#62B6C9; color:white;">회원가입</a>

@@ -48,29 +48,12 @@
 	
 	if(result == 1){
 		session.setAttribute("userID",userID);
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("location.href = '../index.jsp';");
-		script.println("</script>");
-		script.close();
-	}else if (result == -1){
-%>
-		<jsp:include page='../alert.jsp'> 
-				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
-				<jsp:param name="content" value="<%=URLEncoder.encode(\"존재하지 않는 아이디입니다.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="history.back();" />
-		</jsp:include>	
-<% 				
-	}else if (result == 0){
-%>
-		<jsp:include page='../alert.jsp'> 
-				<jsp:param name="title" value="<%=URLEncoder.encode(\"안내\", \"UTF-8\") %>" />
-				<jsp:param name="content" value="<%=URLEncoder.encode(\"올바른 비밀번호를 입력해주세요.\", \"UTF-8\") %>" />
-				<jsp:param name="url" value="history.back();" />
-		</jsp:include>	
-<% 					
+		%>{0}<% 		
+	}else if (result == -1){  %>{1}<% 		
+			
+	}else if (result == 0){   %>{2}<% 						
 		
-	}else{
+	}else{ 
 %>
 		<jsp:include page='../alert.jsp'> 
 				<jsp:param name="title" value="<%=URLEncoder.encode(\"ERROR\", \"UTF-8\") %>" />
