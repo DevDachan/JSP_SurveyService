@@ -403,3 +403,15 @@ textarea{
 	font-size: 2rem;
 	color: white;
 }
+
+.nav-background{
+	background: #62B6C9;
+	padding: 1rem 1.5rem 1.75rem 1.5rem !important;	
+	border-radius: 0px 0px 10px 10px;
+	margin-bottom: 3rem;
+}
+
+.navbar-brand{
+	margin-right: 2rem !important;
+	font-size: 1.75rem !important;
+}

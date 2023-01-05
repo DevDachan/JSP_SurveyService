@@ -71,7 +71,7 @@ pageEncoding="UTF-8"  %>
 
 	
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+	<nav class="navbar navbar-expand-lg navbar-light nav-background" >
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -153,7 +153,7 @@ pageEncoding="UTF-8"  %>
 		<div class="col-sm-7">
 		 </div>
 		<div class="form-group col-sm-3">
-			<p style="text-align:right;">중복 가능</p>
+			<p style="text-align:right;">중복 참여 가능</p>
 		</div>
 		<div class="form-group col-sm-2 wrapper" style="text-align:left;">
 			<%= check_limit_state%> 

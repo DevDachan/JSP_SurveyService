@@ -162,7 +162,7 @@ pageEncoding="UTF-8"  %>
 %>
 
 
-		<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+		<nav class="navbar navbar-expand-lg navbar-light nav-background">
 		<a class="navbar-brand" href="index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -212,10 +212,10 @@ pageEncoding="UTF-8"  %>
 		<div class="list-content">
 			<div class="list-option">
 				<div class="list-option-item">
-					설문링크
+					링크
 			 	</div>
 				<div class="list-option-item">
-					이름 
+					제목 
 				</div> 
 				<div class="list-option-item">
 					수정 
@@ -262,43 +262,11 @@ pageEncoding="UTF-8"  %>
 		<%= adminList %>
 		</div>
 	</div>
-	<%-- 
-	<div class="row">
-	<%
-		String buf = "";
-	for(int step = 0; step<adminDTO.length; step++) {
-			buf +="<div class='col-sm-3' style='margin-bottom:35px; height:20%'>\n"+
-					  "<div class='card h-100'>\n"+ 
-					     "<div class='card-title'>"+
-					        "<h2 style='font-weight:600'>"+adminDTO[step].getSurveyName()+"</h2>"+
-					     "</div>"+
-					  "<div class='card-body'>"+
-					     "<div style='display:grid; grid-template-columns: 1fr 1fr 1fr 1fr;'>"+
-							"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정</a>\n"+
-							"<a href='./admin/ViewAdminStatistic.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary' >통계</a>\n"+
-							"<p class='clip' style='display: inline-block;'>\n"+
-							   "<button style='border:0px;background:#6dedfe' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
-							     	"<img src='https://i.ibb.co/9NfdRzk/copy-image.png' style='height:35px;width:70px;border-radius:10px;' alt='복사하기'>\n"+
-							   "</button>\n"+
-							"</p>\n"+  
-							"<a href='http://localhost:8080/Survey_project' id='kakao_href'></a>"+		
-					         "<img src='https://i.ibb.co/gzWLmg0/kakao.png' onClick=\"kakaoShare("+"\'"+adminDTO[step].getSurveyName()+"\',"+adminDTO[step].getSurveyID() + " );\" width='50' alt='Share' class='btnImg' style='border-radius:8px;'>"+ 
-					     "</div>\n"+
-					  "</div>\n"+	
-					"</div>\n"+
-				  "</div>";
-		}
-		
-	%>
-		
-		<%= buf %>
-	</div>
-	--%>
-	
+
 	
 	<div class="card" style="border:0px;background:white;">
 		<div class="card-header" style="border-radius:20px; border:0px;">
-			<h4 class="ml-4" style="margin:auto;">과거 설문 내역</h4>
+			<h4 class="ml-4" style="margin:auto; text-align:left;">과거 설문 내역</h4>
 		</div>
 		<div class="card-body">
 			<table class="table " style="text-align:center;">

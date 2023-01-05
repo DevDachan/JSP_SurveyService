@@ -121,7 +121,7 @@ pageEncoding="UTF-8"  %>
 	
 %>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+	<nav class="navbar navbar-expand-lg navbar-light nav-background" >
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>

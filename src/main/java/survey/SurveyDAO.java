@@ -36,10 +36,20 @@ public class SurveyDAO extends DatabaseUtil {
 		}
 		if(sid != 0) {
 			try {
-				String query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요',0,0,0)";
+				int maxIndex = 1;
+				String selectMaxindex = "SELECT MAX(survey_index) FROM survey WHERE admin_id=?";
+				psmt = con.prepareStatement(selectMaxindex);
+				psmt.setString(1, userID);
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					maxIndex = rs.getInt(1)+1;
+				}
+				
+				String query = "INSERT INTO survey VALUES(?,'설문 제목을 적어주세요',?,'소개를 적어주세요',0,0,0,?)";
 				psmt = con.prepareStatement(query);
 				psmt.setInt(1, sid);
 				psmt.setString(2,userID);
+				psmt.setInt(3, maxIndex);
 				psmt.executeUpdate();
 				
 				query = "INSERT INTO survey_option VALUES(?,'radio',1,1,'선택 내용')";
@@ -77,6 +87,7 @@ public class SurveyDAO extends DatabaseUtil {
 				psmt.setInt(1, sid);
 				psmt.executeUpdate();
 				return sid;
+				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -338,9 +349,6 @@ public class SurveyDAO extends DatabaseUtil {
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				maxIndex = rs.getInt(1)+1;
-				if(maxIndex == 1) {
-					return 0;
-				}	
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -713,7 +721,7 @@ public class SurveyDAO extends DatabaseUtil {
 			}
 			              
 			adminDTO = new AdminDTO[admin_len];
-			query = "SELECT * FROM survey WHERE admin_id=? ";
+			query = "SELECT * FROM survey WHERE admin_id=? ORDER BY survey_index ";
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, userID);
 				
