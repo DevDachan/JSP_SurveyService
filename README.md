@@ -23,7 +23,7 @@
 
 #### DB 구성 [DB.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/DB.md)
 #### 페이지 구성 [PAGE.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/PAGE.md)
-
+#### 사용 방법 [GUIDELINE.md](https://github.com/DevDachan/JSP-Survey-service/blob/main/GUIDELINE.md)
 
 ## :yellow_heart:목차
 [1. 미리보기](#green_heart미리보기)
