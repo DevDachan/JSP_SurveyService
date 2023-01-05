@@ -1,23 +1,25 @@
 # DB구성
 
 ## E-R Diagram
-![survey_service](https://user-images.githubusercontent.com/111109411/209756717-5640d1d9-10ad-4580-acea-e1c7fb11ec64.jpg)
+![survey_service](https://user-images.githubusercontent.com/111109411/210704825-1dfdb545-3d9b-43fa-988d-80844d1b6c3d.png)
 
 
+## 구성 TABLE
+[1. Survey](#1-survey)
 
-[1. Survey](#1-Survey)
+[2. Opition_detail](#2-option_detail)
 
-[2. Opition_detail](#2-Opition_detail)
+[3. Survey_option](#3-survey_option)
 
-[3. Survey_option](#3-Survey_option)
-
-[4. Survey_result](#4-Survey_result)
+[4. Survey_result](#4-survey_result)
 
 [5. user](#5-user)
 
 [6. emailcode](#6-emailcode)
 
 
+
+</br>
 
 ### 1. Survey
 > Survey는 기본적인 설문의 큰 정보를 가지고 있는 Table입니다.
@@ -27,7 +29,8 @@
 > * **content**       : 각 설문의 소개글을 이야기합니다.   
 > * **result_option** : 결과 페이지의 분기를 위해 사용되는 Option의 number를 말합니다.   
 > * **limit_state**   : 설문지가 중복이 가능한지를 check하는 속성입니다. (1: 중복불가, 0:중복가능)    
-> * **edit_state**    : 설문지가 중복이 가능한지를 check하는 속성입니다. (1: 중복불가, 0:중복가능)    
+> * **edit_state**    : 설문지가 수정이 가능한지를 check하는 속성입니다. (1: 수정불가, 0:수정가능)
+> * **survey_index**  : 설문지의 순서를 나타내기 위한 indexing number.    
 
 ### 2. Option_detail
 > Option_detail 각 설문의 질문(Option) 정보를 가지고 있는 Table입니다.    
@@ -36,6 +39,7 @@
 > * **option_title**     : 질문(Option)의 제목입니다. 
 > * **option_content**   : 질문(Option)의 설명 내용입니다.   
 > * **type**             : 질문(Option)의 Type을 말합니다. (radio, checkbox, text)
+> * **history_index**    : 해당 질문(Option)을 중복 선택이 가능하게 할지를 check하는 속성입니다. (1: 중복 불가, 0: 중복가능) 
 
 ### 3. Survey_option
 > Survey_option은 각 설문의 질문(Option)의 선택지(Component) 정보를 가지고 있는 Table입니다.    
