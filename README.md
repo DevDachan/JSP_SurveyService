@@ -86,6 +86,9 @@
 
 ## :heartpulse:페이지 흐름
  
+<img src="https://user-images.githubusercontent.com/111109411/210708733-ed6abc9a-9e0f-4ff2-8b95-cba7b1e21062.png" width=50%> 
+ 
+ 
 > #### 1. View page
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
 >
