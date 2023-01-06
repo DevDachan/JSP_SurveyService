@@ -111,6 +111,7 @@
 
 > ##### Admin Result
 > - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 \ n을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
+> - 또한 Admin에게는 각각의 질문에 대한 결과 값을 tag로 사용이 가능하도록 제공이 되고 해당 tag는 설문의 모든 질문이 포함이 됩니다.
 ```
 <textarea maxlength='2048' wrap="hard" cols="20" onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content" onChange="editContent(0)"></textarea>
 ```
