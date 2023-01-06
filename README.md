@@ -110,14 +110,14 @@
 
 
 > ##### Admin Result
-> - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 '\n'을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
+> - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 \ n을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
 ```
 <textarea maxlength='2048' wrap="hard" cols="20" onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content" onChange="editContent(0)"></textarea>
 ```
 
 
 > ##### User Result
-> - DB에 저장된 text를 불러오면서는 이전에 사용자에게 제공해줬던 tag값을 통해 DB에 저장된 설문 정보와 matching시켜 값을 대입시켜줍니다. 이때 값은 replace()를 사용해 넣어주며 출력하는 부분에서 HTML로 출력이 되기 때문에 줄바꿈 문자를 </br>로 바꿔주는 작업이 필요 합니다.
+> - DB에 저장된 text를 불러오면서는 이전에 사용자에게 제공해줬던 tag값을 통해 DB에 저장된 설문 정보와 matching시켜 값을 대입시켜줍니다. 이때 값은 replace()를 사용해 넣어주며 출력하는 부분에서 HTML로 출력이 되기 때문에 줄바꿈 문자를 \</br\>로 바꿔주는 작업이 필요 합니다.
 ```
 <%
 	String content = resultDAO.userResultContent(sid, userID,date);
