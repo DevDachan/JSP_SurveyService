@@ -31,42 +31,39 @@ pageEncoding="UTF-8"  %>
 	</style>
 	
 	<script>
-	function sendEmail(){
-		document.getElementById("alert_message").innerText = "";	
-		userEmail = document.getElementById("ip_email").value;
-		content = document.getElementById("content").innerHTML;
-		if(userEmail == null || userEmail == ""){
-			document.getElementById("alert_message").innerText = "* 이메일을 입력해주세요";	
-		}else{
-			document.getElementById("sendMailBtn").innerText = "재전송";
-			document.getElementById("alert_message").innerText = "전송 완료";	
-			$.ajax({
-	    	 	type:'post',
-	      	 	async:true, 
-	       		url:'http://localhost:8080/Survey_project/user/ActionMailSend.jsp',
-	        	dataType:'text',
-	        	data:{
-	        		userEmail:userEmail,
-	        		content:content
-	        		},
-	        	success: function(res) {
-	        		result = res.split('{')[1].split("}")[0];  		
-	        		if(result.includes("Success")){
-	  	
-	        		}else{
-	        			document.getElementById("sendMailBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
-	        		}
-	        	},
-	       		error:function (data, textStatus) {
-	            	console.log('error');
-	      	  	}
-	  	  	})
+		function sendEmail(){
+			document.getElementById("alert_message").innerText = "";	
+			userEmail = document.getElementById("ip_email").value;
+			content = document.getElementById("content").innerHTML;
+			if(userEmail == null || userEmail == ""){
+				document.getElementById("alert_message").innerText = "* 이메일을 입력해주세요";	
+			}else{
+				document.getElementById("sendMailBtn").innerText = "재전송";
+				document.getElementById("alert_message").innerText = "전송 완료";	
+				$.ajax({
+		    	 	type:'post',
+		      	 	async:true, 
+		       		url:'http://localhost:8080/Survey_project/user/ActionMailSend.jsp',
+		        	dataType:'text',
+		        	data:{
+		        		userEmail:userEmail,
+		        		content:content
+		        		},
+		        	success: function(res) {
+		        		result = res.split('{')[1].split("}")[0];  		
+		        		if(result.includes("Success")){
+		  	
+		        		}else{
+		        			document.getElementById("sendMailBtn").innerText = "전송 실패 (올바른 이메일을 입력해주세요.)";	
+		        		}
+		        	},
+		       		error:function (data, textStatus) {
+		            	console.log('error');
+		      	  	}
+		  	  	})
+			}
 		}
-	
-	}
-	
 	</script>
-	
 </head>
 <body>
 <% 
@@ -95,13 +92,10 @@ pageEncoding="UTF-8"  %>
 	}else{
 		if(request.getParameter("submitTime") != null){
 			date = request.getParameter("submitTime");
-		}else if(hid != 0){
-
-			
+		}else if(hid != 0){		
 			date = resultDAO.getDateTime(sid,userID,hid);
 		}	
 	}
-	
 	if(prvsv==0 && sid == 0 || prvsv==0 && date == null){
 %>
 		<jsp:include page='../alert.jsp'> 
@@ -110,12 +104,10 @@ pageEncoding="UTF-8"  %>
 				<jsp:param name="url" value="history.back();" />
 		</jsp:include>	
 <% 					
-		
 	}
 %>
 
-
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+	<nav class="navbar navbar-expand-lg navbar-light nav-background" >
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -129,18 +121,15 @@ pageEncoding="UTF-8"  %>
 					<a class="nav-link dropdowm-toggle" id="dropdown" data-toggle="dropdown" style="color:white;">
 						회원 관리	
 					</a>
-					<div class="dropdown-menu" aria-labelledby="dropdown">
-					
+					<div class="dropdown-menu" aria-labelledby="dropdown">		
 <%
 	if(userID == null){
-		
 %>
 						<a class="dropdown-item" href="../login/ViewLogin.jsp">로그인</a>
 						<a class="dropdown-item" href="../login/ViewRegister.jsp">회원가입</a>
 <% 
 	}
 	else{
-		
 %>
 						<a class="dropdown-item" href="../login/ActionLogout.jsp">로그아웃</a>
 <%
@@ -178,7 +167,6 @@ pageEncoding="UTF-8"  %>
 			}
 		}
 		content = content.replace("\n","<br/>");
-		
 	
 		String title = "";
 		if(content.equals("") ){
@@ -197,6 +185,7 @@ pageEncoding="UTF-8"  %>
 	<% 
 		if(userID == "Guest"){
 	%>
+	
 	<div class="mt-5">
 		<input type="email" id="ip_email" placeholder="email" style="white-space : nowrap ">
 		<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
@@ -208,11 +197,9 @@ pageEncoding="UTF-8"  %>
 		<input type="hidden" id="ip_email" placeholder="email" style="white-space : nowrap" value="<%=userEmail%>">
 		<button type="submit" class="btn btn-primary" id="sendMailBtn" onClick="sendEmail();" > 메일로 응답 받기 </button>
 	</div>
-	<%} %>
+	<%}%>
 	<label id="alert_message" style="color:blue; margin-top:2px; margin-left:5px;"></label>
 	<button type="submit" class="btn btn-primary mt-2" onClick="location.href='../index.jsp';" style="width:100%;"> 메인 </button>
-	
-
 	
 	</section>
 	
@@ -227,7 +214,6 @@ pageEncoding="UTF-8"  %>
 	<script src="../js/popper.min.js" ></script>
 	<!-- Bootstrap Java Script Add -->
 	<script src="../js/bootstrap.min.js" ></script>
-	
-	
-</body>
+
+	</body>
 </html>

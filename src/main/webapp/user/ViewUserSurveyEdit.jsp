@@ -8,7 +8,6 @@ pageEncoding="UTF-8"  %>
 <%@ page import='survey.OptionDetailDTO' %>
 <%@ page import='history.HistoryDTO' %>
 <%@ page import='user.UserDAO' %>
-
 <%@ page import='history.HistoryDAO' %>
 <%@ page import='java.net.URLEncoder' %>
 
@@ -76,7 +75,7 @@ pageEncoding="UTF-8"  %>
 	}
 %>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE; border-radius: 0px 0px 20px 20px;">
+	<nav class="navbar navbar-expand-lg navbar-light nav-background" >
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>

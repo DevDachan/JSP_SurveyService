@@ -257,7 +257,7 @@ pageEncoding="UTF-8"  %>
 				buf +="</div>";
 			}else if(option[count].getOptionType().equals("text")){
 				buf += "<div class='option-rows-text'>"; 
-				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' onkeydown='resize(this)' onkeyup='resize(this)' style='height:100px;' placeholder='이곳은 사용자가 작성하는 공간입니다\n 저장되지 않습니다'></textarea>";
+				buf += "<textarea name='text'" + option[count].getComponentNum()+ " class='form-control' maxlength='2048' onkeydown='resize(this)' onkeyup='resize(this)' style='height:100px;' disabled placeholder='이곳은 사용자가 작성하는 공간입니다'></textarea>";
 				buf +="</div>";
 				buf += "<div class='option-rows'>"+
 						"<div class='option-item'></div>"+	
@@ -295,9 +295,9 @@ pageEncoding="UTF-8"  %>
 		<div class="form-row">
 			<div class="form-group col-sm-6" style="text-align:right;">
 				<select name="optionType" class="select-option" id="optionType">
-				    <option value="radio">Radio</option>
-				    <option value="checkbox">Checkbox</option>
-				    <option value="text" selected="selected">Text</option>
+				    <option value="radio">라디오</option>
+				    <option value="checkbox">체크박스</option>
+				    <option value="text" selected="selected">단답형</option>
 				</select>
 				<input type="hidden" id="surveyID" name="surveyID" value=<%=sid %>>
 			</div>

@@ -212,9 +212,6 @@ pageEncoding="UTF-8"  %>
 		<div class="list-content">
 			<div class="list-option">
 				<div class="list-option-item">
-					링크
-			 	</div>
-				<div class="list-option-item">
 					제목 
 				</div> 
 				<div class="list-option-item">
@@ -223,6 +220,9 @@ pageEncoding="UTF-8"  %>
 			 	<div class="list-option-item">
 			 		통계 
 				</div>
+				<div class="list-option-item">
+					링크
+			 	</div>
 				<div class="list-option-item">
 			 		공유 
 				</div> 
@@ -236,25 +236,27 @@ pageEncoding="UTF-8"  %>
 		for(int step = 0; step<adminDTO.length; step++) {
 			adminList +="<div class=\"list-rows\" >\n"+ 
 						"<div class=\"list-item\">\n"+
-							 "<p class='clip'>\n"+
-						        "<button style='border:0px; background:white;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
-						        	"<img src='https://i.ibb.co/9NfdRzk/copy-image.png' style='height:35px;width:70px;border-radius:8px;' alt='복사하기'>\n"+
-						        "</button>\n"+
-						    "</p>\n"+  	
-						"</div>\n"+
-						"<div class=\"list-item\">\n"+
 							adminDTO[step].getSurveyName()+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>수정하기</a>\n"+
+							"<a href='./admin/ViewAdminSurvey.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary btn-width-9'>수정하기</a>\n"+
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
-							"<a href='./admin/ViewAdminStatistic.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary'>통계</a>\n"+
+							"<a href='./admin/ViewAdminStatistic.jsp?sid="+adminDTO[step].getSurveyID()+"'class='btn btn-primary btn-width-9'>통계</a>\n"+
 						"</div>\n"+
-						"<div class=\"list-item\">\n"+		
+						"<div class=\"list-item\">\n"+
+						 "<p class='clip'>\n"+
+					        "<button style='border:0px; width:90%; border-radius:0.25rem; background:#574949;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
+					        	"<img src='https://i.ibb.co/9NfdRzk/copy-image.png' style='height:35px;width:70px;border-radius:8px;' alt='복사하기'>\n"+
+					        "</button>\n"+
+					    "</p>\n"+  	
+						"</div>\n"+			
+						"<div class=\"list-item\">\n"+
+							"<div style='background:#f9e000; border-radius: 0.25rem;'>"+
 								"<a href='http://localhost:8080/Survey_project' id='kakao_href'></a>"+		
-						         "<img src='https://i.ibb.co/gzWLmg0/kakao.png'style='border-radius:8px;' onClick=\"kakaoShare("+"\'"+adminDTO[step].getSurveyName()+"\',"+adminDTO[step].getSurveyID() + " );\" width='50' alt='Share' class='btnImg'>"+
-						"</div>\n"+
+						         "<img src='https://i.ibb.co/gzWLmg0/kakao.png'style='border-radius:8px;width:20%' onClick=\"kakaoShare("+"\'"+adminDTO[step].getSurveyName()+"\',"+adminDTO[step].getSurveyID() + " );\" width='50' alt='Share' class='btnImg'>"+
+							"</div>\n"+
+						"</div>\n"+        		 
 						"</div>";
 		}
 		%>
@@ -402,7 +404,7 @@ pageEncoding="UTF-8"  %>
 						<input type="hidden" id="currentTabindex" value="1" />
 						<ul class="pagination mr-2" style="justify-content: flex-end;">
 						<li class="paginate_button page-item ">
-							<button id="selecttb_0" onClick="changeHTable(0,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link">Previous</button>
+							<button id="selecttb_0" onClick="changeHTable(0,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link">이전 페이지</button>
 						</li>
 						<li class="paginate_button page-item ">
 							<button id="selecttb_1" onClick="changeHTable(1,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)"  aria-controls="dataTable" tabindex="0" class="page-link" style="background:#87F5F5; color:white;">1</button>
@@ -416,7 +418,7 @@ pageEncoding="UTF-8"  %>
 							<%}%>
 	
 						<li class="paginate_button page-item">
-							<button id="selecttb_4" onClick="changeHTable(<%=maxHistoryIndex+1 %>,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)" aria-controls="dataTable"  tabindex="0" class="page-link">Next</button>
+							<button id="selecttb_4" onClick="changeHTable(<%=maxHistoryIndex+1 %>,<%=tabLimit%>,<%=maxHistoryIndex %>,<%=historyCount %>)" aria-controls="dataTable"  tabindex="0" class="page-link">다음 페이지</button>
 						</li>
 						</ul>
 					</div>

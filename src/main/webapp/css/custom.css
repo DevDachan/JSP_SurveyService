@@ -405,8 +405,8 @@ textarea{
 }
 
 .nav-background{
-	background: #62B6C9;
-	padding: 1rem 1.5rem 1.75rem 1.5rem !important;	
+	background: #A0C3D2;
+	padding: 1rem 1.5rem 1rem 1.5rem !important;	
 	border-radius: 0px 0px 10px 10px;
 	margin-bottom: 3rem;
 }
@@ -414,4 +414,25 @@ textarea{
 .navbar-brand{
 	margin-right: 2rem !important;
 	font-size: 1.75rem !important;
+}
+
+
+.user-title{
+	font-size: 40px;
+    height: 55px;
+    margin: 0px;
+    padding: 2px 10px 2px 10px;
+	font-weight: bold;
+}
+
+.user-content{
+	padding: 10px;
+	margin-top: 10px;
+    font-size: 15px;
+    height: auto;
+}
+
+
+.btn-width-9{
+	width:90%;
 }

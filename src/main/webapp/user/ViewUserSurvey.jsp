@@ -76,7 +76,7 @@ pageEncoding="UTF-8"  %>
 		
 %>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background: #6DEDFE;">
+	<nav class="navbar navbar-expand-lg navbar-light nav-background" >
 		<a class="navbar-brand" href="../index.jsp" style="color:white; text-weight:bold;">설문 서비스 </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
 			<span class="navbar-toggler-icon"></span>
@@ -125,10 +125,10 @@ pageEncoding="UTF-8"  %>
 	<div class="survey">
 		<div class = "form-row">
 			<div class="survey-title form-group col-sm-12">
-				<label class='option-title-text' id='surveyTitle'><%=temp_survey_title%></label>
+				<label class='user-title' id='surveyTitle'><%=temp_survey_title%></label>
 			</div>
 			<div class="survey-content form-group col-sm-12" style="height:auto;">
-				<label class='option-title-text form-control' style="padding:10px; font-size:15px;height:auto;" 
+				<label class='user-content form-control' 
 				id='surveyTitle'><%=temp_survey_content%></label>
 			</div>
 		</div>
