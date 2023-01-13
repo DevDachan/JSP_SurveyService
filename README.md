@@ -86,6 +86,9 @@
 
 ## :heartpulse:페이지 흐름
  
+<img src="https://user-images.githubusercontent.com/111109411/210708733-ed6abc9a-9e0f-4ff2-8b95-cba7b1e21062.png" width=50%> 
+ 
+ 
 > #### 1. View page
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
 >
@@ -107,14 +110,15 @@
 
 
 > ##### Admin Result
-> - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 '\n'을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
+> - Admin측에서는 textarea를 통해 결과 페이지에 대한 HTML을 작성하게 됩니다. 이때 \ n을 포함해 저장이 되어야 하므로 wrap option을 hard로 지정해줘야 합니다. warp은 textarea의 text를 보내면서 줄바꿈을 포함시켜 보내주며 cols를 지정해줘야 사용이 가능합니다.
+> - 또한 Admin에게는 각각의 질문에 대한 결과 값을 tag로 사용이 가능하도록 제공이 되고 해당 tag는 설문의 모든 질문이 포함이 됩니다.
 ```
 <textarea maxlength='2048' wrap="hard" cols="20" onkeydown="resize(this)" onkeyup="resize(this)" class="result-content" id="ta_content" onChange="editContent(0)"></textarea>
 ```
 
 
 > ##### User Result
-> - DB에 저장된 text를 불러오면서는 이전에 사용자에게 제공해줬던 tag값을 통해 DB에 저장된 설문 정보와 matching시켜 값을 대입시켜줍니다. 이때 값은 replace()를 사용해 넣어주며 출력하는 부분에서 HTML로 출력이 되기 때문에 줄바꿈 문자를 </br>로 바꿔주는 작업이 필요 합니다.
+> - DB에 저장된 text를 불러오면서는 이전에 사용자에게 제공해줬던 tag값을 통해 DB에 저장된 설문 정보와 matching시켜 값을 대입시켜줍니다. 이때 값은 replace()를 사용해 넣어주며 출력하는 부분에서 HTML로 출력이 되기 때문에 줄바꿈 문자를 \</br\>로 바꿔주는 작업이 필요 합니다.
 ```
 <%
 	String content = resultDAO.userResultContent(sid, userID,date);
