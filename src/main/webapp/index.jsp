@@ -63,7 +63,9 @@ pageEncoding="UTF-8"  %>
        		});
            	document.getElementById("kakao_href").click(); // 새로고침
           	 }
-		function copy_to_clipboard(sid) {    
+		function copy_to_clipboard(sid) { 
+			  var bt = document.getElementById("copy_bt_"+sid);
+			  bt.style.cssText = "filter: opacity(0) drop-shadow(0 0 0 white);";
           	  var copyText = "http://localhost:8080/Survey_project/user/ViewUserSurvey.jsp?sid="+sid;
           	  const copy_content = document.createElement("textarea");
            	  document.body.appendChild(copy_content);
@@ -71,7 +73,8 @@ pageEncoding="UTF-8"  %>
            	  copy_content.select();
            	  document.execCommand('copy');
            	  document.body.removeChild(copy_content);
-         }
+        	  bt.style.cssText = "transition-property: filter;  transition-duration: 2s;  filter: opacity(1) drop-shadow(0 0 0 white);";
+		}
 		function changeHTable(newtbnum ,limit,maxindex,tbcount){
 			var curtbnum = document.getElementById("currentTabindex").value;
 			
@@ -246,8 +249,8 @@ pageEncoding="UTF-8"  %>
 						"</div>\n"+
 						"<div class=\"list-item\">\n"+
 						 "<p class='clip'>\n"+
-					        "<button style='border:0px; width:90%; border-radius:0.25rem; background:#574949;' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
-					        	"<img src='https://i.ibb.co/9NfdRzk/copy-image.png' style='height:35px;width:70px;border-radius:8px;' alt='복사하기'>\n"+
+					        "<button class='copy-bt' id='copy_bt_"+adminDTO[step].getSurveyID()+"' onclick='copy_to_clipboard("+adminDTO[step].getSurveyID()+")'>\n"+
+					        	"<img src='https://i.ibb.co/9NfdRzk/copy-image.png' class='copy-img' id='copy_img_"+adminDTO[step].getSurveyID()+"' alt='복사하기'>\n"+
 					        "</button>\n"+
 					    "</p>\n"+  	
 						"</div>\n"+			

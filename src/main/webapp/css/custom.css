@@ -436,3 +436,17 @@ textarea{
 .btn-width-9{
 	width:90%;
 }
+
+
+.copy-img{
+	height:35px;
+	width:70px;
+	border-radius:8px;
+}
+
+.copy-bt{
+	border:0px; 
+	width:90%; 
+	border-radius:0.25rem; 
+	background:#574949;
+}
