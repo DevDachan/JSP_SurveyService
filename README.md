@@ -96,7 +96,7 @@
 > * View page의 경우 사용자에게 보여주는 페이지를 구성하는 jsp파일을 이야기 합니다. 해당 페이지에서는 단순히 HTML코드를 가지고 페이지 구성을 나타내거나 DAO를 통해 가져온 값을 통해서 tag값을 구성하기도 합니다. 
 >
 > #### 2. Action page
-> * Action apge의 경우에는 page를 이동하면서 필요한 특정 action들을 담고 있는 jap 파일입니다. 예를 들어 Login이나 Logout을 하거나 이메일 인증 코드등을 통해서 값을 비교할 때 중간 단계에서 DB값과 비교하는 페이지라고 생각하시면 됩니다.
+> * Action apge의 경우에는 page를 이동하면서 필요한 특정 action들을 담고 있는 jsp 파일입니다. 예를 들어 Login이나 Logout을 하거나 이메일 인증 코드등을 통해서 값을 비교할 때 중간 단계에서 DB값과 비교하는 페이지라고 생각하시면 됩니다.
 > * 추가적으로 설문조사를 만들면서 질문 내용이나 옵션등을 추가하거나 삭제하는 기능에서도 action page가 사용이되며 해당 page는 ajax를 통해 비동기식으로 처리가 됩니다.
 >
 > #### 3. DAO and DTO 
@@ -242,9 +242,9 @@
 ```  
   
 > #### 4. Datatable paging
-> Main화면(index.jsp)에서 history를 나타내면서 각각의 설문 참여 내역이 길어질 경우를 대비해 Table pagination을 통해 간략하게 나타내도록 해주는 부분입니다. 
-> * 전체적인 알고리즘은 먼저 처음 페이지가 생성되면서 history의 전체 내역을 table에 추가를 시켜주고 현재 페이지에 해당하는 table 값만 display를 block으로 지정해주고 나머지는 none으로 설정해줍니다. 이후 page번호를 통해 해당하는 값들의 display를 block으로 바꾸고 이전 값들은 none으로 바꿔주는 작업을 해주는 method입니다.   
-> * \[ Table tag안에서 display를 block으로 지정해줄 경우에는 깨지는 현상이 발생 하므로 display = 'block' 대신 display=''을 사용해줘야 합니다. \]
+> Main화면(index.jsp)에서 history를 나타내면서 각각의 설문 참여 내역이 길어질 경우를 대비해 Table pagination을 통해 간략하게 나타내도록 해주는 부분입니다.    
+> * 전체적인 알고리즘은 먼저 처음 페이지가 생성되면서 history의 전체 내역을 table에 추가를 시켜주고 현재 페이지에 해당하는 table 값만 display를 block으로 지정해주고 나머지는 none으로 설정해줍니다. 이후 page번호를 통해 해당하는 값들의 display를 block으로 바꾸고 이전 값들은 none으로 바꿔주는 작업을 해주는 method입니다.     
+> * \[ Table tag안에서 display를 block으로 지정해줄 경우에는 깨지는 현상이 발생 하므로 display = 'block' 대신 display=''을 사용해줘야 합니다. \]   
 ```
 function changeHTable(newtbnum ,limit,maxindex,tbcount){
 	var curtbnum = document.getElementById("currentTabindex").value;
@@ -253,11 +253,11 @@ function changeHTable(newtbnum ,limit,maxindex,tbcount){
 	indexcurtbnum = (Number(curtbnum)-1)*Number(limit);
 	if(newtbnum != curtbnum){
 ```
->	> **newtbnum**: 다음 page의 번호를 의미합니다.
->	> **limit**: 전체 table에서 페이지마다 표시할 row 개수를 의미합니다.
->	> **maxindex**: page번호의 끝을 의미합니다. (Next버튼을 구분할 용도로 사용됩니다.)
->	> **tbcount**: 전체 table의 row 개수를 의미합니다.
->	> **curtbnum**: 현재 table의 page 번호를 의미하고 table 내부에 input type:hidden으로 존재합니다.
+>	> **newtbnum**: 다음 page의 번호를 의미합니다.   
+>	> **limit**: 전체 table에서 페이지마다 표시할 row 개수를 의미합니다.   
+>	> **maxindex**: page번호의 끝을 의미합니다. (Next버튼을 구분할 용도로 사용됩니다.)   
+>	> **tbcount**: 전체 table의 row 개수를 의미합니다.   
+>	> **curtbnum**: 현재 table의 page 번호를 의미하고 table 내부에 input type:hidden으로 존재합니다.   
 
 ```
 	if(newtbnum > maxindex){ // next를 통한 table 변경
