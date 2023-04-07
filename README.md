@@ -362,4 +362,4 @@ function copy_to_clipboard(sid) {
 
 ### :notebook:JSP Study
 -------------
-[Notion - JSP Study](https://circular-otter-276.notion.site/JSP-2022-11-7a8fdc51009b402ab2bf778612774916)
+[Notion - JSP Study](https://dachan.notion.site/JSP-7ed12fee5010467f990b9eb70c3f2a15)
